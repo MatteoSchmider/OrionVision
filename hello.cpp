@@ -12,7 +12,7 @@ using namespace cv;
 using namespace std;
 int main(int argc, char **argv) {
     //Capture stream from webcam.
-    VideoCapture capture(0);
+    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened())
