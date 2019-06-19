@@ -8,21 +8,19 @@ int main (int argc, char **argv)
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/core.hpp"
 using namespace cv;
 using namespace std;
 int main(int argc, char **argv) {
     //Capture stream from webcam.
-    VideoCapture capture(-1);
+    VideoCapture capture(0);
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened())
     {
-        cout << "Could not open camera" << endl;
+        printf("Could not open camera\n");
         return -1;
     }
+    printf("Opened Camera\n");
     while (true)
     {
 		Mat cameraFrame;
@@ -33,4 +31,3 @@ int main(int argc, char **argv) {
 	}
  	return 0;
 }
-//apt-get install uv4l uv4l-demos uv4l-dummy uv4l-mjpegstream uv4l-raspicam uv4l-raspicam-extras uv4l-raspidisp uv4l-server uv4l-uvc uv4l-xmpp-bridge uv4l-xscreen
