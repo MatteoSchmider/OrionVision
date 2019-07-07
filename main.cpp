@@ -48,6 +48,8 @@ int main(int argc, const char * argv[]) {
 		red.convertTo(blue, CV_32F);
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
+		
+		gray.convertTo(gray, CV_32F);
 		//subtract(blue, gray, blue);
 		//subtract(green, gray, green);
 		//subtract(red, gray, red);
