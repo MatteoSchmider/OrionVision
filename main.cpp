@@ -38,7 +38,9 @@ int main(int argc, const char * argv[]) {
 		
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
-		split(cameraFrame, channels);
+		extractChannel(cameraFrame, channels[0], 0);
+		extractChannel(cameraFrame, channels[1], 1);
+		extractChannel(cameraFrame, channels[2], 2);
 		blue = channels[0];
 		green = channels[1];
 		red = channels[2];
