@@ -22,7 +22,7 @@ Mat channels[3];
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
-    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480,saturation=100 ! videoconvert ! appsink");
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened()) {
@@ -45,6 +45,9 @@ int main(int argc, const char * argv[]) {
 		subtract(green, gray, green);
 		subtract(red, gray, red);
 		
+		absdiff(green, red, yellow);
+		equalizeHist(src, dst);
+		
 		multiply(red, red, red);
 		threshold(red, red, 127, 255, THRESH_BINARY);
 		
@@ -53,7 +56,7 @@ int main(int argc, const char * argv[]) {
 		extractChannel(cameraFrame, blue, 0);*/
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
-		absdiff(green, red, yellow);
+		
 		
 		//subtract(yellow, channels[0], yellow);
 		// above equals: yellow = 1 - blue
