@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
 		subtract(red, gray, red);
 		
 		absdiff(green, red, yellow);
-		equalizeHist(src, dst);
+		//equalizeHist(src, dst);
 		
 		multiply(red, red, red);
 		threshold(red, red, 127, 255, THRESH_BINARY);
