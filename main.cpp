@@ -50,9 +50,9 @@ int main(int argc, const char * argv[]) {
 		//subtract(green, gray, green);
 		//subtract(red, gray, red);
 		
-		divide(red, gray, red);
-		divide(green, gray, green);
-		divide(blue, gray, blue);
+		divide(red, gray, red, 1, 1);
+		divide(green, gray, green, 1, 1);
+		divide(blue, gray, blue, 1, 1);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
