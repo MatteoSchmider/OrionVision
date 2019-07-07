@@ -49,7 +49,7 @@ int main(int argc, const char * argv[]) {
 		//equalizeHist(src, dst);
 		
 		multiply(red, red, red);
-		threshold(red, red, 127, 255, THRESH_BINARY);
+		threshold(red, red, 169, 255, THRESH_BINARY);
 		
 		/*extractChannel(cameraFrame, red, 2);
 		extractChannel(cameraFrame, green, 1);
