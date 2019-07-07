@@ -22,7 +22,7 @@ Mat channels[3];
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
-    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480,saturation=100 ! videoconvert ! appsink");
+    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480,contrast=100 ! videoconvert ! appsink");
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened()) {
