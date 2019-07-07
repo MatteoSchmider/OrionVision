@@ -73,8 +73,8 @@ int main(int argc, const char * argv[]) {
 		absdiff(Scalar(255), gray, black);
 		
     	imshow("Original Image", cameraFrame);
-		imshow("Ball", red);
-		imshow("Blue Goal", blue);
+		imshow("Ball", channels[2]);
+		imshow("Blue Goal", channels[0]);
 		imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
 		//imshow("Walls", black);
