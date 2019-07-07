@@ -54,7 +54,8 @@ int main(int argc, const char * argv[]) {
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
 		absdiff(green, red, yellow);
-		subtract(yellow, channels[0], yellow);
+		
+		//subtract(yellow, channels[0], yellow);
 		// above equals: yellow = 1 - blue
 		
 		absdiff(Scalar(255), gray, black);
