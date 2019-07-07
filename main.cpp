@@ -50,6 +50,10 @@ int main(int argc, const char * argv[]) {
 		//subtract(green, gray, green);
 		//subtract(red, gray, red);
 		
+		blue.convertTo(blue, CV_32F);
+		gray.convertTo(gray, CV_32F);
+		red.convertTo(red, CV_32F);
+		
 		divide(red, gray, red, 1, 1);
 		divide(green, gray, green, 1, 1);
 		divide(blue, gray, blue, 1, 1);
