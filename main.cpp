@@ -46,15 +46,17 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		absdiff(blue, gray, blue);
-		absdiff(green, gray, green);
-		absdiff(red, gray, red);
+		//absdiff(blue, gray, blue);
+		//absdiff(red, gray, red);
+		
+		blue = blue / gray * 255;
+		red = red / gray * 255;
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
 		
-		multiply(red, red, red);
-		multiply(blue, blue, blue);
+		//multiply(red, red, red);
+		//multiply(blue, blue, blue);
 		//threshold(red, red, 169, 255, THRESH_BINARY);
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
