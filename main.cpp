@@ -65,7 +65,7 @@ int main(int argc, const char * argv[]) {
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Ball", red);
-		imshow("Blue Goal", blue);
+		imshow("Blue Goal", channels[0]);
 		imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
 		//imshow("Walls", black);
