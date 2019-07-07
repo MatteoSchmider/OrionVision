@@ -29,6 +29,9 @@ int main(int argc, const char * argv[]) {
         cout << "Could not open camera" << endl;
         return -1;
     }
+	long frameCounter = 0;
+	std::time_t timeBegin = std::time(0);
+	int tick = 0;
     while (true) {
         //Read an image from the camera.
         capture.read(cameraFrame);
@@ -41,15 +44,19 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		subtract(blue, gray, blue);
-		subtract(green, gray, green);
-		subtract(red, gray, red);
+		//subtract(blue, gray, blue);
+		//subtract(green, gray, green);
+		//subtract(red, gray, red);
 		
-		absdiff(green, red, yellow);
+		divide(red, gray, red);
+		divide(green, gray, green);
+		divide(blue, gray, blue);
+		
+		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
 		
-		multiply(red, red, red);
-		threshold(red, red, 169, 255, THRESH_BINARY);
+		//multiply(red, red, red);
+		//threshold(red, red, 169, 255, THRESH_BINARY);
 		
 		/*extractChannel(cameraFrame, red, 2);
 		extractChannel(cameraFrame, green, 1);
@@ -65,12 +72,19 @@ int main(int argc, const char * argv[]) {
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Ball", red);
-		imshow("Blue Goal", channels[0]);
+		imshow("Blue Goal", blue);
 		imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
 		//imshow("Walls", black);
 		
-		char key = (char) waitKey(30);
+		frameCounter++;
+		std::time_t timeNow = std::time(0) - timeBegin;
+		if (timeNow - tick >= 1) {
+		            tick++;
+		            cout << "Frames per second: " << frameCounter << endl;
+					frameCounter = 0;
+		}
+		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
             break;
