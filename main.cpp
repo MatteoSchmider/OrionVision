@@ -46,27 +46,16 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		//subtract(blue, gray, blue);
-		//subtract(green, gray, green);
-		//subtract(red, gray, red);
-		
-		blue.convertTo(blue, CV_32F);
-		gray.convertTo(gray, CV_32F);
-		red.convertTo(red, CV_32F);
-		
-		divide(red, gray, red, 1, 1);
-		divide(green, gray, green, 1, 1);
-		divide(blue, gray, blue, 1, 1);
+		absdiff(blue, gray, blue);
+		absdiff(green, gray, green);
+		absdiff(red, gray, red);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
 		
-		//multiply(red, red, red);
+		multiply(red, red, red);
+		multiply(blue, blue, blue);
 		//threshold(red, red, 169, 255, THRESH_BINARY);
-		
-		/*extractChannel(cameraFrame, red, 2);
-		extractChannel(cameraFrame, green, 1);
-		extractChannel(cameraFrame, blue, 0);*/
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
 		
@@ -78,7 +67,7 @@ int main(int argc, const char * argv[]) {
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Ball", red);
-		imshow("Blue Goal", channels[0]);
+		imshow("Blue Goal", blue);
 		imshow("Yellow Goal", gray);
 		//imshow("Field", green);
 		//imshow("Walls", black);
