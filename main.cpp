@@ -7,18 +7,18 @@
 using namespace cv;
 using namespace std;
 
-Mat gray;
-Mat blue;
-Mat green;
-Mat red;
-Mat yellow;
-Mat black;
-Mat ryG;
-Mat gyG;
+UMat gray;
+UMat blue;
+UMat green;
+UMat red;
+UMat yellow;
+UMat black;
+UMat ryG;
+UMat gyG;
 
-Mat cameraFrame;
+UMat cameraFrame;
 
-Mat channels[3];
+UMat channels[3];
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
