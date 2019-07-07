@@ -46,11 +46,8 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		//absdiff(blue, gray, blue);
-		//absdiff(red, gray, red);
-		
-		blue = blue / gray * 255;
-		red = red / gray * 255;
+		absdiff(blue, gray, blue);
+		absdiff(red, gray, red);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
