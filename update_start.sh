@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#cd ..
+cd ..
 rm -rf OrionVision
 git clone https://github.com/MatteoSchmider/OrionVision.git
 cd OrionVision
