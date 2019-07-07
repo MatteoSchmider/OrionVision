@@ -46,6 +46,7 @@ int main(int argc, const char * argv[]) {
 		blue.convertTo(blue, CV_32F);
 		green.convertTo(blue, CV_32F);
 		red.convertTo(blue, CV_32F);
+		yellow.convertTo(yellow, CV_32F);
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
 		
