@@ -52,9 +52,9 @@ int main(int argc, const char * argv[]) {
 		addWeighted(red, 0.33, green, 0.33, 0, gray);
 		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
 		
-		red = red / gray * 255;
-		green = green / gray * 255;
-		blue = blue / gray * 255;
+		divide(red, gray, red, 255);
+		divide(green, gray, green, 255);
+		divide(blue, gray, blue, 255);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
