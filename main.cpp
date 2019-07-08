@@ -52,9 +52,9 @@ int main(int argc, const char * argv[]) {
 		addWeighted(red, 0.33, green, 0.33, 0, gray);
 		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
 		
-		divide(red, gray, red, 50);
-		divide(green, gray, green, 255);
-		divide(blue, gray, blue, 255);
+		divide(red, gray, red, 20);
+		divide(green, gray, green, 20);
+		divide(blue, gray, blue, 20);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
@@ -74,8 +74,8 @@ int main(int argc, const char * argv[]) {
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
 		imshow("Ball", red);
-		//imshow("Blue Goal", blue);
-		//imshow("Yellow Goal", yellow);
+		imshow("Blue Goal", blue);
+		imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
 		//imshow("Walls", black);
 		
