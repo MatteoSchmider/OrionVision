@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
 		absdiff(red, green, yellow);
 		
 		multiply(red, red, red);
-		threshold(red, red, 169, 255, THRESH_BINARY);
+		multiply(blue, blue, blue);
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
 		
