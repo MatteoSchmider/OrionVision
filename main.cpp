@@ -49,17 +49,12 @@ int main(int argc, const char * argv[]) {
 		//subtract(blue, gray, blue);
 		//subtract(red, gray, red);
 		
-		for(int x=0; x < cameraFrame->width; x++) {
-		    for(int y = 0; y < cameraFrame->height; y++) {
-				int redValue = cvGetReal2D(red, y, x);
-				int greenValue = cvGetReal2D(green, y, x);
-				int blueValue = cvGetReal2D(blue, y, x);
-				double sum = redValue+greenValue+blueValue;
-				cvSetReal2D(red, y, x, redValue / sum * 255);
-				cvSetReal2D(green, y, x, greenValue / sum * 255);
-				cvSetReal2D(blue, y, x, blueValue / sum * 255);
-			}
-		}
+		addWeighted(red, 0.33, green, 0.33, 0, gray);
+		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
+		
+		red = red / gray * 255;
+		green = green / gray * 255;
+		blue = blue / gray * 255;
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
