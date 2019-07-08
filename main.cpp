@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
 		addWeighted(red, 0.33, green, 0.33, 0, gray);
 		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
 		
-		//divide(red, gray, red, 255);
+		divide(red, gray, red, 50);
 		divide(green, gray, green, 255);
 		divide(blue, gray, blue, 255);
 		
