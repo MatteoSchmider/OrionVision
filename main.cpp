@@ -56,11 +56,11 @@ int main(int argc, const char * argv[]) {
 		divide(green, gray, green, 20);
 		divide(blue, gray, blue, 20);
 		
-		absdiff(channels[2], channels[1], yellow);
+		absdiff(red, green, yellow);
 		//equalizeHist(src, dst);
 		
-		//multiply(red, red, red);
-		//multiply(blue, blue, blue);
+		multiply(red, red, red);
+		multiply(blue, blue, blue);
 		//threshold(red, red, 169, 255, THRESH_BINARY);
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
