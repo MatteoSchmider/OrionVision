@@ -45,9 +45,12 @@ int main(int argc, const char * argv[]) {
 		green = channels[1];
 		red = channels[2];
 		
-		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		subtract(blue, gray, blue);
-		subtract(red, gray, red);
+		//cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
+		//subtract(blue, gray, blue);
+		//subtract(red, gray, red);
+		
+		addWeighted(red, 0.33, green, 0.33, 0, gray);
+		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
 		
 		absdiff(channels[2], channels[1], yellow);
 		//equalizeHist(src, dst);
@@ -65,9 +68,10 @@ int main(int argc, const char * argv[]) {
 		absdiff(Scalar(255), gray, black);
 		
     	imshow("Original Image", cameraFrame);
-		imshow("Ball", red);
-		imshow("Blue Goal", blue);
-		imshow("Yellow Goal", gray);
+		imshow("Gray", gray);
+		//imshow("Ball", red);
+		//imshow("Blue Goal", blue);
+		//imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
 		//imshow("Walls", black);
 		
