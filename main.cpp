@@ -70,7 +70,7 @@ int main(int argc, const char * argv[]) {
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
-		//imshow("Ball", red);
+		imshow("Ball", red);
 		//imshow("Blue Goal", blue);
 		//imshow("Yellow Goal", yellow);
 		//imshow("Field", green);
