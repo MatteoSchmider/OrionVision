@@ -45,22 +45,20 @@ int main(int argc, const char * argv[]) {
 		green = channels[1];
 		red = channels[2];
 		
-		//cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
+		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
 		//subtract(blue, gray, blue);
-		//subtract(red, gray, red);
+		subtract(red, gray, red);
 		
-		addWeighted(red, 0.33, green, 0.33, 0, gray);
-		addWeighted(blue, 0.33, gray, 0.33, 0, gray);
-		
-		divide(red, gray, red, 20);
 		divide(green, gray, green, 20);
 		divide(blue, gray, blue, 20);
 		
 		absdiff(red, green, yellow);
 		
-		//threshold(red, red, 169, 255, THRESH_BINARY);
+		multiply(red, red, red);
+		threshold(red, red, 169, 255, THRESH_BINARY);
 		
 		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
+		
 		
 		//subtract(yellow, channels[0], yellow);
 		// above equals: yellow = 1 - blue
