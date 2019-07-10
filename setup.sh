@@ -28,7 +28,7 @@ sudo pip3 install numpy
 sudo python get-pip.py
 sudo pip2 install numpy
 cd /opt/opencv-4.1.0/cmake
-sudo cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib-4.1.0/modules -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON -D OPENCV_GENERATE_PKGCONFIG=ON -D WITH_LIBV4L=ON -D WITH_OPENGL=ON ..
+sudo cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-4.1.0/modules -D ENABLE_NEON=ON -D ENABLE_VFPV3=ON -D OPENCV_GENERATE_PKGCONFIG=ON -D WITH_LIBV4L=ON -D WITH_OPENGL=ON ..
 sudo make install -j4
 sudo make clean
 sudo ldconfig
@@ -41,3 +41,8 @@ git clone https://github.com/MatteoSchmider/OrionVision.git
 cd OrionVision
 g++ main.cpp -o main `pkg-config --cflags --libs opencv4`
 ./main
+
+# L = p * G * V
+# p = 1.2
+# G = 2 * pi * radius * 2 * pi * radius * revs/sec
+# 
