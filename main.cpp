@@ -46,24 +46,12 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		//subtract(blue, gray, blue);
+		subtract(blue, gray, blue);
+		subtract(gray, blue, yellow);
 		subtract(red, gray, red);
-		
-		divide(green, gray, green, 20);
-		divide(blue, gray, blue, 20);
-		
-		absdiff(red, green, yellow);
 		
 		multiply(red, red, red);
 		multiply(blue, blue, blue);
-		
-		//addWeighted(blue, -1.0, blue, 0.0, 255.0, yellow);
-		
-		
-		//subtract(yellow, channels[0], yellow);
-		// above equals: yellow = 1 - blue
-		
-		absdiff(Scalar(255), gray, black);
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
@@ -73,13 +61,14 @@ int main(int argc, const char * argv[]) {
 		//imshow("Field", green);
 		//imshow("Walls", black);
 		
-		frameCounter++;
+		//frameCounter++;
 		std::time_t timeNow = std::time(0) - timeBegin;
-		if (timeNow - tick >= 1) {
-		            tick++;
-		            cout << "Frames per second: " << frameCounter << endl;
-					frameCounter = 0;
-		}
+		//if (timeNow - tick >= 1) {
+		//            tick++;
+		//			cout << "Frames per second: " << frameCounter << endl;
+		//			frameCounter = 0;
+		//}
+		cout << "Frames per second: " << timeNow << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
