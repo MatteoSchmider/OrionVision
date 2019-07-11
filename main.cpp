@@ -3,6 +3,7 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/core.hpp"
+#include "opencv2/core/utility.hpp"
 
 using namespace cv;
 using namespace std;
@@ -20,6 +21,8 @@ UMat cameraFrame;
 
 UMat channels[3];
 
+TickMeter tm;
+
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
     VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
@@ -29,10 +32,12 @@ int main(int argc, const char * argv[]) {
         cout << "Could not open camera" << endl;
         return -1;
     }
-	long frameCounter = 0;
-	std::time_t timeBegin = std::time(0);
-	int tick = 0;
-    while (true) {
+	//long frameCounter = 0;
+	//std::time_t timeBegin = std::time(0);
+	//int tick = 0;
+    
+	while (true) {
+		tm.start();
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
@@ -62,14 +67,15 @@ int main(int argc, const char * argv[]) {
 		//imshow("Walls", black);
 		
 		//frameCounter++;
-		std::time_t timeNow = std::time(0) - timeBegin;
-		std::time_t timeBegin = std::time(0);
+		//std::time_t timeNow = std::time(0) - timeBegin;
+		//std::time_t timeBegin = std::time(0);
 		//if (timeNow - tick >= 1) {
 		//            tick++;
 		//			cout << "Frames per second: " << frameCounter << endl;
 		//			frameCounter = 0;
 		//}
-		cout << "Frames per second: " << timeNow << endl;
+		tm.stop();
+		cout << "milliseconds per frame: " << tm.getTimeMilli() << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
