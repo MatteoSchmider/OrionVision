@@ -3,7 +3,8 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/core.hpp"
-#include "opencv2/core/utility.hpp"
+#include <chrono>
+#include <unistd.h>
 
 using namespace cv;
 using namespace std;
@@ -37,7 +38,7 @@ int main(int argc, const char * argv[]) {
 	//int tick = 0;
     
 	while (true) {
-		tm.start();
+		auto start = chrono::steady_clock::now();
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
@@ -74,8 +75,10 @@ int main(int argc, const char * argv[]) {
 		//			cout << "Frames per second: " << frameCounter << endl;
 		//			frameCounter = 0;
 		//}
-		tm.stop();
-		cout << "milliseconds per frame: " << tm.getTimeMilli() << endl;
+		
+		auto end = chrono::steady_clock::now();
+		
+		cout << "milliseconds per frame: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
