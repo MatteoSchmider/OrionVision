@@ -63,6 +63,7 @@ int main(int argc, const char * argv[]) {
 		
 		//frameCounter++;
 		std::time_t timeNow = std::time(0) - timeBegin;
+		std::time_t timeBegin = std::time(0);
 		//if (timeNow - tick >= 1) {
 		//            tick++;
 		//			cout << "Frames per second: " << frameCounter << endl;
