@@ -46,8 +46,8 @@ int main(int argc, const char * argv[]) {
 		red = channels[2];
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-		subtract(blue, gray, blue);
 		subtract(gray, blue, yellow);
+		subtract(blue, gray, blue);
 		subtract(red, gray, red);
 		
 		multiply(red, red, red);
