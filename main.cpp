@@ -55,9 +55,11 @@ int main(int argc, const char * argv[]) {
 		subtract(gray, blue, yellow);
 		subtract(blue, gray, blue);
 		subtract(red, gray, red);
+		subtract(yellow, red, yellow);
 		
 		multiply(red, red, red);
 		multiply(blue, blue, blue);
+		multiply(yellow, yellow, yellow);
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
