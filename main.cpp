@@ -21,7 +21,7 @@ UMat cameraFrame;
 
 UMat channels[3];
 
-TickMeter tm;
+cv::TickMeter tm;
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
