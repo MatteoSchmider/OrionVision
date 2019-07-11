@@ -78,7 +78,7 @@ int main(int argc, const char * argv[]) {
 		
 		auto end = chrono::steady_clock::now();
 		
-		cout << "milliseconds per frame: " << 1000 / chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
+		cout << "FPS: " << 1000 / chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
