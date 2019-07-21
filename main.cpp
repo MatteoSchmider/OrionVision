@@ -42,6 +42,8 @@ int main(int argc, const char * argv[]) {
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
+		cameraFrame = correctGamma(cameraFrame, 1.0);
+		
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
 		extractChannel(cameraFrame, channels[0], 0);
@@ -58,9 +60,9 @@ int main(int argc, const char * argv[]) {
 		subtract(yellow, red, yellow);
 		subtract(red, yellow, red);
 		
-		multiply(red, red, red);
-		multiply(blue, blue, blue);
-		multiply(yellow, yellow, yellow);
+		//multiply(red, red, red);
+		//multiply(blue, blue, blue);
+		//multiply(yellow, yellow, yellow);
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
@@ -80,8 +82,9 @@ int main(int argc, const char * argv[]) {
 		//}
 		
 		auto end = chrono::steady_clock::now();
-		
-		cout << "FPS: " << 1000 / chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
+		double fps = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+		fps = 1000 / fps;
+		cout << "FPS: " << fps << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
@@ -89,4 +92,18 @@ int main(int argc, const char * argv[]) {
         }
 	}
 	return 0;
+}
+
+Mat correctGamma( Mat& img, double gamma ) {
+ double inverse_gamma = 1.0 / gamma;
+ 
+ Mat lut_matrix(1, 256, CV_8UC1 );
+ uchar * ptr = lut_matrix.ptr();
+ for( int i = 0; i < 256; i++ )
+   ptr[i] = (int)( pow( (double) i / 255.0, inverse_gamma ) * 255.0 );
+ 
+ Mat result;
+ LUT( img, lut_matrix, result );
+ 
+ return result;
 }
