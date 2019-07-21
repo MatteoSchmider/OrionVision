@@ -91,7 +91,7 @@ int main(int argc, const char * argv[]) {
 		//multiply(yellow, yellow, yellow);
 		
     	imshow("Original Image", cameraFrame);
-		imshow("Gray", gray);
+		imshow("Original Image", gray);
 		imshow("Ball", red);
 		imshow("Blue Goal", blue);
 		imshow("Yellow Goal", yellow);
