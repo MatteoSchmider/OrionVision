@@ -56,7 +56,7 @@ int main(int argc, const char * argv[]) {
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		cameraFrame = correctGamma(cameraFrame, 1.0);
+		cameraFrame = correctGamma(cameraFrame, 2.0);
 		
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
