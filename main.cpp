@@ -69,7 +69,8 @@ int main(int argc, const char * argv[]) {
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		cameraFrame = correctGamma(cameraFrame, 1.5);
+		gamma = iSliderValue1 / 100;
+		cameraFrame = correctGamma(cameraFrame, gamma);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
 		extractChannel(cameraFrame, channels[0], 0);
