@@ -59,16 +59,15 @@ int main(int argc, const char * argv[]) {
     namedWindow("Original Image", 1);
 
     //Create trackbar to change brightness
-    int iSliderValue1 = 100;
-    createTrackbar("Gamma", "Original Image", &iSliderValue1, 200);
+    double iSliderValue1 = 1;
+    createTrackbar("Gamma", "Original Image", &iSliderValue1, 2);
 	
 	while (true) {
 		auto start = chrono::steady_clock::now();
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		double gamma = iSliderValue1 / 100;
-		cameraFrame = correctGamma(cameraFrame, gamma);
+		cameraFrame = correctGamma(cameraFrame, iSliderValue1);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
 		extractChannel(cameraFrame, channels[0], 0);
