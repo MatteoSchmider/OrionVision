@@ -56,6 +56,7 @@ int main(int argc, const char * argv[]) {
 		subtract(blue, gray, blue);
 		subtract(red, gray, red);
 		subtract(yellow, red, yellow);
+		subtract(red, yellow, red);
 		
 		multiply(red, red, red);
 		multiply(blue, blue, blue);
