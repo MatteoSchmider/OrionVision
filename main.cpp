@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
 
     //Create trackbar to change brightness
     int iSliderValue1 = 100;
-    createTrackbar("Gamma", "Original Image", &iSliderValue1, 200);
+    createTrackbar("Gamma", "Original Image", &iSliderValue1, 500);
 	
 	while (true) {
 		auto start = chrono::steady_clock::now();
@@ -91,7 +91,7 @@ int main(int argc, const char * argv[]) {
 		//multiply(yellow, yellow, yellow);
 		
     	imshow("Original Image", cameraFrame);
-		imshow("Original Image", gray);
+		imshow("Gray", gray);
 		imshow("Ball", red);
 		imshow("Blue Goal", blue);
 		imshow("Yellow Goal", yellow);
