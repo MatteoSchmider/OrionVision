@@ -39,6 +39,8 @@ Mat correctGamma( Mat& img, double gamma ) {
  Mat result;
  LUT( img, lut_matrix, result );
  
+ cout << "Gamma: " << gamma << endl;
+ 
  return result;
 }
 
@@ -109,7 +111,6 @@ int main(int argc, const char * argv[]) {
 		double fps = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 		fps = 1000 / fps;
 		cout << "FPS: " << fps << endl;
-		cout << "Gamma: " << gamma << endl;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
