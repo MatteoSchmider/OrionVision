@@ -69,7 +69,7 @@ int main(int argc, const char * argv[]) {
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		gamma = iSliderValue1 / 100;
+		double gamma = iSliderValue1 / 100;
 		cameraFrame = correctGamma(cameraFrame, gamma);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
