@@ -42,16 +42,6 @@ Mat correctGamma( Mat& img, double gamma ) {
  return result;
 }
 
-/**
- * @function on_trackbar
- * @brief Callback for trackbar
- */
-void on_trackbar( int, void* )
-{
- alpha = (double) alpha_slider/alpha_slider_max ;
- cameraFrame = correctGamma(cameraFrame, alpha);
-}
-
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
     VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
@@ -65,11 +55,20 @@ int main(int argc, const char * argv[]) {
 	//std::time_t timeBegin = std::time(0);
 	//int tick = 0;
     
+	// Create a window
+    namedWindow("Original Image", 1);
+
+    //Create trackbar to change brightness
+    int iSliderValue1 = 100;
+    createTrackbar("Gamma", "Original Image", &iSliderValue1, 200);
+	
 	while (true) {
 		auto start = chrono::steady_clock::now();
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
+		double gamma = iSliderValue1 / 200;
+		cameraFrame = correctGamma(cameraFrame, gamma);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
 		extractChannel(cameraFrame, channels[0], 0);
@@ -89,21 +88,6 @@ int main(int argc, const char * argv[]) {
 		//multiply(red, red, red);
 		//multiply(blue, blue, blue);
 		//multiply(yellow, yellow, yellow);
-		
-	   	/// Initialize values
-	    alpha_slider = 0;
-
-	    /// Create Windows
-	    namedWindow("Original Image", 1);
-
-	    /// Create Trackbars
-	    char TrackbarName[50];
-	    sprintf(TrackbarName, "Alpha x %d", 200);
-
-	    createTrackbar(TrackbarName, "Original Image", &alpha_slider, 200, on_trackbar);
-
-	    /// Show some stuff
-	    on_trackbar( alpha_slider, 0 );
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
