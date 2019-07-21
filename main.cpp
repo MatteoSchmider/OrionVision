@@ -39,8 +39,6 @@ Mat correctGamma( Mat& img, double gamma ) {
  Mat result;
  LUT( img, lut_matrix, result );
  
- cout << "Gamma: " << gamma << endl;
- 
  return result;
 }
 
@@ -70,6 +68,7 @@ int main(int argc, const char * argv[]) {
         capture.read(cameraFrame);
 		
 		double gamma = iSliderValue1 / 100;
+		cout << "Gamma: " << gamma << endl;
 		cameraFrame = correctGamma(cameraFrame, gamma);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
