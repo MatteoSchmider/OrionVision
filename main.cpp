@@ -24,6 +24,10 @@ UMat channels[3];
 
 cv::TickMeter tm;
 
+/// Global Variables
+int alpha_slider;
+double alpha;
+
 Mat correctGamma( Mat& img, double gamma ) {
  double inverse_gamma = 1.0 / gamma;
  
@@ -36,6 +40,16 @@ Mat correctGamma( Mat& img, double gamma ) {
  LUT( img, lut_matrix, result );
  
  return result;
+}
+
+/**
+ * @function on_trackbar
+ * @brief Callback for trackbar
+ */
+void on_trackbar( int, void* )
+{
+ alpha = (double) alpha_slider/alpha_slider_max ;
+ cameraFrame = correctGamma(cameraFrame, alpha);
 }
 
 int main(int argc, const char * argv[]) {
@@ -56,8 +70,6 @@ int main(int argc, const char * argv[]) {
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		cameraFrame = correctGamma(cameraFrame, 2.0);
-		
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
 		
 		extractChannel(cameraFrame, channels[0], 0);
@@ -77,6 +89,21 @@ int main(int argc, const char * argv[]) {
 		//multiply(red, red, red);
 		//multiply(blue, blue, blue);
 		//multiply(yellow, yellow, yellow);
+		
+	   	/// Initialize values
+	    alpha_slider = 0;
+
+	    /// Create Windows
+	    namedWindow("Original Image", 1);
+
+	    /// Create Trackbars
+	    char TrackbarName[50];
+	    sprintf(TrackbarName, "Alpha x %d", 200);
+
+	    createTrackbar(TrackbarName, "Original Image", &alpha_slider, 200, on_trackbar);
+
+	    /// Show some stuff
+	    on_trackbar( alpha_slider, 0 );
 		
     	imshow("Original Image", cameraFrame);
 		imshow("Gray", gray);
