@@ -24,6 +24,12 @@ UMat channels[3];
 
 cv::TickMeter tm;
 
+double fps1 = 0;
+double fps2 = 0;
+double fps3 = 0;
+double totalFps = 0;
+long totalFpsCount = 1;
+
 /// Global Variables
 int alpha_slider;
 double alpha;
@@ -59,15 +65,17 @@ int main(int argc, const char * argv[]) {
     namedWindow("Original Image", 1);
 
     //Create trackbar to change brightness
-    int iSliderValue1 = 100;
-    createTrackbar("Gamma", "Original Image", &iSliderValue1, 500);
+    int gammaSlider = 100;
+    createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
+    int imageShownSlider = 1;
+    createTrackbar("Preview Images", "Original Image", &imageShownSlider, 1);
 	
 	while (true) {
 		auto start = chrono::steady_clock::now();
         //Read an image from the camera.
         capture.read(cameraFrame);
 		
-		double gamma = iSliderValue1 / 100.0;
+		double gamma = gammaSlider / 100.0;
 		cout << "Gamma: " << gamma << endl;
 		cameraFrame = correctGamma(cameraFrame, gamma);
 		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
@@ -89,12 +97,13 @@ int main(int argc, const char * argv[]) {
 		//multiply(red, red, red);
 		//multiply(blue, blue, blue);
 		//multiply(yellow, yellow, yellow);
-		
-    	imshow("Original Image", cameraFrame);
-		imshow("Gray", gray);
-		imshow("Ball", red);
-		imshow("Blue Goal", blue);
-		imshow("Yellow Goal", yellow);
+		if (imageShownSlider == 1) {
+    		imshow("Original Image", cameraFrame);
+			imshow("Gray", gray);
+			imshow("Ball", red);
+			imshow("Blue Goal", blue);
+			imshow("Yellow Goal", yellow);
+		}
 		//imshow("Field", green);
 		//imshow("Walls", black);
 		
@@ -106,11 +115,18 @@ int main(int argc, const char * argv[]) {
 		//			cout << "Frames per second: " << frameCounter << endl;
 		//			frameCounter = 0;
 		//}
-		
+		totalFps += fps3;
+		fps1 = fps2;
+		fps2 = fps3;
 		auto end = chrono::steady_clock::now();
-		double fps = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-		fps = 1000 / fps;
-		cout << "FPS: " << fps << endl;
+		fps3 = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+		fps3 = 1000 / fps3;
+		double avg3 = (fps1 + fps2 + fps3) / 3;
+		double totalavg = totalFps / totalFpsCount;
+		cout << "Current FPS: " << fps3 << endl;
+		cout << "Running Average (3) FPS: " << avg3 << endl;
+		cout << "Total Average FPS: " << totalavg << endl;
+		totalFpsCount++;
 		char key = (char) waitKey(1);
         if (key == 'q' || key == 27)
         {
