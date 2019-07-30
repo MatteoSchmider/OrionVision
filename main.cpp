@@ -99,7 +99,7 @@ void doContours() {
         }
 
         /// Show in a window
-        imshow( "Contours", drawing );
+        //imshow( "Contours", drawing );
 }
 
 void processFrame() {
