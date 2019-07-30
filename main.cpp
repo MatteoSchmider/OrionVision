@@ -44,9 +44,9 @@ auto endTime = chrono::steady_clock::now();
 
 int gammaSlider = 100;
 int imageShownSlider = 1;
-int threshold_red_slider = 80;
-int threshold_blue_slider = 80;
-int threshold_yellow_slider = 80;
+int threshold_red_slider = 52;
+int threshold_blue_slider = 7;
+int threshold_yellow_slider = 35;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
@@ -84,6 +84,41 @@ void normalizeChannels() {
         subtract(yellow, redNormalized, yellowNormalized);
         subtract(red, yellowNormalized, redNormalized);
         subtract(green, gray, greenNormalized);
+}
+
+void thresh_callback() {
+        vector<vector<Point> > contours;
+        vector<Vec4i> hierarchy;
+
+        /// Find contours
+        findContours( red, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+        /// Approximate contours to polygons + get bounding rects and circles
+        vector<vector<Point> > contours_poly( contours.size() );
+        vector<Rect> boundRect( contours.size() );
+        vector<Point2f>center( contours.size() );
+        vector<float>radius( contours.size() );
+
+        for( int i = 0; i < contours.size(); i++ )
+        { approxPolyDP( Mat(contours[i]), contours_poly[i], 3, true );
+          boundRect[i] = boundingRect( Mat(contours_poly[i]) );
+          minEnclosingCircle( (Mat)contours_poly[i], center[i], radius[i] );}
+
+
+        /// Draw polygonal contour + bonding rects + circles
+        Mat drawing;
+        cameraFrame.copyTo(drawing);
+        for( int i = 0; i< contours.size(); i++ )
+        {
+                Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+                drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+                rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
+                circle( drawing, center[i], (int)radius[i], color, 2, 8, 0 );
+        }
+
+        /// Show in a window
+        namedWindow( "Contours", CV_WINDOW_AUTOSIZE );
+        imshow( "Contours", drawing );
 }
 
 void processFrame() {
@@ -142,6 +177,7 @@ int main(int argc, const char * argv[]) {
         while (true) {
                 switch (imageShownSlider) {
                 case 0: {
+
                         break;
                 }
                 case 1: {
@@ -167,6 +203,13 @@ int main(int argc, const char * argv[]) {
                 }
                 case 5: {
                         imshow("Original Image", yellowThreshold);
+                        break;
+                }
+                case 6: {
+                        imshow("Original Image", cameraFrame);
+                        imshow("Ball", redThreshold);
+                        imshow("Blue Goal", blueThreshold);
+                        imshow("Yellow Goal", yellowThreshold);
                         break;
                 }
                 }
