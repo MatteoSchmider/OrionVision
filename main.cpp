@@ -93,7 +93,7 @@ void doContours() {
         for( size_t i = 0; i< contours.size(); i++ )
         {
                 Scalar color = Scalar(255, 0, 0);
-                drawContours( redThreshold, contours, (int)i, color, 2, LINE_8, hierarchy, 0 );
+                drawContours( cameraFrame, contours, (int)i, color, 2, LINE_8, hierarchy, 0 );
         }
 }
 
