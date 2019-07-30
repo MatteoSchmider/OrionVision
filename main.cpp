@@ -28,8 +28,8 @@ double fps3 = 0;
 double totalFps = 0;
 long totalFpsCount = 1;
 
-auto start = chrono::steady_clock::now();
-auto end = chrono::steady_clock::now();
+auto startTime = chrono::steady_clock::now();
+auto endTime = chrono::steady_clock::now();
 
 int gammaSlider = 100;
 int imageShownSlider = 1;
@@ -121,9 +121,9 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
 
-        thread image_processor(&processFrames, this);
+        thread image_processor(&processFrames);
         while (true) {
-                start = chrono::steady_clock::now();
+                startTime = chrono::steady_clock::now();
 
                 //get frame
                 capture >> cameraFrameNoMask;
@@ -144,8 +144,8 @@ int main(int argc, const char * argv[]) {
                 totalFps += fps3;
                 fps1 = fps2;
                 fps2 = fps3;
-                end = chrono::steady_clock::now();
-                fps3 = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                endTime = chrono::steady_clock::now();
+                fps3 = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
                 fps3 = 1000 / fps3;
                 double avg3 = (fps1 + fps2 + fps3) / 3;
                 double totalavg = totalFps / totalFpsCount;
