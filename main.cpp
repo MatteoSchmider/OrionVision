@@ -122,7 +122,7 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
-        image_processor.join();
+        //image_processor.join();
         while (true) {
                 startTime = chrono::steady_clock::now();
                 cout << "Main Thread!" << endl;
