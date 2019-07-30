@@ -121,7 +121,8 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
 
-        thread image_processor(&processFrames);
+        thread image_processor(processFrames);
+        image_processor.join();
         while (true) {
                 startTime = chrono::steady_clock::now();
 
