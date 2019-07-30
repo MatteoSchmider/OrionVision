@@ -54,8 +54,8 @@ void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gamma
         double Gamma = gammaSlider / 100.0;
-        cout << "Gamma: " << gamma << endl;
-        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, gamma);
+        cout << "Gamma: " << Gamma << endl;
+        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, Gamma);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(5, 5));
 }
