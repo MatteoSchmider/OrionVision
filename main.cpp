@@ -141,27 +141,34 @@ int main(int argc, const char * argv[]) {
 
         while (true) {
                 switch (imageShownSlider) {
-                case 0:
+                case 0: {
                         break;
-                case 1:
+                }
+                case 1: {
                         imshow("Original Image", cameraFrame);
                         break;
-                case 2:
+                }
+                case 2: {
                         seg_channels[0] = blueNormalized * 10;
                         seg_channels[1] = greenNormalized * 25;
                         seg_channels[2] = redNormalized * 2;
                         Mat seg_img;
                         merge(seg_channels, 3, seg_img);
                         imshow("Original Image", seg_img);
-                case 3:
+                        break;
+                }
+                case 3: {
                         imshow("Original Image", redThreshold);
                         break;
-                case 4:
+                }
+                case 4: {
                         imshow("Original Image", blueThreshold);
                         break;
-                case 5:
+                }
+                case 5: {
                         imshow("Original Image", yellowThreshold);
                         break;
+                }
                 }
 
                 cout << "Main Thread: " << mainCounter << endl;
