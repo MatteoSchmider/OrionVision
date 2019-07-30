@@ -87,13 +87,26 @@ void normalizeChannels() {
 }
 
 void doContours() {
-        vector<vector<Point> > contours;
-        vector<Vec4i> hierarchy;
-        findContours( redThreshold, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE );
-        for( size_t i = 0; i< contours.size(); i++ )
-        {
+        vector<vector<Point> > contoursBall;
+        vector<Vec4i> hierarchyBall;
+        findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        for(size_t i = 0; i < contoursBall.size(); i++) {
+                Scalar color = Scalar(0, 0, 255);
+                drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
+        }
+        vector<vector<Point> > contoursBG;
+        vector<Vec4i> hierarchyBG;
+        findContours(blueThreshold, contoursBG, hierarchyBG, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        for(size_t i = 0; i < contoursBG.size(); i++) {
                 Scalar color = Scalar(255, 0, 0);
-                drawContours( cameraFrame, contours, (int)i, color, 2, LINE_8, hierarchy, 0 );
+                drawContours(cameraFrame, contoursBG, (int)i, color, 2, LINE_8, hierarchyBG, 0);
+        }
+        vector<vector<Point> > contoursYG;
+        vector<Vec4i> hierarchyYG;
+        findContours(yellowThreshold, contoursYG, hierarchyYG, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        for(size_t i = 0; i < contoursYG.size(); i++) {
+                Scalar color = Scalar(0, 255, 255);
+                drawContours(cameraFrame, contoursYG, (int)i, color, 2, LINE_8, hierarchyYG, 0);
         }
 }
 
