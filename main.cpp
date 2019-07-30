@@ -53,7 +53,7 @@ Mat correctGamma(Mat& img, double gamma) {
 void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gamma
-        double gamma = gammaSlider / 100.0;
+        double Gamma = gammaSlider / 100.0;
         cout << "Gamma: " << gamma << endl;
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, gamma);
         //blur
