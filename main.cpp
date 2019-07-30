@@ -125,7 +125,7 @@ int main(int argc, const char * argv[]) {
         image_processor.join();
         while (true) {
                 startTime = chrono::steady_clock::now();
-
+                cout << "Main Thread!" << endl;
                 //get frame
                 capture >> cameraFrameNoMask;
 
