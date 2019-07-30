@@ -66,7 +66,6 @@ void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gamma
         double Gamma = gammaSlider / 100.0;
-        cout << "Gamma: " << Gamma << endl;
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, Gamma);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(5, 5));
@@ -145,7 +144,6 @@ int main(int argc, const char * argv[]) {
         //image_processor.join();
         while (true) {
                 startTime = chrono::steady_clock::now();
-                cout << "Main Thread!" << endl;
                 //get frame
 
                 if (imageShownSlider == 1) {
