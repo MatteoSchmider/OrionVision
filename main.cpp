@@ -16,7 +16,9 @@ Mat red;
 Mat yellow;
 Mat black;
 
+Mat mask;
 Mat cameraFrame;
+Mat cameraFramenomask;
 
 Mat channels[3];
 
@@ -49,7 +51,7 @@ Mat correctGamma( Mat& img, double gamma ) {
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
     VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
-
+mask = imread("mask.png", IMREAD_COLOR);
     //Check if we can get the webcam stream.
     if(!capture.isOpened()) {
         cout << "Could not open camera" << endl;
@@ -73,11 +75,15 @@ int main(int argc, const char * argv[]) {
     createTrackbar("Blue Treshold multiplier", "Original Image", &tb, 100);
     int ty = 80;
     createTrackbar("Yellow Treshold multiplier", "Original Image", &ty, 100);
-	capture.read(cameraFrame);
-	capture.read(cameraFrame);
-	capture.read(cameraFrame);
-	capture.read(cameraFrame);
-	capture.read(cameraFrame);
+	capture >> cameraFramenomask;
+	capture >> cameraFramenomask;
+	capture >> cameraFramenomask;
+	capture >> cameraFramenomask;
+	capture >> cameraFramenomask;
+	capture >> cameraFramenomask;
+        cameraFramenomask.copyTo(cameraFrame, mask);
+        
+        blur(cameraFrame, cameraFrame, Size(5, 5));
 	
 	Mat channelsc[3];
 	Mat yellowc;
@@ -103,7 +109,8 @@ int main(int argc, const char * argv[]) {
 	while (true) {
 		auto start = chrono::steady_clock::now();
         	//Read an image from the camera.
-        	capture >> cameraFrame;
+        	capture >> cameraFramenomask;
+        	cameraFramenomask.copyTo(cameraFrame, mask);
         	auto ReadFrame = chrono::steady_clock::now();
         	long deltaReadFrame = chrono::duration_cast<chrono::milliseconds>(ReadFrame - start).count();
 		cout << "deltaReadFrame: " << deltaReadFrame << endl;
@@ -115,7 +122,7 @@ int main(int argc, const char * argv[]) {
         	long deltaGamma = chrono::duration_cast<chrono::milliseconds>(GammaTime - ReadFrame).count();
 		cout << "deltaGamma: " << deltaGamma << endl;
 		
-		blur(cameraFrame, cameraFrame, Size(10, 10));
+		blur(cameraFrame, cameraFrame, Size(5, 5));
 		auto Blur = chrono::steady_clock::now();
         	long deltaBlur = chrono::duration_cast<chrono::milliseconds>(Blur - GammaTime).count();
 		cout << "deltaBlur: " << deltaBlur << endl;
