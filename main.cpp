@@ -9,18 +9,18 @@
 using namespace cv;
 using namespace std;
 
-UMat gray;
-UMat blue;
-UMat green;
-UMat red;
-UMat yellow;
-UMat black;
-UMat ryG;
-UMat gyG;
+Mat gray;
+Mat blue;
+Mat green;
+Mat red;
+Mat yellow;
+Mat black;
+Mat ryG;
+Mat gyG;
 
 Mat cameraFrame;
 
-UMat channels[3];
+Mat channels[3];
 
 cv::TickMeter tm;
 
@@ -50,7 +50,7 @@ Mat correctGamma( Mat& img, double gamma ) {
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
-    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+    VideoCapture capture("rkcamsrc io-mode=2 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened()) {
@@ -69,7 +69,39 @@ int main(int argc, const char * argv[]) {
     createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
     int imageShownSlider = 1;
     createTrackbar("Preview Images", "Original Image", &imageShownSlider, 1);
+    int tr = 80;
+    createTrackbar("Red Treshold multiplier", "Original Image", &tr, 100);
+    int tb = 80;
+    createTrackbar("Blue Treshold multiplier", "Original Image", &tb, 100);
+    int ty = 80;
+    createTrackbar("Yellow Treshold multiplier", "Original Image", &ty, 100);
+	capture.read(cameraFrame);
+	capture.read(cameraFrame);
+	capture.read(cameraFrame);
+	capture.read(cameraFrame);
+	capture.read(cameraFrame);
 	
+	Mat channelsc[3];
+	Mat yellowc;
+	extractChannel(cameraFrame, channelsc[0], 0);
+	extractChannel(cameraFrame, channelsc[1], 1);
+	extractChannel(cameraFrame, channelsc[2], 2);
+	Mat bluec = channelsc[0];
+	Mat greenc = channelsc[1];
+	Mat redc = channelsc[2];
+	
+	Mat grayc;
+	cvtColor(cameraFrame, grayc, COLOR_BGR2GRAY);
+	subtract(grayc, bluec, yellowc);
+	subtract(bluec, grayc, bluec);
+	subtract(redc, grayc, redc);
+	subtract(yellowc, redc, yellowc);
+	subtract(redc, yellowc, redc);
+	
+	double minr, maxr, minb, maxb, miny, maxy;
+	minMaxLoc(redc, &minr, &maxr, NULL, NULL);
+	minMaxLoc(bluec, &minb, &maxb, NULL, NULL);
+	minMaxLoc(yellowc, &miny, &maxy, NULL, NULL);
 	while (true) {
 		auto start = chrono::steady_clock::now();
         //Read an image from the camera.
@@ -97,6 +129,12 @@ int main(int argc, const char * argv[]) {
 		//multiply(red, red, red);
 		//multiply(blue, blue, blue);
 		//multiply(yellow, yellow, yellow);
+		
+		threshold(red, red, maxr * tr / 100, 255, THRESH_BINARY);
+		threshold(blue, blue, maxb * tb / 100, 255, THRESH_BINARY);
+		threshold(yellow, yellow, maxy * ty / 100, 255, THRESH_BINARY);
+		
+		
 		if (imageShownSlider == 1) {
     		imshow("Original Image", cameraFrame);
 			imshow("Gray", gray);
