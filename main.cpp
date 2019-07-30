@@ -89,17 +89,12 @@ void normalizeChannels() {
 void doContours() {
         vector<vector<Point> > contours;
         vector<Vec4i> hierarchy;
-        findContours(redThreshold, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0) );
-        vector<vector<Point> > contours_poly( contours.size() );
-
-        for( int i = 0; i< contours.size(); i++ )
-        {
+        findContours(redThreshold, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
+        vector<vector<Point> > contours_poly(contours.size());
+        for(int i = 0; i< contours.size(); i++) {
                 Scalar color = Scalar(255, 0, 0);
-                drawContours( cameraFrame, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+                drawContours(cameraFrame, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point());
         }
-
-        /// Show in a window
-        //imshow( "Contours", drawing );
 }
 
 void processFrame() {
