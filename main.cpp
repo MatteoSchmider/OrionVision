@@ -43,7 +43,7 @@ auto startTime = chrono::steady_clock::now();
 auto endTime = chrono::steady_clock::now();
 
 int gammaSlider = 100;
-int imageShownSlider = 1;
+int imageShownSlider = 0;
 int threshold_red_slider = 52;
 int threshold_blue_slider = 7;
 int threshold_yellow_slider = 35;
@@ -86,14 +86,10 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
 }
 
-void thresh_callback() {
+void doContours() {
         vector<vector<Point> > contours;
         vector<Vec4i> hierarchy;
-
-        /// Find contours
         findContours( redThreshold, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0) );
-
-        /// Approximate contours to polygons + get bounding rects and circles
         vector<vector<Point> > contours_poly( contours.size() );
         vector<Rect> boundRect( contours.size() );
         vector<Point2f>center( contours.size() );
@@ -111,13 +107,12 @@ void thresh_callback() {
         for( int i = 0; i< contours.size(); i++ )
         {
                 Scalar color = Scalar(255, 0, 0);
-                drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+                //drawContours( drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
                 rectangle( drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0 );
                 circle( drawing, center[i], (int)radius[i], color, 2, 8, 0 );
         }
 
         /// Show in a window
-        namedWindow( "Contours", 1);
         imshow( "Contours", drawing );
 }
 
