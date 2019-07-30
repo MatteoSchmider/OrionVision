@@ -11,16 +11,16 @@ using namespace cv;
 using namespace std;
 
 Mat gray;
-Mat blue, blueThreshold;
-Mat green, greenThreshold;
-Mat red, redThreshold;
-Mat yellow, yellowThreshold;
+Mat blue, blueNormalized, blueThreshold;
+Mat green, greenNormalized, greenThreshold;
+Mat red, redNormalized, redThreshold;
+Mat yellow, yellowNormalized, yellowThreshold;
 
 Mat mask;
-Mat cameraFrame;
-Mat cameraFrameNoMask;
+Mat cameraFrame, cameraFrameNoMask, cameraFrameNoGammaBlur;
 
 Mat channels[3];
+Mat seg_channels[3];
 
 double fps1 = 0;
 double fps2 = 0;
@@ -51,13 +51,13 @@ Mat correctGamma(Mat& img, double gamma) {
 }
 
 void prepareFrame() {
-        cameraFrameNoMask.copyTo(cameraFrame, mask);
+        cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gamma
         double gamma = gammaSlider / 100.0;
         cout << "Gamma: " << gamma << endl;
-        cameraFrame = correctGamma(cameraFrame, gamma);
+        cameraFrameG = correctGamma(cameraFrameNoGammaBlur, gamma);
         //blur
-        blur(cameraFrame, cameraFrame, Size(5, 5));
+        blur(cameraFrameNoGammaBlur, cameraFrame, Size(5, 5));
 }
 
 void normalizeChannels() {
@@ -68,19 +68,19 @@ void normalizeChannels() {
 
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         subtract(gray, blue, yellow);
-        subtract(blue, gray, blue);
+        subtract(blue, gray, blueNormalized);
         subtract(red, gray, red);
-        subtract(yellow, red, yellow);
-        subtract(red, yellow, red);
-        subtract(green, gray, green);
+        subtract(yellow, redNormalized, yellowNormalized);
+        subtract(red, yellowNormalized, redNormalized);
+        subtract(green, gray, greenNormalized);
 }
 
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        threshold(red, redThreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
-        threshold(blue, blueThreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
-        threshold(yellow, yellowThreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
+        threshold(redNormalized, redThreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
+        threshold(blueNormalized, blueThreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
+        threshold(yellowNormalized, yellowThreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
 }
 
 void processFrames() {
@@ -131,11 +131,11 @@ int main(int argc, const char * argv[]) {
 
                 if (imageShownSlider == 1) {
                         imshow("Original Image", cameraFrame);
-                        channels[0] = blue * 10;
-                        channels[1] = green * 25;
-                        channels[2] = red * 2;
+                        seg_channels[0] = blueNormalized * 10;
+                        seg_channels[1] = greenNormalized * 25;
+                        seg_channels[2] = redNormalized * 2;
                         Mat seg_img;
-                        merge(channels, 3, seg_img);
+                        merge(seg_channels, 3, seg_img);
                         imshow("Segmented Image", seg_img);
                         imshow("Ball", redThreshold);
                         imshow("Blue Goal", blueThreshold);
