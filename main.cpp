@@ -143,20 +143,20 @@ int main(int argc, const char * argv[]) {
         thread image_processor(processFrames);
         //image_processor.join();
         while (true) {
-                startTime = chrono::steady_clock::now();
+                //startTime = chrono::steady_clock::now();
                 //get frame
 
                 if (imageShownSlider == 1) {
                         imshow("Original Image", cameraFrame);
-                        seg_channels[0] = blueNormalized * 10;
-                        seg_channels[1] = greenNormalized * 25;
-                        seg_channels[2] = redNormalized * 2;
-                        Mat seg_img;
-                        merge(seg_channels, 3, seg_img);
-                        imshow("Segmented Image", seg_img);
-                        imshow("Ball", redThreshold);
-                        imshow("Blue Goal", blueThreshold);
-                        imshow("Yellow Goal", yellowThreshold);
+                        //seg_channels[0] = blueNormalized * 10;
+                        //seg_channels[1] = greenNormalized * 25;
+                        //seg_channels[2] = redNormalized * 2;
+                        //Mat seg_img;
+                        //merge(seg_channels, 3, seg_img);
+                        //imshow("Segmented Image", seg_img);
+                        //imshow("Ball", redThreshold);
+                        //imshow("Blue Goal", blueThreshold);
+                        //imshow("Yellow Goal", yellowThreshold);
                 }
 
                 // totalFps += fps3;
@@ -171,6 +171,7 @@ int main(int argc, const char * argv[]) {
                 // cout << "Running Average (3) FPS: " << avg3 << endl;
                 // cout << "Total Average FPS: " << totalavg << endl;
                 // totalFpsCount++;
+
                 cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
