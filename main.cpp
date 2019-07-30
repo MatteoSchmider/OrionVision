@@ -10,25 +10,25 @@
 using namespace cv;
 using namespace std;
 
-Mat gray(480, 640, CV_8UC1);
-Mat blue(480, 640, CV_8UC1);
-Mat blueNormalized(480, 640, CV_8UC1);
-Mat blueThreshold(480, 640, CV_8UC1);
-Mat green(480, 640, CV_8UC1);
-Mat greenNormalized(480, 640, CV_8UC1);
-Mat greenThreshold(480, 640, CV_8UC1);
-Mat red(480, 640, CV_8UC1);
-Mat redNormalized(480, 640, CV_8UC1);
-Mat redThreshold(480, 640, CV_8UC1);
-Mat yellow(480, 640, CV_8UC1);
-Mat yellowNormalized(480, 640, CV_8UC1);
-Mat yellowThreshold(480, 640, CV_8UC1);
+Mat gray(720, 1280, CV_8UC1);
+Mat blue(720, 1280, CV_8UC1);
+Mat blueNormalized(720, 1280, CV_8UC1);
+Mat blueThreshold(720, 1280, CV_8UC1);
+Mat green(720, 1280, CV_8UC1);
+Mat greenNormalized(720, 1280, CV_8UC1);
+Mat greenThreshold(720, 1280, CV_8UC1);
+Mat red(720, 1280, CV_8UC1);
+Mat redNormalized(720, 1280, CV_8UC1);
+Mat redThreshold(720, 1280, CV_8UC1);
+Mat yellow(720, 1280, CV_8UC1);
+Mat yellowNormalized(720, 1280, CV_8UC1);
+Mat yellowThreshold(720, 1280, CV_8UC1);
 
-Mat mask(480, 640, CV_8UC1);
-Mat cameraFrame(480, 640, CV_8UC3);
-Mat cameraFrameNoMask(480, 640, CV_8UC3);
-Mat cameraFrameNoGamma(480, 640, CV_8UC3);
-Mat cameraFrameNoBlur(480, 640, CV_8UC3);
+Mat mask(720, 1280, CV_8UC1);
+Mat cameraFrame(720, 1280, CV_8UC3);
+Mat cameraFrameNoMask(720, 1280, CV_8UC3);
+Mat cameraFrameNoGamma(720, 1280, CV_8UC3);
+Mat cameraFrameNoBlur(720, 1280, CV_8UC3);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -128,7 +128,7 @@ void processFrames() {
 }
 
 void getFrames() {
-        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=1280,height=720 ! videoconvert ! appsink");
         if(!capture.isOpened()) {
                 cout << "Could not open camera" << endl;
         }
