@@ -15,8 +15,6 @@ Mat green;
 Mat red;
 Mat yellow;
 Mat black;
-Mat ryG;
-Mat gyG;
 
 Mat cameraFrame;
 
@@ -50,7 +48,7 @@ Mat correctGamma( Mat& img, double gamma ) {
 
 int main(int argc, const char * argv[]) {
     //Capture stream from webcam.
-    VideoCapture capture("rkcamsrc io-mode=2 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+    VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
 
     //Check if we can get the webcam stream.
     if(!capture.isOpened()) {
@@ -104,20 +102,29 @@ int main(int argc, const char * argv[]) {
 	minMaxLoc(yellowc, &miny, &maxy, NULL, NULL);
 	while (true) {
 		auto start = chrono::steady_clock::now();
-        //Read an image from the camera.
-        capture.read(cameraFrame);
+        	//Read an image from the camera.
+        	capture >> cameraFrame;
+        	auto ReadFrame = chrono::steady_clock::now();
+        	long deltaReadFrame = chrono::duration_cast<chrono::milliseconds>(ReadFrame - start).count();
+		cout << "deltaReadFrame: " << deltaReadFrame << endl;
 		
 		double gamma = gammaSlider / 100.0;
 		cout << "Gamma: " << gamma << endl;
 		cameraFrame = correctGamma(cameraFrame, gamma);
-		//cameraFrame = imread("/Users/matteoschmider/Desktop/Foto.png", IMREAD_COLOR);
+		auto GammaTime = chrono::steady_clock::now();
+        	long deltaGamma = chrono::duration_cast<chrono::milliseconds>(GammaTime - ReadFrame).count();
+		cout << "deltaGamma: " << deltaGamma << endl;
 		
-		extractChannel(cameraFrame, channels[0], 0);
-		extractChannel(cameraFrame, channels[1], 1);
-		extractChannel(cameraFrame, channels[2], 2);
+		blur(cameraFrame, cameraFrame, Size(10, 10));
+		auto Blur = chrono::steady_clock::now();
+        	long deltaBlur = chrono::duration_cast<chrono::milliseconds>(Blur - GammaTime).count();
+		cout << "deltaBlur: " << deltaBlur << endl;
+		
+		split(cameraFrame, channels);
 		blue = channels[0];
 		green = channels[1];
 		red = channels[2];
+
 		
 		cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
 		subtract(gray, blue, yellow);
@@ -125,34 +132,36 @@ int main(int argc, const char * argv[]) {
 		subtract(red, gray, red);
 		subtract(yellow, red, yellow);
 		subtract(red, yellow, red);
+		subtract(green, gray, green);
+		auto Normalization = chrono::steady_clock::now();
+        	long deltaNormalization = chrono::duration_cast<chrono::milliseconds>(Normalization - Blur).count();
+		cout << "deltaNormalization: " << deltaNormalization << endl;
 		
-		//multiply(red, red, red);
-		//multiply(blue, blue, blue);
-		//multiply(yellow, yellow, yellow);
+			/*channels[0] = blue * 10;
+			channels[1] = green * 25;
+			channels[2] = red * 2;
+			
+			Mat seg_img;
+			merge(channels, 3, seg_img);*/
+		
+		
 		
 		threshold(red, red, maxr * tr / 100, 255, THRESH_BINARY);
 		threshold(blue, blue, maxb * tb / 100, 255, THRESH_BINARY);
 		threshold(yellow, yellow, maxy * ty / 100, 255, THRESH_BINARY);
+		auto Threshold = chrono::steady_clock::now();
+        	long deltaThreshold = chrono::duration_cast<chrono::milliseconds>(Threshold - Normalization).count();
+		cout << "deltaThreshold: " << deltaThreshold << endl;
 		
 		
 		if (imageShownSlider == 1) {
-    		imshow("Original Image", cameraFrame);
+    			imshow("Original Image", cameraFrame);
+    			//imshow("Segmented Image", seg_img);
 			imshow("Gray", gray);
 			imshow("Ball", red);
 			imshow("Blue Goal", blue);
 			imshow("Yellow Goal", yellow);
 		}
-		//imshow("Field", green);
-		//imshow("Walls", black);
-		
-		//frameCounter++;
-		//std::time_t timeNow = std::time(0) - timeBegin;
-		//std::time_t timeBegin = std::time(0);
-		//if (timeNow - tick >= 1) {
-		//            tick++;
-		//			cout << "Frames per second: " << frameCounter << endl;
-		//			frameCounter = 0;
-		//}
 		totalFps += fps3;
 		fps1 = fps2;
 		fps2 = fps3;
