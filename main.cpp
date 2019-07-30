@@ -121,13 +121,10 @@ int main(int argc, const char * argv[]) {
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        //Check if we can get the webcam stream.
-
-
         // Create a window
         namedWindow("Original Image", 1);
         createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
-        createTrackbar("Preview Images", "Original Image", &imageShownSlider, 1);
+        createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
         createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
         createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
         createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
@@ -141,36 +138,31 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
-        //image_processor.join();
+
         while (true) {
-                //startTime = chrono::steady_clock::now();
-                //get frame
-
-                if (imageShownSlider == 1) {
+                switch (imageShownSlider) {
+                case 0:
+                        break;
+                case 1:
                         imshow("Original Image", cameraFrame);
-                        //seg_channels[0] = blueNormalized * 10;
-                        //seg_channels[1] = greenNormalized * 25;
-                        //seg_channels[2] = redNormalized * 2;
-                        //Mat seg_img;
-                        //merge(seg_channels, 3, seg_img);
-                        //imshow("Segmented Image", seg_img);
-                        //imshow("Ball", redThreshold);
-                        //imshow("Blue Goal", blueThreshold);
-                        //imshow("Yellow Goal", yellowThreshold);
+                        break;
+                case 2:
+                        seg_channels[0] = blueNormalized * 10;
+                        seg_channels[1] = greenNormalized * 25;
+                        seg_channels[2] = redNormalized * 2;
+                        Mat seg_img;
+                        merge(seg_channels, 3, seg_img);
+                        imshow("Original Image", seg_img);
+                case 3:
+                        imshow("Original Image", redThreshold);
+                        break;
+                case 4:
+                        imshow("Original Image", blueThreshold);
+                        break;
+                case 5:
+                        imshow("Original Image", yellowThreshold);
+                        break;
                 }
-
-                // totalFps += fps3;
-                // fps1 = fps2;
-                // fps2 = fps3;
-                // endTime = chrono::steady_clock::now();
-                // fps3 = chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count();
-                // fps3 = 1000 / fps3;
-                // double avg3 = (fps1 + fps2 + fps3) / 3;
-                // double totalavg = totalFps / totalFpsCount;
-                // cout << "Current FPS: " << fps3 << endl;
-                // cout << "Running Average (3) FPS: " << avg3 << endl;
-                // cout << "Total Average FPS: " << totalavg << endl;
-                // totalFpsCount++;
 
                 cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
