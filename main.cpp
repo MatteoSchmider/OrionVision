@@ -44,7 +44,7 @@ Mat correctGamma(Mat& img, double gamma) {
 
 void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrame, mask);
-        //gamma
+        //Gamma
         double gamma = gammaSlider / 100.0;
         cout << "Gamma: " << gamma << endl;
         cameraFrame = correctGamma(cameraFrame, gamma);
