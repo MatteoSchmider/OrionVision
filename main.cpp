@@ -10,25 +10,25 @@
 using namespace cv;
 using namespace std;
 
-Mat gray(720, 1280, CV_8UC1);
-Mat blue(720, 1280, CV_8UC1);
-Mat blueNormalized(720, 1280, CV_8UC1);
-Mat blueThreshold(720, 1280, CV_8UC1);
-Mat green(720, 1280, CV_8UC1);
-Mat greenNormalized(720, 1280, CV_8UC1);
-Mat greenThreshold(720, 1280, CV_8UC1);
-Mat red(720, 1280, CV_8UC1);
-Mat redNormalized(720, 1280, CV_8UC1);
-Mat redThreshold(720, 1280, CV_8UC1);
-Mat yellow(720, 1280, CV_8UC1);
-Mat yellowNormalized(720, 1280, CV_8UC1);
-Mat yellowThreshold(720, 1280, CV_8UC1);
+Mat gray(768, 1024, CV_8UC1);
+Mat blue(768, 1024, CV_8UC1);
+Mat blueNormalized(768, 1024, CV_8UC1);
+Mat blueThreshold(768, 1024, CV_8UC1);
+Mat green(768, 1024, CV_8UC1);
+Mat greenNormalized(768, 1024, CV_8UC1);
+Mat greenThreshold(768, 1024, CV_8UC1);
+Mat red(768, 1024, CV_8UC1);
+Mat redNormalized(768, 1024, CV_8UC1);
+Mat redThreshold(768, 1024, CV_8UC1);
+Mat yellow(768, 1024, CV_8UC1);
+Mat yellowNormalized(768, 1024, CV_8UC1);
+Mat yellowThreshold(768, 1024, CV_8UC1);
 
-Mat mask(720, 1280, CV_8UC1);
-Mat cameraFrame(720, 1280, CV_8UC3);
-Mat cameraFrameNoMask(720, 1280, CV_8UC3);
-Mat cameraFrameNoGamma(720, 1280, CV_8UC3);
-Mat cameraFrameNoBlur(720, 1280, CV_8UC3);
+Mat mask(768, 1024, CV_8UC1);
+Mat cameraFrame(768, 1024, CV_8UC3);
+Mat cameraFrameNoMask(768, 1024, CV_8UC3);
+Mat cameraFrameNoGamma(768, 1024, CV_8UC3);
+Mat cameraFrameNoBlur(768, 1024, CV_8UC3);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -56,9 +56,9 @@ Mat correctGamma(Mat& img, double gamma) {
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
-                ptr[i] = (int)( pow( (double) i / 255.0, inverse_gamma ) * 255.0 );
+                ptr[i] = (int)(pow((double) i / 255.0, inverse_gamma) * 255.0);
         Mat result;
-        LUT( img, lut_matrix, result );
+        LUT(img, lut_matrix, result);
         return result;
 }
 
@@ -128,7 +128,7 @@ void processFrames() {
 }
 
 void getFrames() {
-        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=1280,height=720 ! videoconvert ! appsink");
+        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=1024,height=768 ! videoconvert ! appsink");
         if(!capture.isOpened()) {
                 cout << "Could not open camera" << endl;
         }
