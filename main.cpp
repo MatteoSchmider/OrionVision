@@ -104,7 +104,6 @@ void getFrames() {
         VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
         if(!capture.isOpened()) {
                 cout << "Could not open camera" << endl;
-                return -1;
         }
         while(true) {
                 capture >> cameraFrameNoMask;
@@ -143,7 +142,6 @@ int main(int argc, const char * argv[]) {
                 startTime = chrono::steady_clock::now();
                 cout << "Main Thread!" << endl;
                 //get frame
-                capture >> cameraFrameNoMask;
 
                 if (imageShownSlider == 1) {
                         imshow("Original Image", cameraFrame);
