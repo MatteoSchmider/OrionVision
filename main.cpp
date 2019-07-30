@@ -120,7 +120,7 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(red, &minr, &maxr, NULL, NULL);
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
-
+        cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
         image_processor.join();
         while (true) {
