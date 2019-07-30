@@ -49,7 +49,7 @@ int threshold_blue_slider = 80;
 int threshold_yellow_slider = 80;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
-long main = 0, process = 0, cam = 0;
+long mainCounter = 0, processCounter = 0, camCounter = 0;
 
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
@@ -98,8 +98,8 @@ void processFrame() {
 void processFrames() {
         while(true) {
                 processFrame();
-                cout << "Image Processing Thread: " << process << endl;
-                process++;
+                cout << "Image Processing Thread: " << processCounter << endl;
+                processCounter++;
         }
 }
 
@@ -110,8 +110,8 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                cout << "Camera Thread: " << cam << endl;
-                cam++;
+                cout << "Camera Thread: " << camCounter << endl;
+                camCounter++;
         }
 }
 
@@ -173,8 +173,8 @@ int main(int argc, const char * argv[]) {
                 // cout << "Running Average (3) FPS: " << avg3 << endl;
                 // cout << "Total Average FPS: " << totalavg << endl;
                 // totalFpsCount++;
-                cout << "Main Thread: " << main << endl;
-                main++;
+                cout << "Main Thread: " << mainCounter << endl;
+                mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
                 {
