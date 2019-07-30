@@ -91,7 +91,7 @@ void thresh_callback() {
         vector<Vec4i> hierarchy;
 
         /// Find contours
-        findContours( red, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0) );
+        findContours( redThreshold, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
         /// Approximate contours to polygons + get bounding rects and circles
         vector<vector<Point> > contours_poly( contours.size() );
