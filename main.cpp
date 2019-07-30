@@ -10,14 +10,25 @@
 using namespace cv;
 using namespace std;
 
-Mat gray;
-Mat blue, blueNormalized, blueThreshold;
-Mat green, greenNormalized, greenThreshold;
-Mat red, redNormalized, redThreshold;
-Mat yellow, yellowNormalized, yellowThreshold;
+Mat gray(480, 640, CV_8UC1);
+Mat blue(480, 640, CV_8UC1);
+Mat blueNormalized(480, 640, CV_8UC1);
+Mat blueThreshold(480, 640, CV_8UC1);
+Mat green(480, 640, CV_8UC1);
+Mat greenNormalized(480, 640, CV_8UC1);
+Mat greenThreshold(480, 640, CV_8UC1);
+Mat red(480, 640, CV_8UC1);
+Mat redNormalized(480, 640, CV_8UC1);
+Mat redThreshold(480, 640, CV_8UC1);
+Mat yellow(480, 640, CV_8UC1);
+Mat yellowNormalized(480, 640, CV_8UC1);
+Mat yellowThreshold(480, 640, CV_8UC1);
 
-Mat mask;
-Mat cameraFrame, cameraFrameNoMask, cameraFrameNoGamma, cameraFrameNoBlur;
+Mat mask(480, 640, CV_8UC1);
+Mat cameraFrame(480, 640, CV_8UC3);
+Mat cameraFrameNoMask(480, 640, CV_8UC3);
+Mat cameraFrameNoGamma(480, 640, CV_8UC3);
+Mat cameraFrameNoBlur(480, 640, CV_8UC3);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -37,7 +48,7 @@ int threshold_red_slider = 80;
 int threshold_blue_slider = 80;
 int threshold_yellow_slider = 80;
 
-double minr, maxr, minb, maxb, miny, maxy;
+double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
