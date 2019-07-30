@@ -17,7 +17,7 @@ Mat red, redNormalized, redThreshold;
 Mat yellow, yellowNormalized, yellowThreshold;
 
 Mat mask;
-Mat cameraFrame, cameraFrameNoMask, cameraFrameNoGammaBlur;
+Mat cameraFrame, cameraFrameNoMask, cameraFrameNoGamma, cameraFrameNoBlur;
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -55,9 +55,9 @@ void prepareFrame() {
         //Gamma
         double gamma = gammaSlider / 100.0;
         cout << "Gamma: " << gamma << endl;
-        cameraFrameG = correctGamma(cameraFrameNoGammaBlur, gamma);
+        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, gamma);
         //blur
-        blur(cameraFrameNoGammaBlur, cameraFrame, Size(5, 5));
+        blur(cameraFrameNoBlur, cameraFrame, Size(5, 5));
 }
 
 void normalizeChannels() {
