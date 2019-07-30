@@ -155,7 +155,7 @@ int main(int argc, const char * argv[]) {
                 cout << "Total Average FPS: " << totalavg << endl;
                 totalFpsCount++;
 
-                char key = (char) waitKey(1);
+                char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
                 {
                         break;
