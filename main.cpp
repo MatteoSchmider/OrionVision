@@ -102,6 +102,10 @@ void processFrames() {
 
 void getFrames() {
         VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+        if(!capture.isOpened()) {
+                cout << "Could not open camera" << endl;
+                return -1;
+        }
         while(true) {
                 capture >> cameraFrameNoMask;
         }
@@ -115,10 +119,7 @@ int main(int argc, const char * argv[]) {
         mask = imread("mask.png", IMREAD_COLOR);
 
         //Check if we can get the webcam stream.
-        if(!capture.isOpened()) {
-                cout << "Could not open camera" << endl;
-                return -1;
-        }
+
 
         // Create a window
         namedWindow("Original Image", 1);
