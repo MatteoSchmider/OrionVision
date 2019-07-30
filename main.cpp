@@ -100,10 +100,18 @@ void processFrames() {
         }
 }
 
+void getFrames() {
+        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+        while(true) {
+                capture >> cameraFrameNoMask;
+        }
+}
+
 int main(int argc, const char * argv[]) {
 
         //Capture stream from webcam.
-        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+        thread image_getter(getFrames);
+
         mask = imread("mask.png", IMREAD_COLOR);
 
         //Check if we can get the webcam stream.
@@ -119,10 +127,6 @@ int main(int argc, const char * argv[]) {
         createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
         createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
         createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
-
-        for (int i = 0; i < 6; i++) {
-                capture >> cameraFrameNoMask;
-        }
 
         prepareFrame();
 
