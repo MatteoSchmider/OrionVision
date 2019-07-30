@@ -28,8 +28,8 @@ double fps3 = 0;
 double totalFps = 0;
 long totalFpsCount = 1;
 
-auto start;
-auto end;
+auto start = chrono::steady_clock::now();
+auto end = chrono::steady_clock::now();
 
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
