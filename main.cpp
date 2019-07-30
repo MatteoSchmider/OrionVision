@@ -89,11 +89,11 @@ void normalizeChannels() {
 void doContours() {
         vector<vector<Point> > contours;
         vector<Vec4i> hierarchy;
-        findContours(redThreshold, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Point(0, 0));
-        vector<vector<Point> > contours_poly(contours.size());
-        for(int i = 0; i< contours.size(); i++) {
+        findContours( redThreshold, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE );
+        for( size_t i = 0; i< contours.size(); i++ )
+        {
                 Scalar color = Scalar(255, 0, 0);
-                drawContours(cameraFrame, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point());
+                drawContours( redThreshold, contours, (int)i, color, 2, LINE_8, hierarchy, 0 );
         }
 }
 
