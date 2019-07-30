@@ -11,10 +11,10 @@ using namespace cv;
 using namespace std;
 
 Mat gray;
-Mat blue, blueTreshold;
-Mat green, greenTreshold;
-Mat red, redTreshold;
-Mat yellow, yellowTreshold;
+Mat blue, blueThreshold;
+Mat green, greenThreshold;
+Mat red, redThreshold;
+Mat yellow, yellowThreshold;
 
 Mat mask;
 Mat cameraFrame;
@@ -78,9 +78,9 @@ void normalizeChannels() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        threshold(red, redTreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
-        threshold(blue, blueTreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
-        threshold(yellow, yellowTreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
+        threshold(red, redThreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
+        threshold(blue, blueThreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
+        threshold(yellow, yellowThreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
 }
 
 void processFrames() {
@@ -110,7 +110,7 @@ int main(int argc, const char * argv[]) {
         createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
 
         for (int i = 0; i < 6; i++) {
-                capture >> cameraFramenomask;
+                capture >> cameraFrameNoMask;
         }
 
         prepareFrame();
