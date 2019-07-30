@@ -31,6 +31,14 @@ long totalFpsCount = 1;
 auto start = chrono::steady_clock::now();
 auto end = chrono::steady_clock::now();
 
+int gammaSlider = 100;
+int imageShownSlider = 1;
+int threshold_red_slider = 80;
+int threshold_blue_slider = 80;
+int threshold_yellow_slider = 80;
+
+double minr, maxr, minb, maxb, miny, maxy;
+
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
         Mat lut_matrix(1, 256, CV_8UC1 );
@@ -95,15 +103,10 @@ int main(int argc, const char * argv[]) {
 
         // Create a window
         namedWindow("Original Image", 1);
-        int gammaSlider = 100;
         createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
-        int imageShownSlider = 1;
         createTrackbar("Preview Images", "Original Image", &imageShownSlider, 1);
-        int threshold_red_slider = 80;
         createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
-        int threshold_blue_slider = 80;
         createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
-        int threshold_yellow_slider = 80;
         createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
 
         for (int i = 0; i < 6; i++) {
@@ -114,7 +117,6 @@ int main(int argc, const char * argv[]) {
 
         normalizeChannels();
 
-        double minr, maxr, minb, maxb, miny, maxy;
         minMaxLoc(red, &minr, &maxr, NULL, NULL);
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
