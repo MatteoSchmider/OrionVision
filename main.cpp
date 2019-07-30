@@ -134,6 +134,7 @@ void processFrames() {
                 processFrame();
                 cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
+                thresh_callback();
         }
 }
 
