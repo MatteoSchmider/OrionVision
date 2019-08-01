@@ -236,19 +236,19 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
         }
-        return 0;
-        int fd;
-        if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
-                fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
-                return 1;
-        }
-        // Loop, getting and printing characters
-        for (;;) {
-                if (serialDataAvail(fd)) {
-                        putchar(serialGetchar(fd));
-                        fflush(stdout);
-                }
-        }
-        serialPutchar(fd, count);
-        return 0;
+        // return 0;
+        // int fd;
+        // if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
+        //         fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
+        //         return 1;
+        // }
+        // // Loop, getting and printing characters
+        // for (;;) {
+        //         if (serialDataAvail(fd)) {
+        //                 putchar(serialGetchar(fd));
+        //                 fflush(stdout);
+        //         }
+        // }
+        // serialPutchar(fd, count);
+        // return 0;
 }
