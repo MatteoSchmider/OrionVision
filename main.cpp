@@ -101,7 +101,7 @@ void doContours() {
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
-        if (contoursBall.size() >= 0) {
+        if (contoursBall.size() > 0) {
                 cout << "Ball X: " << minRect[0].center.x << endl;
                 cout << "Ball Y: " << minRect[0].center.y << endl;
         }
