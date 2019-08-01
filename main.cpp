@@ -49,6 +49,9 @@ int threshold_yellow_slider = 35;
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
+uint_16t ballX = 0, ballY = 0;
+boolean ballVisible = false;
+
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
         Mat lut_matrix(1, 256, CV_8UC1 );
@@ -102,12 +105,16 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                cout << "Ball X: " << minRect[0].center.x << endl;
-                cout << "Ball Y: " << minRect[0].center.y << endl;
+                ballX = (int) (minRect[0].center.x / 640);
+                ballY = (int) (minRect[0].center.y / 480);
+                ballVisible = true;
+
         }
-        else {
-                cout << "Ball not visible" << endl;
-        }
+        else {ballVisible = false;}
+
+        cout << "Ball X: " << ballX << endl;
+        cout << "Ball Y: " << ballY << endl;
+        cout << "Ball visible: " << ballVisible << endl;
 
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
