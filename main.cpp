@@ -92,7 +92,8 @@ void doContours() {
                 Scalar color = Scalar(0, 0, 255);
                 drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
         }
-        RotatedRect ballBox = minAreaRect(contoursBall);
+        //vector<RotatedRect> minRect(contours.size() );
+        RotatedRect minRect = minAreaRect(Mat(contoursBall[0]));
 
 
         vector<vector<Point> > contoursBG;
