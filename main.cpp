@@ -92,8 +92,9 @@ void print16(int value) {
         char b1 = value & 0xFF;
         char b2 = (value >> 8) & 0xFF;
         cout << "Low Byte: " << +b1 << " High Byte: " << +b2 << endl;
-        //serialPutchar(fd, b1);
-        //serialPutchar(fd, b1);
+        fd = serialOpen("/dev/ttyS1", 115200);
+        serialPutchar(fd, b1);
+        serialPutchar(fd, b2);
 }
 
 void doContours() {
