@@ -92,9 +92,10 @@ void doContours() {
                 Scalar color = Scalar(0, 0, 255);
                 drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
         }
-        //vector<RotatedRect> minRect(contours.size() );
-        RotatedRect minRect = minAreaRect(Mat(contoursBall[0]));
-
+        vector<RotatedRect> minRect(contoursBall.size());
+        for(int i = 0; i < contoursBall.size(); i++) {
+                minRect[i] = minAreaRect(Mat(contoursBall[i]));
+        }
 
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
