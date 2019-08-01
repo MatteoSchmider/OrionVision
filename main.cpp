@@ -7,10 +7,13 @@
 #include <thread>
 #include <wiringPi.h>
 #include <wiringSerial.h>
+#include <cmath>
 
 using namespace cv;
 using namespace std;
 
+#define CENTER_X 310
+#define CENTER_Y 255
 Mat gray(480, 640, CV_8UC1);
 Mat blue(480, 640, CV_8UC1);
 Mat blueNormalized(480, 640, CV_8UC1);
@@ -155,8 +158,17 @@ void doContours() {
         }
         if (contoursBall.size() > 0) {
                 ballX = (int) (minRectBall[0].center.x);
+                ballX -= CENTER_X;
                 ballY = (int) (minRectBall[0].center.y);
+                ballY -= CENTER_Y;
                 ballVisible = true;
+                cout << "Ball X: " << ballX << endl;
+                cout << "Ball Y: " << ballY << endl;
+                cout << "\n";
+                int ballradius = sqrt((ballX * ballX) + (ballY * ballY));
+                int angle = tan(ballY / ballX);
+                cout << "Ball Radius: " << ballX << endl;
+                cout << "Ball Angle: " << ballX << endl;
 
         }
         else {ballVisible = false;}
