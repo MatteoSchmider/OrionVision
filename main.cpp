@@ -93,7 +93,7 @@ void doContours() {
                 drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
         }
         RotatedRect ballBox = minAreaRect(contoursBall);
-        cout << "Ball X: " << ballBox << endl;
+
 
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
