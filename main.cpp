@@ -87,6 +87,15 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
 }
 
+void print16(int value) {
+        //send both bytes
+        char b1 = value & 0xFF;
+        char b2 = (value >> 8) & 0xFF;
+        cout << "Low Byte: " << b1 << " High Byte: " << b2 << endl;
+        //serialPutchar(fd, b1);
+        //serialPutchar(fd, b1);
+}
+
 void doContours() {
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
@@ -159,15 +168,6 @@ void getFrames() {
                 //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
-}
-
-void print16(int value) {
-        //send both bytes
-        char b1 = value & 0xFF;
-        char b2 = (value >> 8) & 0xFF;
-        cout << "Low Byte: " << b1 << " High Byte: " << b2 << endl;
-        //serialPutchar(fd, b1);
-        //serialPutchar(fd, b1);
 }
 
 int main(int argc, const char * argv[]) {
