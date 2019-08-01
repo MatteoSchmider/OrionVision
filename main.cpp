@@ -165,8 +165,8 @@ void doContours() {
                 cout << "Ball X: " << ballX << endl;
                 cout << "Ball Y: " << ballY << endl;
                 cout << "\n";
-                int ballradius = sqrt((ballX * ballX) + (ballY * ballY));
-                int angle = tan(ballY / ballX);
+                int ballradius = (int) sqrt((ballX * ballX) + (ballY * ballY));
+                int angle = (int) tan(ballY / ballX);
                 cout << "Ball Radius: " << ballX << endl;
                 cout << "Ball Angle: " << ballX << endl;
 
