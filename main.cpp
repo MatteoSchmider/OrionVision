@@ -222,8 +222,10 @@ int main(int argc, const char * argv[]) {
         }
         // Loop, getting and printing characters
         for (;;) {
-                putchar(serialGetchar(fd));
-                fflush(stdout);
+                if (serialDataAvail(fd)) {
+                        putchar(serialGetchar(fd));
+                        fflush(stdout);
+                }
         }
         return 0;
 }
