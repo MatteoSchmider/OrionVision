@@ -161,13 +161,12 @@ void getFrames() {
         }
 }
 
-void send16(int value)
-{
+void send16(int value) {
         //send both bytes
-        byte b1 = value & 0xFF;
-        byte b2 = (value >> 8) & 0xFF;
-        serialPutchar(fd, b1);
-        serialPutchar(fd, b1);
+        char b1 = value & 0xFF;
+        char b2 = (value >> 8) & 0xFF;
+        //serialPutchar(fd, b1);
+        //serialPutchar(fd, b1);
 }
 
 int main(int argc, const char * argv[]) {
