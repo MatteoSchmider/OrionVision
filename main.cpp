@@ -121,8 +121,10 @@ void doContours() {
         }
         else {ballVisible = false;}
 
-        cout << "Ball X: " << print16(ballX) << endl;
-        cout << "Ball Y: " << print16(ballY) << endl;
+        //cout << "Ball X: " << print16(ballX) << endl;
+        //cout << "Ball Y: " << print16(ballY) << endl;
+        print16(ballX);
+        print16(ballY);
         cout << "Ball visible: " << ballVisible << endl;
 
         vector<vector<Point> > contoursBG;
