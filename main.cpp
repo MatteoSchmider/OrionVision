@@ -105,8 +105,8 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballX = (int) (minRect[0].center.x / 640);
-                ballY = (int) (minRect[0].center.y / 480);
+                ballX = (int) (minRect[0].center.x);
+                ballY = (int) (minRect[0].center.y);
                 ballVisible = true;
 
         }
