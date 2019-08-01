@@ -216,41 +216,14 @@ int main(int argc, const char * argv[]) {
         // }
         // return 0;
         int fd;
-        int count;
-        unsigned int nextTime;
-        while (true) {
-                if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
-                {
-                        fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno));
-                        return 1;
-                }
-
-                if (wiringPiSetup () == -1)
-                {
-                        fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno));
-                        return 1;
-                }
-
-                // nextTime = millis () + 300;
-                //
-                // for (count = 0; count < 256; )
-                // {
-                //         if (millis () > nextTime)
-                //         {
-                //                 printf ("\nOut: %3d: ", count);
-                //                 fflush (stdout);
-                //                 serialPutchar (fd, count);
-                //                 nextTime += 300;
-                //                 ++count;
-                //         }
-                //
-                //         delay (3);
-
-                cout <<  serialGetchar(fd) << endl;
-                fflush (stdout);
-                // }
-
-                // printf ("\n");
+        if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0) {
+                fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
+                return 1;
+        }
+        // Loop, getting and printing characters
+        for (;;) {
+                putchar(serialGetchar(fd));
+                fflush(stdout);
         }
         return 0;
 }
