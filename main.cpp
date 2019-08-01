@@ -129,11 +129,11 @@ void printTeensy() {
         serialPutchar(fd, goalBYHigh);
         serialPutchar(fd, goalBVis);
 
-        serialPutchar(fd, goalBXLow);
-        serialPutchar(fd, goalBXHigh);
-        serialPutchar(fd, goalBYLow);
-        serialPutchar(fd, goalBYHigh);
-        serialPutchar(fd, goalBVis);
+        serialPutchar(fd, goalYXLow);
+        serialPutchar(fd, goalYXHigh);
+        serialPutchar(fd, goalYYLow);
+        serialPutchar(fd, goalYYHigh);
+        serialPutchar(fd, goalYVis);
 
         cout << ballX << endl;
 }
