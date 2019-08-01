@@ -6,6 +6,8 @@
 #include <chrono>
 #include <unistd.h>
 #include <thread>
+#include <wiringPi.h>
+#include <wiringSerial.h>
 
 using namespace cv;
 using namespace std;
@@ -140,77 +142,117 @@ void getFrames() {
 }
 
 int main(int argc, const char * argv[]) {
+        //
+        // //Capture stream from webcam.
+        // thread image_getter(getFrames);
+        //
+        // mask = imread("mask.png", IMREAD_COLOR);
+        //
+        // // Create a window
+        // namedWindow("Original Image", 1);
+        // createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
+        // createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
+        // createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
+        // createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
+        // createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
+        //
+        // prepareFrame();
+        //
+        // normalizeChannels();
+        //
+        // minMaxLoc(red, &minr, &maxr, NULL, NULL);
+        // minMaxLoc(blue, &minb, &maxb, NULL, NULL);
+        // minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
+        // cout << "Just before threading!" << endl;
+        // thread image_processor(processFrames);
+        //
+        // while (true) {
+        //         switch (imageShownSlider) {
+        //         case 0: {
+        //
+        //                 break;
+        //         }
+        //         case 1: {
+        //                 imshow("Original Image", cameraFrame);
+        //                 break;
+        //         }
+        //         case 2: {
+        //                 seg_channels[0] = blueNormalized * 10;
+        //                 seg_channels[1] = greenNormalized * 25;
+        //                 seg_channels[2] = redNormalized * 2;
+        //                 Mat seg_img;
+        //                 merge(seg_channels, 3, seg_img);
+        //                 imshow("Original Image", seg_img);
+        //                 break;
+        //         }
+        //         case 3: {
+        //                 imshow("Original Image", redThreshold);
+        //                 break;
+        //         }
+        //         case 4: {
+        //                 imshow("Original Image", blueThreshold);
+        //                 break;
+        //         }
+        //         case 5: {
+        //                 imshow("Original Image", yellowThreshold);
+        //                 break;
+        //         }
+        //         case 6: {
+        //                 imshow("Original Image", cameraFrame);
+        //                 imshow("Ball", redThreshold);
+        //                 imshow("Blue Goal", blueThreshold);
+        //                 imshow("Yellow Goal", yellowThreshold);
+        //                 break;
+        //         }
+        //         }
+        //
+        //         cout << "Main Thread: " << mainCounter << endl;
+        //         mainCounter++;
+        //         char key = (char) waitKey(20);
+        //         if (key == 'q' || key == 27)
+        //         {
+        //                 break;
+        //         }
+        // }
+        // return 0;
+        int fd;
+        int count;
+        unsigned int nextTime;
 
-        //Capture stream from webcam.
-        thread image_getter(getFrames);
+        if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
+        {
+                fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno));
+                return 1;
+        }
 
-        mask = imread("mask.png", IMREAD_COLOR);
+        if (wiringPiSetup () == -1)
+        {
+                fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno));
+                return 1;
+        }
 
-        // Create a window
-        namedWindow("Original Image", 1);
-        createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
-        createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
-        createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
-        createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
-        createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
+        nextTime = millis () + 300;
 
-        prepareFrame();
-
-        normalizeChannels();
-
-        minMaxLoc(red, &minr, &maxr, NULL, NULL);
-        minMaxLoc(blue, &minb, &maxb, NULL, NULL);
-        minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
-        cout << "Just before threading!" << endl;
-        thread image_processor(processFrames);
-
-        while (true) {
-                switch (imageShownSlider) {
-                case 0: {
-
-                        break;
-                }
-                case 1: {
-                        imshow("Original Image", cameraFrame);
-                        break;
-                }
-                case 2: {
-                        seg_channels[0] = blueNormalized * 10;
-                        seg_channels[1] = greenNormalized * 25;
-                        seg_channels[2] = redNormalized * 2;
-                        Mat seg_img;
-                        merge(seg_channels, 3, seg_img);
-                        imshow("Original Image", seg_img);
-                        break;
-                }
-                case 3: {
-                        imshow("Original Image", redThreshold);
-                        break;
-                }
-                case 4: {
-                        imshow("Original Image", blueThreshold);
-                        break;
-                }
-                case 5: {
-                        imshow("Original Image", yellowThreshold);
-                        break;
-                }
-                case 6: {
-                        imshow("Original Image", cameraFrame);
-                        imshow("Ball", redThreshold);
-                        imshow("Blue Goal", blueThreshold);
-                        imshow("Yellow Goal", yellowThreshold);
-                        break;
-                }
-                }
-
-                cout << "Main Thread: " << mainCounter << endl;
-                mainCounter++;
-                char key = (char) waitKey(20);
-                if (key == 'q' || key == 27)
+        for (count = 0; count < 256; )
+        {
+                if (millis () > nextTime)
                 {
-                        break;
+                        printf ("\nOut: %3d: ", count);
+                        fflush (stdout);
+                        serialPutchar (fd, count);
+                        nextTime += 300;
+                        ++count;
+                }
+
+                delay (3);
+
+                while (serialDataAvail (fd))
+                {
+                        printf (" -> %3d", serialGetchar (fd));
+                        fflush (stdout);
                 }
         }
+
+        printf ("\n");
         return 0;
 }
