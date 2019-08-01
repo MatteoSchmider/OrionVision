@@ -87,14 +87,19 @@ void normalizeChannels() {
 void doContours() {
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
+
         findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
-        for(size_t i = 0; i < contoursBall.size(); i++) {
-                Scalar color = Scalar(0, 0, 255);
-                drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
-        }
+
         vector<RotatedRect> minRect(contoursBall.size());
         for(int i = 0; i < contoursBall.size(); i++) {
                 minRect[i] = minAreaRect(Mat(contoursBall[i]));
+        }
+        for(size_t i = 0; i < contoursBall.size(); i++) {
+                Scalar color = Scalar(0, 0, 255);
+                drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
+                Point2f rect_points[4]; minRect[i].points( rect_points );
+                for( int j = 0; j < 4; j++ )
+                        line(drawing, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
 
         vector<vector<Point> > contoursBG;
