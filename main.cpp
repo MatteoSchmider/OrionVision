@@ -254,3 +254,18 @@ int main(int argc, const char * argv[]) {
         }
         return 0;
 }
+
+/*#!/bin/bash
+   celsius1=$(cat /sys/class/thermal/thermal_zone0/temp | sed 's/.\{3\}$/.&/')
+   celsius2=$(cat /sys/class/thermal/thermal_zone1/temp | sed 's/.\{3\}$/.&/')
+   faranheit1=$(echo "scale=2;((9/5) * $celsius1) + 32" |bc)
+   faranheit2=$(echo "scale=2;((9/5) * $celsius2) + 32" |bc)
+   echo "--------------------"
+   echo "   Thermal Zone 0"
+   echo "   ${celsius1} °C"
+   echo "   ${faranheit1} °F"
+   echo "--------------------"
+   echo "   Thermal Zone 1"
+   echo "   ${celsius2} °C"
+   echo "   ${faranheit2} °F"
+   echo "--------------------"*/
