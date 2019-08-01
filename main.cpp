@@ -100,8 +100,10 @@ void doContours() {
                 Point2f rect_points[4]; minRect[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
+
+                Point2f centerBall = minRect[i].center;
         }
-        Point2f centerBall = minRect[0].center;
+
         //cout << "Ball X: " << minRect[0].center.x << endl;
 
         vector<vector<Point> > contoursBG;
