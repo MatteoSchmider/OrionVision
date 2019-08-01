@@ -3,7 +3,6 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/core.hpp"
-#include <chrono>
 #include <unistd.h>
 #include <thread>
 #include <wiringPi.h>
@@ -40,9 +39,6 @@ double fps2 = 0;
 double fps3 = 0;
 double totalFps = 0;
 long totalFpsCount = 1;
-
-auto startTime = chrono::steady_clock::now();
-auto endTime = chrono::steady_clock::now();
 
 int gammaSlider = 100;
 int imageShownSlider = 0;
@@ -96,6 +92,9 @@ void doContours() {
                 Scalar color = Scalar(0, 0, 255);
                 drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
         }
+        RotatedRect ballBox = minAreaRect(contoursBall);
+        cout << "Ball X: " << ballBox.center.x << endl;
+
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
         findContours(blueThreshold, contoursBG, hierarchyBG, RETR_TREE, CHAIN_APPROX_SIMPLE);
@@ -142,90 +141,90 @@ void getFrames() {
 }
 
 int main(int argc, const char * argv[]) {
-        //
-        // //Capture stream from webcam.
-        // thread image_getter(getFrames);
-        //
-        // mask = imread("mask.png", IMREAD_COLOR);
-        //
-        // // Create a window
-        // namedWindow("Original Image", 1);
-        // createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
-        // createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
-        // createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
-        // createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
-        // createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
-        //
-        // prepareFrame();
-        //
-        // normalizeChannels();
-        //
-        // minMaxLoc(red, &minr, &maxr, NULL, NULL);
-        // minMaxLoc(blue, &minb, &maxb, NULL, NULL);
-        // minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
-        // cout << "Just before threading!" << endl;
-        // thread image_processor(processFrames);
-        //
-        // while (true) {
-        //         switch (imageShownSlider) {
-        //         case 0: {
-        //
-        //                 break;
-        //         }
-        //         case 1: {
-        //                 imshow("Original Image", cameraFrame);
-        //                 break;
-        //         }
-        //         case 2: {
-        //                 seg_channels[0] = blueNormalized * 10;
-        //                 seg_channels[1] = greenNormalized * 25;
-        //                 seg_channels[2] = redNormalized * 2;
-        //                 Mat seg_img;
-        //                 merge(seg_channels, 3, seg_img);
-        //                 imshow("Original Image", seg_img);
-        //                 break;
-        //         }
-        //         case 3: {
-        //                 imshow("Original Image", redThreshold);
-        //                 break;
-        //         }
-        //         case 4: {
-        //                 imshow("Original Image", blueThreshold);
-        //                 break;
-        //         }
-        //         case 5: {
-        //                 imshow("Original Image", yellowThreshold);
-        //                 break;
-        //         }
-        //         case 6: {
-        //                 imshow("Original Image", cameraFrame);
-        //                 imshow("Ball", redThreshold);
-        //                 imshow("Blue Goal", blueThreshold);
-        //                 imshow("Yellow Goal", yellowThreshold);
-        //                 break;
-        //         }
-        //         }
-        //
-        //         cout << "Main Thread: " << mainCounter << endl;
-        //         mainCounter++;
-        //         char key = (char) waitKey(20);
-        //         if (key == 'q' || key == 27)
-        //         {
-        //                 break;
-        //         }
-        // }
-        // return 0;
-        int fd;
-        if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
-                fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
-                return 1;
-        }
-        // Loop, getting and printing characters
-        for (;;) {
-                if (serialDataAvail(fd)) {
-                        putchar(serialGetchar(fd));
-                        fflush(stdout);
+
+        //Capture stream from webcam.
+        thread image_getter(getFrames);
+
+        mask = imread("mask.png", IMREAD_COLOR);
+
+        // Create a window
+        namedWindow("Original Image", 1);
+        createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
+        createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
+        createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
+        createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
+        createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
+
+        prepareFrame();
+
+        normalizeChannels();
+
+        minMaxLoc(red, &minr, &maxr, NULL, NULL);
+        minMaxLoc(blue, &minb, &maxb, NULL, NULL);
+        minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
+        cout << "Just before threading!" << endl;
+        thread image_processor(processFrames);
+
+        while (true) {
+                switch (imageShownSlider) {
+                case 0: {
+
+                        break;
+                }
+                case 1: {
+                        imshow("Original Image", cameraFrame);
+                        break;
+                }
+                case 2: {
+                        seg_channels[0] = blueNormalized * 10;
+                        seg_channels[1] = greenNormalized * 25;
+                        seg_channels[2] = redNormalized * 2;
+                        Mat seg_img;
+                        merge(seg_channels, 3, seg_img);
+                        imshow("Original Image", seg_img);
+                        break;
+                }
+                case 3: {
+                        imshow("Original Image", redThreshold);
+                        break;
+                }
+                case 4: {
+                        imshow("Original Image", blueThreshold);
+                        break;
+                }
+                case 5: {
+                        imshow("Original Image", yellowThreshold);
+                        break;
+                }
+                case 6: {
+                        imshow("Original Image", cameraFrame);
+                        imshow("Ball", redThreshold);
+                        imshow("Blue Goal", blueThreshold);
+                        imshow("Yellow Goal", yellowThreshold);
+                        break;
+                }
+                }
+
+                cout << "Main Thread: " << mainCounter << endl;
+                mainCounter++;
+                char key = (char) waitKey(20);
+                if (key == 'q' || key == 27)
+                {
+                        break;
                 }
         }
         return 0;
+        // int fd;
+        // if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
+        //         fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
+        //         return 1;
+        // }
+        // // Loop, getting and printing characters
+        // for (;;) {
+        //         if (serialDataAvail(fd)) {
+        //                 putchar(serialGetchar(fd));
+        //                 fflush(stdout);
+        //         }
+        // }
+        // return 0;
 }
