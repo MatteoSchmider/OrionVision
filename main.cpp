@@ -52,6 +52,14 @@ long mainCounter = 0, processCounter = 0, camCounter = 0;
 int16_t ballX = 0, ballY = 0;
 bool ballVisible = false;
 
+int16_t goalBX = 0, goalBY = 0;
+bool goalBVisible = false;
+
+int16_t goalYX = 0, goalYY = 0;
+bool goalYVisible = false;
+
+int fd;
+
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
         Mat lut_matrix(1, 256, CV_8UC1 );
@@ -87,14 +95,42 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
 }
 
-void print16(int value) {
-        //send both bytes
-        char b1 = value & 0xFF;
-        char b2 = (value >> 8) & 0xFF;
-        cout << "Low Byte: " << +b1 << " High Byte: " << +b2 << endl;
-        int fd = serialOpen("/dev/ttyS1", 115200);
-        serialPutchar(fd, b1);
-        serialPutchar(fd, b2);
+void printTeensy() {
+        char ballXLow = ballX & 0xFF;
+        char ballXHigh = (ballX >> 8) & 0xFF;
+        char ballYLow = ballX & 0xFF;
+        char ballYHigh = (ballX >> 8) & 0xFF;
+        char ballVis = ballVisible;
+
+        char goalBXLow = goalBX & 0xFF;
+        char goalBXHigh = (goalBX >> 8) & 0xFF;
+        char goalBYLow = goalBY & 0xFF;
+        char goalBYHigh = (goalBY >> 8) & 0xFF;
+        char goalBVis = goalBVisible;
+
+        char goalYXLow = goalYX & 0xFF;
+        char goalYXHigh = (goalYX >> 8) & 0xFF;
+        char goalYYLow = goalYY & 0xFF;
+        char goalYYHigh = (goalYY >> 8) & 0xFF;
+        char goalYVis = goalYVisible;
+
+        serialPutchar(fd, ballXLow);
+        serialPutchar(fd, ballXHigh);
+        serialPutchar(fd, ballYLow);
+        serialPutchar(fd, ballYHigh);
+        serialPutchar(fd, ballVis);
+
+        serialPutchar(fd, goalBXLow);
+        serialPutchar(fd, goalBXHigh);
+        serialPutchar(fd, goalBYLow);
+        serialPutchar(fd, goalBYHigh);
+        serialPutchar(fd, goalBVis);
+
+        serialPutchar(fd, goalBXLow);
+        serialPutchar(fd, goalBXHigh);
+        serialPutchar(fd, goalBYLow);
+        serialPutchar(fd, goalBYHigh);
+        serialPutchar(fd, goalBVis);
 }
 
 void doContours() {
@@ -103,45 +139,72 @@ void doContours() {
 
         findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
 
-        vector<RotatedRect> minRect(contoursBall.size());
+        vector<RotatedRect> minRectBall(contoursBall.size());
         for(int i = 0; i < contoursBall.size(); i++) {
-                minRect[i] = minAreaRect(Mat(contoursBall[i]));
+                minRectBall[i] = minAreaRect(Mat(contoursBall[i]));
         }
         for(size_t i = 0; i < contoursBall.size(); i++) {
                 Scalar color = Scalar(0, 0, 255);
                 //drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
-                Point2f rect_points[4]; minRect[i].points( rect_points );
+                Point2f rect_points[4]; minRectBall[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballX = (int) (minRect[0].center.x);
-                ballY = (int) (minRect[0].center.y);
+                ballX = (int) (minRectBall[0].center.x);
+                ballY = (int) (minRectBall[0].center.y);
                 ballVisible = true;
 
         }
         else {ballVisible = false;}
 
-        //cout << "Ball X: " << print16(ballX) << endl;
-        //cout << "Ball Y: " << print16(ballY) << endl;
-        print16(ballX);
-        //print16(ballY);
-        cout << "Ball visible: " << ballVisible << endl;
-
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
+
         findContours(blueThreshold, contoursBG, hierarchyBG, RETR_TREE, CHAIN_APPROX_SIMPLE);
-        for(size_t i = 0; i < contoursBG.size(); i++) {
-                Scalar color = Scalar(255, 0, 0);
-                drawContours(cameraFrame, contoursBG, (int)i, color, 2, LINE_8, hierarchyBG, 0);
+
+        vector<RotatedRect> minRectBG(contoursBG.size());
+        for(int i = 0; i < contoursBG.size(); i++) {
+                minRectBG[i] = minAreaRect(Mat(contoursBG[i]));
         }
+        for(size_t i = 0; i < contoursBG.size(); i++) {
+                Scalar color = Scalar(0, 0, 255);
+                //drawContours(cameraFrame, contoursBG, (int)i, color, 2, LINE_8, hierarchyBG, 0);
+                Point2f rect_points[4]; minRectBG[i].points( rect_points );
+                for( int j = 0; j < 4; j++ )
+                        line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
+        }
+        if (contoursBG.size() > 0) {
+                goalBX = (int) (minRectBG[0].center.x);
+                goalBY = (int) (minRectBG[0].center.y);
+                goalBVisible = true;
+
+        }
+        else {goalBVisible = false;}
+
         vector<vector<Point> > contoursYG;
         vector<Vec4i> hierarchyYG;
+
         findContours(yellowThreshold, contoursYG, hierarchyYG, RETR_TREE, CHAIN_APPROX_SIMPLE);
-        for(size_t i = 0; i < contoursYG.size(); i++) {
-                Scalar color = Scalar(0, 255, 255);
-                drawContours(cameraFrame, contoursYG, (int)i, color, 2, LINE_8, hierarchyYG, 0);
+
+        vector<RotatedRect> minRectYG(contoursYG.size());
+        for(int i = 0; i < contoursYG.size(); i++) {
+                minRectYG[i] = minAreaRect(Mat(contoursYG[i]));
         }
+        for(size_t i = 0; i < contoursYG.size(); i++) {
+                Scalar color = Scalar(0, 0, 255);
+                //drawContours(cameraFrame, contoursYG, (int)i, color, 2, LINE_8, hierarchyYG, 0);
+                Point2f rect_points[4]; minRectYG[i].points( rect_points );
+                for( int j = 0; j < 4; j++ )
+                        line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
+        }
+        if (contoursYG.size() > 0) {
+                goalYX = (int) (minRectYG[0].center.x);
+                goalYY = (int) (minRectYG[0].center.y);
+                goalYVisible = true;
+
+        }
+        else {goalBVisible = false;}
 }
 
 void processFrame() {
@@ -150,14 +213,15 @@ void processFrame() {
         threshold(redNormalized, redThreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
         threshold(blueNormalized, blueThreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
         threshold(yellowNormalized, yellowThreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
+        doContours();
 }
 
 void processFrames() {
         while(true) {
                 processFrame();
+                printTeensy();
                 //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
-                doContours();
         }
 }
 
@@ -179,6 +243,8 @@ int main(int argc, const char * argv[]) {
         thread image_getter(getFrames);
 
         mask = imread("mask.png", IMREAD_COLOR);
+
+        fd = serialOpen("/dev/ttyS1", 115200);
 
         // Create a window
         namedWindow("Original Image", 1);
