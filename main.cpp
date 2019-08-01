@@ -100,8 +100,13 @@ void doContours() {
                 Point2f rect_points[4]; minRect[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
-
+        }
+        if (contoursBall.size() >= 0) {
                 cout << "Ball X: " << minRect[0].center.x << endl;
+                cout << "Ball Y: " << minRect[0].center.y << endl;
+        }
+        else {
+                cout << "Ball not visible" << endl;
         }
 
         vector<vector<Point> > contoursBG;
@@ -131,7 +136,7 @@ void processFrame() {
 void processFrames() {
         while(true) {
                 processFrame();
-                cout << "Image Processing Thread: " << processCounter << endl;
+                //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
                 doContours();
         }
@@ -144,7 +149,7 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                cout << "Camera Thread: " << camCounter << endl;
+                //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
@@ -214,7 +219,7 @@ int main(int argc, const char * argv[]) {
                 }
                 }
 
-                cout << "Main Thread: " << mainCounter << endl;
+                //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
