@@ -231,27 +231,27 @@ int main(int argc, const char * argv[]) {
                         return 1;
                 }
 
-                nextTime = millis () + 300;
+                // nextTime = millis () + 300;
+                //
+                // for (count = 0; count < 256; )
+                // {
+                //         if (millis () > nextTime)
+                //         {
+                //                 printf ("\nOut: %3d: ", count);
+                //                 fflush (stdout);
+                //                 serialPutchar (fd, count);
+                //                 nextTime += 300;
+                //                 ++count;
+                //         }
+                //
+                //         delay (3);
 
-                for (count = 0; count < 256; )
+                while (serialDataAvail (fd))
                 {
-                        if (millis () > nextTime)
-                        {
-                                printf ("\nOut: %3d: ", count);
-                                fflush (stdout);
-                                serialPutchar (fd, count);
-                                nextTime += 300;
-                                ++count;
-                        }
-
-                        delay (3);
-
-                        while (serialDataAvail (fd))
-                        {
-                                printf (" -> %3d", serialGetchar (fd));
-                                fflush (stdout);
-                        }
+                        printf (" -> %3d", serialGetchar (fd));
+                        fflush (stdout);
                 }
+                // }
 
                 printf ("\n");
         }
