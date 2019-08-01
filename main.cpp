@@ -49,8 +49,8 @@ int threshold_yellow_slider = 35;
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
-uint_16t ballX = 0, ballY = 0;
-boolean ballVisible = false;
+int ballX = 0, ballY = 0;
+bool ballVisible = false;
 
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
