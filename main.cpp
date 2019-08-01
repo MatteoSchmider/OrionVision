@@ -106,7 +106,9 @@ void doContours() {
         }
         if (contoursBall.size() > 0) {
                 ballX = (int) (minRect[0].center.x);
+                ballX = ballX / 6.4;
                 ballY = (int) (minRect[0].center.y);
+                ballX = ballY / 4.8;
                 ballVisible = true;
 
         }
