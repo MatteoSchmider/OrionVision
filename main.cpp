@@ -80,7 +80,7 @@ void prepareFrame() {
         double Gamma = gammaSlider / 100.0;
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, Gamma);
         //blur
-        blur(cameraFrameNoBlur, cameraFrame, Size(5, 5));
+        blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
 
 void normalizeChannels() {
