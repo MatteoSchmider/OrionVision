@@ -134,8 +134,6 @@ void printTeensy() {
         serialPutchar(fd, goalYYLow);
         serialPutchar(fd, goalYYHigh);
         serialPutchar(fd, goalYVis);
-
-        cout << ballX << endl;
 }
 
 void doContours() {
