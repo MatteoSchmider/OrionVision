@@ -96,7 +96,7 @@ void doContours() {
         }
         for(size_t i = 0; i < contoursBall.size(); i++) {
                 Scalar color = Scalar(0, 0, 255);
-                drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
+                //drawContours(cameraFrame, contoursBall, (int)i, color, 2, LINE_8, hierarchyBall, 0);
                 Point2f rect_points[4]; minRect[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
