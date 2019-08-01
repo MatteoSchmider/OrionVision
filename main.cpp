@@ -106,9 +106,7 @@ void doContours() {
         }
         if (contoursBall.size() > 0) {
                 ballX = (int) (minRect[0].center.x);
-                ballX = ballX / 6.4;
                 ballY = (int) (minRect[0].center.y);
-                ballY = ballY / 4.8;
                 ballVisible = true;
 
         }
@@ -161,6 +159,15 @@ void getFrames() {
                 //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
+}
+
+void send16(int value)
+{
+        //send both bytes
+        byte b1 = value & 0xFF;
+        byte b2 = (value >> 8) & 0xFF;
+        serialPutchar(fd, b1);
+        serialPutchar(fd, b1);
 }
 
 int main(int argc, const char * argv[]) {
