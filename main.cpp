@@ -60,6 +60,9 @@ bool goalYVisible = false;
 
 int fd;
 
+char teensyByte = 0;
+bool robotOnField = false;
+
 Mat correctGamma(Mat& img, double gamma) {
         double inverse_gamma = 1.0 / gamma;
         Mat lut_matrix(1, 256, CV_8UC1 );
@@ -311,6 +314,12 @@ int main(int argc, const char * argv[]) {
                 {
                         break;
                 }
+                if (serialDataAvail(fd)) {
+                        teensyByte = serialGetchar(fd);
+                        fflush(stdout);
+                }
+                robotOnField = (teensyByte == 1);
+                cout << robotOnField << endl;
         }
         // return 0;
         // int fd;
