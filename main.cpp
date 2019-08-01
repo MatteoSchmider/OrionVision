@@ -102,6 +102,8 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
 
+        cout << "Ball X: " << minRect[0].center.x << endl;
+
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
         findContours(blueThreshold, contoursBG, hierarchyBG, RETR_TREE, CHAIN_APPROX_SIMPLE);
