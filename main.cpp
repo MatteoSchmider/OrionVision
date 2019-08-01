@@ -49,7 +49,7 @@ int threshold_yellow_slider = 35;
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
-int ballX = 0, ballY = 0;
+int16_t ballX = 0, ballY = 0;
 bool ballVisible = false;
 
 Mat correctGamma(Mat& img, double gamma) {
@@ -235,17 +235,18 @@ int main(int argc, const char * argv[]) {
                 }
         }
         return 0;
-        // int fd;
-        // if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
-        //         fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
-        //         return 1;
-        // }
-        // // Loop, getting and printing characters
-        // for (;;) {
-        //         if (serialDataAvail(fd)) {
-        //                 putchar(serialGetchar(fd));
-        //                 fflush(stdout);
-        //         }
-        // }
-        // return 0;
+        int fd;
+        if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
+                fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
+                return 1;
+        }
+        // Loop, getting and printing characters
+        for (;;) {
+                if (serialDataAvail(fd)) {
+                        putchar(serialGetchar(fd));
+                        fflush(stdout);
+                }
+        }
+        serialPutchar(fd, count);
+        return 0;
 }
