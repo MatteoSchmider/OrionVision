@@ -168,7 +168,7 @@ void doContours() {
                 minRectBG[i] = minAreaRect(Mat(contoursBG[i]));
         }
         for(size_t i = 0; i < contoursBG.size(); i++) {
-                Scalar color = Scalar(0, 0, 255);
+                Scalar color = Scalar(255, 0, 0);
                 //drawContours(cameraFrame, contoursBG, (int)i, color, 2, LINE_8, hierarchyBG, 0);
                 Point2f rect_points[4]; minRectBG[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
@@ -192,7 +192,7 @@ void doContours() {
                 minRectYG[i] = minAreaRect(Mat(contoursYG[i]));
         }
         for(size_t i = 0; i < contoursYG.size(); i++) {
-                Scalar color = Scalar(0, 0, 255);
+                Scalar color = Scalar(0, 255, 255);
                 //drawContours(cameraFrame, contoursYG, (int)i, color, 2, LINE_8, hierarchyYG, 0);
                 Point2f rect_points[4]; minRectYG[i].points( rect_points );
                 for( int j = 0; j < 4; j++ )
