@@ -112,8 +112,8 @@ void doContours() {
         }
         else {ballVisible = false;}
 
-        cout << "Ball X: " << ballX << endl;
-        cout << "Ball Y: " << ballY << endl;
+        cout << "Ball X: " << print16(ballX) << endl;
+        cout << "Ball Y: " << print16(ballY) << endl;
         cout << "Ball visible: " << ballVisible << endl;
 
         vector<vector<Point> > contoursBG;
@@ -161,10 +161,11 @@ void getFrames() {
         }
 }
 
-void send16(int value) {
+void print16(int value) {
         //send both bytes
         char b1 = value & 0xFF;
         char b2 = (value >> 8) & 0xFF;
+        cout << "Low Byte: " << b1 << " High Byte: " << b2 << endl;
         //serialPutchar(fd, b1);
         //serialPutchar(fd, b1);
 }
