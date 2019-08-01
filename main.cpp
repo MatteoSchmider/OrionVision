@@ -101,8 +101,8 @@ void doContours() {
                 for( int j = 0; j < 4; j++ )
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
-
-        cout << "Ball X: " << minRect[0].center.x << endl;
+        Point2f centerBall = minRect[0].center;
+        //cout << "Ball X: " << minRect[0].center.x << endl;
 
         vector<vector<Point> > contoursBG;
         vector<Vec4i> hierarchyBG;
