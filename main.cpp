@@ -61,7 +61,7 @@ char teensyByte = 0;
 bool robotOnField = false;
 
 Mat correctGamma(Mat& img) {
-        double inverse_gamma = 10000 / gammaSlider;
+        double inverse_gamma = 100 / gammaSlider;
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
