@@ -43,6 +43,7 @@ int threshold_red_slider = 52;
 int threshold_blue_slider = 7;
 int threshold_yellow_slider = 35;
 
+double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
 int16_t ballX = 0, ballY = 0;
