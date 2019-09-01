@@ -75,7 +75,7 @@ Mat correctGamma(Mat& img) {
 
 void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
-        createSimpleWB().balanceWhite(cameraFrameNoGamma, cameraFrameNoGamma);
+        createGrayworldWB().balanceWhite(cameraFrameNoGamma, cameraFrameNoGamma);
         //Gamma
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
         //blur
