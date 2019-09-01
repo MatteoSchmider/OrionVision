@@ -75,7 +75,7 @@ Mat correctGamma(Mat& img) {
 
 void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
-        createGrayworldWB().balanceWhite(cameraFrameNoGamma, cameraFrameNoGamma);
+        xphoto::createGrayworldWB().balanceWhite(cameraFrameNoGamma, cameraFrameNoGamma);
         //Gamma
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
         //blur
