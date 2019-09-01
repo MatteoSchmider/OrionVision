@@ -37,19 +37,12 @@ Mat cameraFrameNoBlur(480, 640, CV_8UC3);
 Mat channels[3];
 Mat seg_channels[3];
 
-double fps1 = 0;
-double fps2 = 0;
-double fps3 = 0;
-double totalFps = 0;
-long totalFpsCount = 1;
-
 int gammaSlider = 100;
 int imageShownSlider = 0;
 int threshold_red_slider = 52;
 int threshold_blue_slider = 7;
 int threshold_yellow_slider = 35;
 
-double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
 int16_t ballX = 0, ballY = 0;
@@ -66,8 +59,8 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
-Mat correctGamma(Mat& img, double gamma) {
-        double inverse_gamma = 1.0 / gamma;
+Mat correctGamma(Mat& img) {
+        double inverse_gamma = 10000 / gammaSlider;
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
@@ -80,8 +73,7 @@ Mat correctGamma(Mat& img, double gamma) {
 void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gamma
-        double Gamma = gammaSlider / 100.0;
-        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma, Gamma);
+        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
