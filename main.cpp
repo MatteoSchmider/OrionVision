@@ -38,7 +38,7 @@ Mat cameraFrameNoBlur(480, 640, CV_8UC3);
 Mat channels[3];
 Mat seg_channels[3];
 
-int gammaSlider = 100;
+int gammaSlider = 50;
 int imageShownSlider = 0;
 int threshold_red_slider = 52;
 int threshold_blue_slider = 7;
