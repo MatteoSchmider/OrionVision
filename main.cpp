@@ -62,22 +62,26 @@ char teensyByte = 0;
 bool robotOnField = false;
 
 void SimplestCB(Mat& in, Mat& out, float percent) {
-        Mat lookUpTable(1, 256, CV_8U);
-        uchar* p = lookUpTable.ptr();
-        for( int i = 0; i < 256; ++i)
-            p[i] = saturate_cast<uchar>(pow(i / 255.0, (percent/100)) * 255.0);
-        //out = in.clone();
-        LUT(in, lookUpTable, out);
+    Mat ycrcb;
+
+    cvtColor(in,ycrcb,CV_BGR2YCrCb);
+
+    vector<Mat> channels;
+    split(ycrcb,channels);
+
+    equalizeHist(channels[0], channels[0]);
+
+    merge(channels,ycrcb);
+
+    cvtColor(ycrcb,out,CV_YCrCb2BGR);
 }
 
 void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-        cameraFrameNoMask.convertTo(cameraFrameNoMask, -1, 1, 100);
-        cvtColor( src, src, CV_BGR2GRAY );
-        equalizeHist( cameraFrameNoMask, cameraFrameNoMask );
+        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+        //cameraFrameNoMask.convertTo(cameraFrameNoMask, -1, 1, 100);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
