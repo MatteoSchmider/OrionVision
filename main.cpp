@@ -64,14 +64,12 @@ bool robotOnField = false;
 void SimplestCB(Mat& in, Mat& out, float percent) {
         assert(in.channels() == 3);
         assert(percent > 0 && percent < 100);
-
         float half_percent = percent / 200.0f;
-
         vector<Mat> tmpsplit; split(in,tmpsplit);
         for(int i=0; i<3; i++) {
                 //find the low and high precentile values (based on the input percentile)
                 Mat flat; tmpsplit[i].reshape(1,1).copyTo(flat);
-                cv::sort(flat,flat,CV_SORT_EVERY_ROW + CV_SORT_ASCENDING);
+                cv::sort(flat,flat,SORT_EVERY_ROW + SORT_ASCENDING);
                 int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
                 int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
                 cout << lowval << " " << highval << endl;
