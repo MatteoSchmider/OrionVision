@@ -82,11 +82,11 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
 }
 
 void prepareFrame() {
-        /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
-           var->setSaturationThreshold(gammaSlider);
-           var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-        cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
+        Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
+        var->setSaturationThreshold(gammaSlider / 100.0);
+        var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
+        //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
