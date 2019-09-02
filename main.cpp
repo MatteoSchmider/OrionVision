@@ -74,7 +74,7 @@ void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+        //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
