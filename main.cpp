@@ -83,6 +83,7 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
 
 void prepareFrame() {
         Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
+        cout << "Slider: " << gammaSlider / 100.0 << endl;
         var->setSaturationThreshold(gammaSlider / 100.0);
         var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
