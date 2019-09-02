@@ -63,7 +63,7 @@ bool robotOnField = false;
 
 
 Mat correctGamma(Mat& img) {
-        double inverse_gamma = 100 / gammaSlider;
+        double inverse_gamma = 1;//00 / gammaSlider;
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
@@ -74,7 +74,9 @@ Mat correctGamma(Mat& img) {
 }
 
 void prepareFrame() {
-        xphoto::createGrayworldWB()->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
+        Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
+        var->setSaturationThreshold(gammaSlider/100);
+        var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gammas
         cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
@@ -162,7 +164,7 @@ void doContours() {
                 cout << "Ball Y: " << ballY << endl;
                 cout << "\n";
                 int ballradius = (int) sqrt((ballX * ballX) + (ballY * ballY));
-                int angle = (int) tan(ballY / ballX) * 180;
+                double angle = (double) tan(ballY / ballX) * 180;
                 cout << "Ball Radius: " << ballradius << endl;
                 cout << "Ball Angle: " << angle << endl;
 
