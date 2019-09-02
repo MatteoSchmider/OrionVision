@@ -63,7 +63,7 @@ bool robotOnField = false;
 
 void SimplestCB(Mat& in, Mat& out) {
         vector<Mat> tmpsplit; split(in,tmpsplit);
-        for(int i=0; i<3; i++) {
+        for(int i = 0; i < 3; i++) {
                 equalizeHist(tmpsplit[i], tmpsplit[i]);
         }
         merge(tmpsplit,out);
@@ -218,9 +218,9 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        threshold(redNormalized, redThreshold, maxr * threshold_red_slider / 100, 255, THRESH_BINARY);
-        threshold(blueNormalized, blueThreshold, maxb * threshold_blue_slider / 100, 255, THRESH_BINARY);
-        threshold(yellowNormalized, yellowThreshold, maxy * threshold_yellow_slider / 100, 255, THRESH_BINARY);
+        threshold(redNormalized, redThreshold, maxr * (threshold_red_slider / 100.0), 255, THRESH_BINARY);
+        threshold(blueNormalized, blueThreshold, maxb * (threshold_blue_slider / 100.0), 255, THRESH_BINARY);
+        threshold(yellowNormalized, yellowThreshold, maxy * (threshold_yellow_slider / 100.0), 255, THRESH_BINARY);
         doContours();
 }
 
