@@ -72,7 +72,7 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
                    int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));*/
                 double low;
                 double high;
-                minMaxIdx(tmpsplit[i], low*, high*);
+                minMaxIdx(tmpsplit[i], &low, &high);
                 int lowval = (int) (low * half_percent);
                 int highval = (int) (high * (1.0 - half_percent));
 
