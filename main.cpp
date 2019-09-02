@@ -133,7 +133,6 @@ void printTeensy() {
 }
 
 void doContours() {
-        ha
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
 
