@@ -70,6 +70,8 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
                    cv::sort(flat,flat,SORT_EVERY_ROW + SORT_ASCENDING);
                    int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
                    int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));*/
+                double low;
+                double high;
                 minMaxIdx(tmpsplit[i], low, high);
                 int lowval = (int) (low * half_percent);
                 int highval = (int) (high * (1.0 - half_percent));
