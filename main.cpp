@@ -61,10 +61,22 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
-void SimplestCB(Mat& in, Mat& out) {
+void SimplestCB(Mat& in, Mat& out, float percent) {
+        float half_percent = percent / 200.0f;
         vector<Mat> tmpsplit; split(in,tmpsplit);
-        for(int i = 0; i < 3; i++) {
-                equalizeHist(tmpsplit[i], tmpsplit[i]);
+        for(int i=0; i<3; i++) {
+                //find the low and high precentile values (based on the input percentile)
+                Mat flat; tmpsplit[i].reshape(1,1).copyTo(flat);
+                cv::sort(flat,flat,SORT_EVERY_ROW + SORT_ASCENDING);
+                int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
+                int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
+
+                //saturate below the low percentile and above the high percentile
+                tmpsplit[i].setTo(lowval,tmpsplit[i] < lowval);
+                tmpsplit[i].setTo(highval,tmpsplit[i] > highval);
+
+                //scale the channel
+                normalize(tmpsplit[i],tmpsplit[i],0,255,NORM_MINMAX);
         }
         merge(tmpsplit,out);
 }
@@ -73,7 +85,7 @@ void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        SimplestCB(cameraFrameNoMask, cameraFrameNoMask);
+        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
@@ -220,9 +232,6 @@ void processFrame() {
         double redTresh = maxr * (double)(threshold_red_slider / 100.0);
         double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
         double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
-        cout << "Red Treshold Percent: " << redTresh << endl;
-        cout << "Blue Treshold Percent: " << blueTresh << endl;
-        cout << "Yellow Treshold Percent: " << yellowTresh << endl;
         threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
         threshold(blueNormalized, blueThreshold, blueTresh, 255, THRESH_BINARY);
         threshold(yellowNormalized, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
