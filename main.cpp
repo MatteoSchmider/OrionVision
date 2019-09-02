@@ -61,25 +61,37 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
+void SimplestCB(Mat& in, Mat& out, float percent) {
+        assert(in.channels() == 3);
+        assert(percent > 0 && percent < 100);
 
-Mat correctGamma(Mat& img) {
-        double inverse_gamma = 1.0;//00 / gammaSlider;
-        Mat lut_matrix(1, 256, CV_8UC1 );
-        uchar * ptr = lut_matrix.ptr();
-        for( int i = 0; i < 256; i++ )
-                ptr[i] = (int)(pow((double) i / 255.0, inverse_gamma) * 255.0);
-        Mat result;
-        LUT(img, lut_matrix, result);
-        return result;
+        float half_percent = percent / 200.0f;
+
+        vector<Mat> tmpsplit; split(in,tmpsplit);
+        for(int i=0; i<3; i++) {
+                //find the low and high precentile values (based on the input percentile)
+                Mat flat; tmpsplit[i].reshape(1,1).copyTo(flat);
+                cv::sort(flat,flat,CV_SORT_EVERY_ROW + CV_SORT_ASCENDING);
+                int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
+                int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
+                cout << lowval << " " << highval << endl;
+
+                //saturate below the low percentile and above the high percentile
+                tmpsplit[i].setTo(lowval,tmpsplit[i] < lowval);
+                tmpsplit[i].setTo(highval,tmpsplit[i] > highval);
+
+                //scale the channel
+                normalize(tmpsplit[i],tmpsplit[i],0,255,NORM_MINMAX);
+        }
+        merge(tmpsplit,out);
 }
 
 void prepareFrame() {
-        Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
-        var->setSaturationThreshold(gammaSlider / 100.0);
-        var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
+        /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
+           var->setSaturationThreshold(gammaSlider);
+           var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
+        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
-        //Gammas
-        //cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
