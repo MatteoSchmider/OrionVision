@@ -62,8 +62,6 @@ char teensyByte = 0;
 bool robotOnField = false;
 
 void SimplestCB(Mat& in, Mat& out, float percent) {
-        assert(in.channels() == 3);
-        assert(percent > 0 && percent < 100);
         float half_percent = percent / 200.0f;
         vector<Mat> tmpsplit; split(in,tmpsplit);
         for(int i=0; i<3; i++) {
