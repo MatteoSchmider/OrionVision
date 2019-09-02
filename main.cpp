@@ -217,10 +217,10 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        double redTresh = maxr * (threshold_red_slider / 100.0);
-        double blueTresh = maxb * (threshold_blue_slider / 100.0);
-        double yellowTresh = maxy * (threshold_yellow_slider / 100.0);
-        cout << "Red Treshold Percent: !" << redTresh << endl;
+        double redTresh = maxr * (double)(threshold_red_slider / 100.0);
+        double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
+        double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
+        cout << "Red Treshold Percent: " << redTresh << endl;
         cout << "Blue Treshold Percent: " << blueTresh << endl;
         cout << "Yellow Treshold Percent: " << yellowTresh << endl;
         threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
