@@ -61,8 +61,7 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
-void SimplestCB(Mat& in, Mat& out, float percent) {
-        float half_percent = percent / 200.0f;
+void SimplestCB(Mat& in, Mat& out) {
         vector<Mat> tmpsplit; split(in,tmpsplit);
         for(int i=0; i<3; i++) {
                 equalizeHist(tmpsplit[i], tmpsplit[i]);
@@ -74,7 +73,7 @@ void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+        SimplestCB(cameraFrameNoMask, cameraFrameNoMask);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
@@ -134,6 +133,7 @@ void printTeensy() {
 }
 
 void doContours() {
+        ha
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
 
