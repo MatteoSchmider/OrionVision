@@ -157,7 +157,6 @@ void doContours() {
                 ballVisible = true;
                 cout << "Ball X: " << ballX << endl;
                 cout << "Ball Y: " << ballY << endl;
-                cout << "\n";
                 int ballradius = (int) sqrt((ballX * ballX) + (ballY * ballY));
                 double angle = (double) tan(ballY / ballX) * 180;
                 cout << "Ball Radius: " << ballradius << endl;
@@ -218,11 +217,16 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        threshold(redNormalized, redThreshold, maxr * (threshold_red_slider / 100.0), 255, THRESH_BINARY);
-        threshold(blueNormalized, blueThreshold, maxb * (threshold_blue_slider / 100.0), 255, THRESH_BINARY);
-        threshold(yellowNormalized, yellowThreshold, maxy * (threshold_yellow_slider / 100.0), 255, THRESH_BINARY);
+        double redTresh = maxr * (threshold_red_slider / 100.0);
+        double blueTresh = maxb * (threshold_blue_slider / 100.0);
+        double yellowTresh = maxy * (threshold_yellow_slider / 100.0);
+        cout << "Red Treshold Percent: !" << redTresh << endl;
+        cout << "Blue Treshold Percent: " << blueTresh << endl;
+        cout << "Yellow Treshold Percent: " << yellowTresh << endl;
+        threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
+        threshold(blueNormalized, blueThreshold, blueTresh, 255, THRESH_BINARY);
+        threshold(yellowNormalized, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
         doContours();
-        cout << "Processed frame!" << endl;
 }
 
 void processFrames() {
@@ -242,7 +246,6 @@ void getFrames() {
         while(true) {
                 capture >> cameraFrameNoMask;
                 //cout << "Camera Thread: " << camCounter << endl;
-                cout << "Got a Frame!" << endl;
                 camCounter++;
         }
 }
@@ -313,7 +316,6 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                cout << "Displayed some images!" << endl;
                 //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
@@ -326,7 +328,6 @@ int main(int argc, const char * argv[]) {
                         fflush(stdout);
                 }
                 robotOnField = (teensyByte == 1);
-                cout << robotOnField << endl;
         }
         // return 0;
         // int fd;
