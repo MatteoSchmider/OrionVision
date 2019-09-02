@@ -63,7 +63,7 @@ bool robotOnField = false;
 
 
 Mat correctGamma(Mat& img) {
-        double inverse_gamma = 1;//00 / gammaSlider;
+        double inverse_gamma = 1.0;//00 / gammaSlider;
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
@@ -77,9 +77,9 @@ void prepareFrame() {
         Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
         var->setSaturationThreshold(gammaSlider / 100.0);
         var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
-        cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
         //Gammas
-        cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
+        //cameraFrameNoBlur = correctGamma(cameraFrameNoGamma);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
