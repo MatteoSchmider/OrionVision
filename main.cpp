@@ -66,7 +66,7 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
         uchar* p = lookUpTable.ptr();
         for( int i = 0; i < 256; ++i)
             p[i] = saturate_cast<uchar>(pow(i / 255.0, (percent/10)) * 255.0);
-        //out = in.clone();
+        out = in.clone();
         LUT(in, lookUpTable, out);
 }
 
