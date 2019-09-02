@@ -64,7 +64,7 @@ bool robotOnField = false;
 void SimplestCB(Mat& in, Mat& out, float percent) {
     Mat ycrcb;
 
-    cvtColor(in,ycrcb,CV_BGR2YCrCb);
+    cvtColor(in, ycrcb, COLOR_BGR2YCrCb);
 
     vector<Mat> channels;
     split(ycrcb,channels);
@@ -73,7 +73,7 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
 
     merge(channels,ycrcb);
 
-    cvtColor(ycrcb,out,CV_YCrCb2BGR);
+    cvtColor(ycrcb,out, COLOR_YCrCb2BGR);
 }
 
 void prepareFrame() {
