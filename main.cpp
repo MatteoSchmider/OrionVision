@@ -160,7 +160,7 @@ void doContours() {
                 int ballradius = (int) sqrt((ballX * ballX) + (ballY * ballY));
                 //double angle = (double) tan(ballY / ballX) * 180;
                 cout << "Ball Radius: " << ballradius << endl;
-                cout << "Ball Angle: " << angle << endl;
+                //cout << "Ball Angle: " << angle << endl;
 
         }
         else {ballVisible = false;}
