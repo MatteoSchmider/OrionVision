@@ -75,7 +75,7 @@ Mat correctGamma(Mat& img) {
 
 void prepareFrame() {
         Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
-        var->setSaturationThreshold(gammaSlider/100);
+        var->setSaturationThreshold(gammaSlider / 100.0);
         var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
         cameraFrameNoMask.copyTo(cameraFrameNoGamma, mask);
         //Gammas
