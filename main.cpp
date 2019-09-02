@@ -76,6 +76,8 @@ void prepareFrame() {
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.convertTo(cameraFrameNoMask, -1, 1, 100);
+        //cvtColor( src, src, CV_BGR2GRAY );
+        equalizeHist( cameraFrameNoMask, cameraFrameNoMask );
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
