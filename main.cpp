@@ -62,37 +62,20 @@ char teensyByte = 0;
 bool robotOnField = false;
 
 void SimplestCB(Mat& in, Mat& out, float percent) {
-        float half_percent = percent / 200.0f;
-        vector<Mat> tmpsplit; split(in,tmpsplit);
-        for(int i=0; i<3; i++) {
-                //find the low and high precentile values (based on the input percentile)
-                Mat flat; tmpsplit[i].reshape(1,1).copyTo(flat);
-                cv::sort(flat,flat,SORT_EVERY_ROW + SORT_ASCENDING);
-                int lowval = flat.at<uchar>(cvFloor(((float)flat.cols) * half_percent));
-                int highval = flat.at<uchar>(cvCeil(((float)flat.cols) * (1.0 - half_percent)));
-
-                //saturate below the low percentile and above the high percentile
-                tmpsplit[i].setTo(lowval,tmpsplit[i] < lowval);
-                tmpsplit[i].setTo(highval,tmpsplit[i] > highval);
-
-                //scale the channel
-                normalize(tmpsplit[i],tmpsplit[i],0,255,NORM_MINMAX);
-        }
-        merge(tmpsplit,out);
+        Mat lookUpTable(1, 256, CV_8U);
+        uchar* p = lookUpTable.ptr();
+        for( int i = 0; i < 256; ++i)
+            p[i] = saturate_cast<uchar>(pow(i / 255.0, gamma_) * 255.0);
+        Mat out = in.clone();
+        LUT(in, lookUpTable, out);
 }
 
 void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
-           var->setSaturationThreshold(gammaSlider / 100.0);
-           cout << "Slider: " << var->getSaturationThreshold() << endl;
+           var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-
-        //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-
-        Ptr<xphoto::SimpleWB> var = xphoto::createSimpleWB();
-        var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);
-
-        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
+        SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
 }
