@@ -222,6 +222,7 @@ void processFrame() {
         threshold(blueNormalized, blueThreshold, maxb * (threshold_blue_slider / 100.0), 255, THRESH_BINARY);
         threshold(yellowNormalized, yellowThreshold, maxy * (threshold_yellow_slider / 100.0), 255, THRESH_BINARY);
         doContours();
+        cout << "Processed frame!" << endl;
 }
 
 void processFrames() {
@@ -241,6 +242,7 @@ void getFrames() {
         while(true) {
                 capture >> cameraFrameNoMask;
                 //cout << "Camera Thread: " << camCounter << endl;
+                cout << "Got a Frame!" << endl;
                 camCounter++;
         }
 }
@@ -311,7 +313,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-
+                cout << "Displayed some images!" << endl;
                 //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
