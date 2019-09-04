@@ -34,6 +34,7 @@ Mat cameraFrame(480, 640, CV_8UC3);
 Mat cameraFrameNoMask(480, 640, CV_8UC3);
 Mat cameraFrameNoGamma(480, 640, CV_8UC3);
 Mat cameraFrameNoBlur(480, 640, CV_8UC3);
+Mat oneMat = Mat::ones(480, 640, CV_8UC1);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -66,9 +67,8 @@ void SimplestCB(Mat& in, Mat& out, float percent) {
 void wb(Mat& in) {
         double min, max;
         minMaxLoc(in, &min, &max, NULL, NULL);
-        in = in - ((int) min);
         double scale = (int)(1.0 / (max - min));
-        in = in * scale;
+        addWeighted(in, 1.0, oneMat, -min, scale, in);
 }
 
 void prepareFrame() {
@@ -83,9 +83,13 @@ void prepareFrame() {
 
 void normalizeChannels() {
         split(cameraFrame, channels);
+        wb(channels[0]);
+        wb(channels[1]);
+        wb(channels[2]);
         blue = channels[0];
         green = channels[1];
         red = channels[2];
+        merge(channels, 3, cameraFrame);
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
