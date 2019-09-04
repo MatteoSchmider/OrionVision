@@ -93,8 +93,9 @@ void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         //subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
-        absdiff(green, red, yellowNormalized);
+        absdiff(green, red, yellow);
         subtract(red, gray, redNormalized);
+        absdiff(yellow, redNormalized, yellowNormalized);
         //addWeighted(yellow, 1.5, blue, -1.0, 1.0, yellowNormalized);
         //subtract(yellow, gray, yellowNormalized);
         //subtract(red, yellowNormalized, redNormalized);
@@ -307,7 +308,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowNormalized);
+                        imshow("Original Image", yellowNormalized * 4);
                         break;
                 }
                 case 6: {
