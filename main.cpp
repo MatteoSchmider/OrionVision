@@ -89,23 +89,24 @@ void prepareFrame() {
         blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
 }
 
-Mat correctGammaWhiteLine(Mat& img) {
+void correctGammaWhiteLine(Mat& img) {
         Mat lookUpTable(1, 256, CV_8U);
         uchar* p = lookUpTable.ptr();
         for(int i = 0; i < 256; ++i) {
                 p[i] = saturate_cast<uchar>(pow(i / 255.0, 10) * 255.0);
         }
         Mat res = img.clone();
-        LUT(res, lookUpTable, res);
-        return res;
+        LUT(img, lookUpTable, res);
 }
 
 void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         //subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
+        subtract(green, gray, greenNormalized);
         subtract(gray, blue, yellow);
-        subtract(yellow, correctGammaWhiteLine(gray), yellow);
+        correctGammaWhiteLine(gray);
+        subtract(yellow, gray, yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
         subtract(yellow, redNormalized, yellowNormalized);
@@ -114,7 +115,6 @@ void normalizeChannels() {
         //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
         //subtract(yellow, gray, yellowNormalized);
         //subtract(red, yellowNormalized, redNormalized);
-        subtract(green, gray, greenNormalized);
 }
 
 void printTeensy() {
