@@ -297,15 +297,15 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 3: {
-                        imshow("Original Image", redThreshold);
+                        imshow("Original Image", redNormalized);
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueThreshold);
+                        imshow("Original Image", blueNormalized);
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowThreshold);
+                        imshow("Original Image", yellowNormalized);
                         break;
                 }
                 case 6: {
