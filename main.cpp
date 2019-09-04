@@ -92,8 +92,9 @@ void prepareFrame() {
 Mat correctGammaWhiteLine(Mat& img) {
         Mat lookUpTable(1, 256, CV_8U);
         uchar* p = lookUpTable.ptr();
-        for( int i = 0; i < 256; ++i)
+        for(int i = 0; i < 256; ++i) {
                 p[i] = saturate_cast<uchar>(pow(i / 255.0, 5) * 255.0);
+        }
         Mat res = img.clone();
         LUT(res, lookUpTable, res);
         return res;
