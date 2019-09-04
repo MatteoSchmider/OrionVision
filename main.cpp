@@ -6,8 +6,8 @@
 #include <opencv2/xphoto/white_balance.hpp>
 #include <unistd.h>
 #include <thread>
-//#include <wiringPi.h>
-//#include <wiringSerial.h>
+#include <wiringPi.h>
+#include <wiringSerial.h>
 #include <cmath>
 
 using namespace cv;
@@ -15,25 +15,25 @@ using namespace std;
 
 #define CENTER_X 310
 #define CENTER_Y 255
-Mat gray(720, 1280, CV_8UC1);
-Mat blue(720, 1280, CV_8UC1);
-Mat blueNormalized(720, 1280, CV_8UC1);
-Mat blueThreshold(720, 1280, CV_8UC1);
-Mat green(720, 1280, CV_8UC1);
-Mat greenNormalized(720, 1280, CV_8UC1);
-Mat greenThreshold(720, 1280, CV_8UC1);
-Mat red(720, 1280, CV_8UC1);
-Mat redNormalized(720, 1280, CV_8UC1);
-Mat redThreshold(720, 1280, CV_8UC1);
-Mat yellow(720, 1280, CV_8UC1);
-Mat yellowNormalized(720, 1280, CV_8UC1);
-Mat yellowThreshold(720, 1280, CV_8UC1);
+Mat gray(480, 640, CV_8UC1);
+Mat blue(480, 640, CV_8UC1);
+Mat blueNormalized(480, 640, CV_8UC1);
+Mat blueThreshold(480, 640, CV_8UC1);
+Mat green(480, 640, CV_8UC1);
+Mat greenNormalized(480, 640, CV_8UC1);
+Mat greenThreshold(480, 640, CV_8UC1);
+Mat red(480, 640, CV_8UC1);
+Mat redNormalized(480, 640, CV_8UC1);
+Mat redThreshold(480, 640, CV_8UC1);
+Mat yellow(480, 640, CV_8UC1);
+Mat yellowNormalized(480, 640, CV_8UC1);
+Mat yellowThreshold(480, 640, CV_8UC1);
 
-Mat mask(720, 1280, CV_8UC1);
-Mat cameraFrame(720, 1280, CV_8UC3);
-Mat cameraFrameNoMask(720, 1280, CV_8UC3);
-Mat cameraFrameNoGamma(720, 1280, CV_8UC3);
-Mat cameraFrameNoBlur(720, 1280, CV_8UC3);
+Mat mask(480, 640, CV_8UC1);
+Mat cameraFrame(480, 640, CV_8UC3);
+Mat cameraFrameNoMask(480, 640, CV_8UC3);
+Mat cameraFrameNoGamma(480, 640, CV_8UC3);
+Mat cameraFrameNoBlur(480, 640, CV_8UC3);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -61,8 +61,6 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
-VideoCapture capture;
-
 void SimplestCB(Mat& in, Mat& out, float percent) {
 }
 void wb(Mat& in) {
@@ -83,7 +81,7 @@ void prepareFrame() {
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
         split(cameraFrame, channels);
         for (int i = 0; i < 4; i++) {
-          wb(channels[i]);
+                wb(channels[i]);
         }
         blue = channels[0];
         green = channels[1];
@@ -101,7 +99,7 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
 }
 
-/*void printTeensy() {
+void printTeensy() {
         char ballXLow = ballX & 0xFF;
         char ballXHigh = (ballX >> 8) & 0xFF;
         char ballYLow = ballX & 0xFF;
@@ -137,7 +135,7 @@ void normalizeChannels() {
         serialPutchar(fd, goalYYLow);
         serialPutchar(fd, goalYYHigh);
         serialPutchar(fd, goalYVis);
-}*/
+}
 
 void doContours() {
         vector<vector<Point> > contoursBall;
@@ -243,8 +241,7 @@ void processFrames() {
 }
 
 void getFrames() {
-        //VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=1280,height=720 ! videoconvert ! appsink");
-        //VideoCapture capture(0);
+        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
         if(!capture.isOpened()) {
                 cout << "Could not open camera" << endl;
         }
@@ -256,12 +253,11 @@ void getFrames() {
 }
 
 int main(int argc, const char * argv[]) {
-        capture.open(0);
-        capture >> cameraFrameNoMask;
+        thread image_getter(getFrames);
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        //fd = serialOpen("/dev/ttyS1", 115200);
+        fd = serialOpen("/dev/ttyS1", 115200);
 
         // Create a window
         namedWindow("Original Image", 1);
@@ -279,7 +275,6 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
-        thread image_getter(getFrames);
         thread image_processor(processFrames);
 
         while (true) {
@@ -328,10 +323,10 @@ int main(int argc, const char * argv[]) {
                 {
                         break;
                 }
-                /*if (serialDataAvail(fd)) {
+                if (serialDataAvail(fd)) {
                         teensyByte = serialGetchar(fd);
                         fflush(stdout);
                 }
-                robotOnField = (teensyByte == 1);*/
+                robotOnField = (teensyByte == 1);
         }
 }
