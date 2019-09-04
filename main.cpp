@@ -84,7 +84,7 @@ void prepareFrame() {
         blue = channels[0];
         green = channels[1];
         red = channels[2];
-        merge(channels, 3, cameraFrame); ()
+        merge(channels, 3, cameraFrame);
         //blur
         blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
 }
