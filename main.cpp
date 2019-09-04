@@ -6,8 +6,8 @@
 #include <opencv2/xphoto/white_balance.hpp>
 #include <unistd.h>
 #include <thread>
-#include <wiringPi.h>
-#include <wiringSerial.h>
+//#include <wiringPi.h>
+//#include <wiringSerial.h>
 #include <cmath>
 
 using namespace cv;
@@ -15,25 +15,25 @@ using namespace std;
 
 #define CENTER_X 310
 #define CENTER_Y 255
-Mat gray(480, 640, CV_8UC1);
-Mat blue(480, 640, CV_8UC1);
-Mat blueNormalized(480, 640, CV_8UC1);
-Mat blueThreshold(480, 640, CV_8UC1);
-Mat green(480, 640, CV_8UC1);
-Mat greenNormalized(480, 640, CV_8UC1);
-Mat greenThreshold(480, 640, CV_8UC1);
-Mat red(480, 640, CV_8UC1);
-Mat redNormalized(480, 640, CV_8UC1);
-Mat redThreshold(480, 640, CV_8UC1);
-Mat yellow(480, 640, CV_8UC1);
-Mat yellowNormalized(480, 640, CV_8UC1);
-Mat yellowThreshold(480, 640, CV_8UC1);
+Mat gray(720, 1280, CV_8UC1);
+Mat blue(720, 1280, CV_8UC1);
+Mat blueNormalized(720, 1280, CV_8UC1);
+Mat blueThreshold(720, 1280, CV_8UC1);
+Mat green(720, 1280, CV_8UC1);
+Mat greenNormalized(720, 1280, CV_8UC1);
+Mat greenThreshold(720, 1280, CV_8UC1);
+Mat red(720, 1280, CV_8UC1);
+Mat redNormalized(720, 1280, CV_8UC1);
+Mat redThreshold(720, 1280, CV_8UC1);
+Mat yellow(720, 1280, CV_8UC1);
+Mat yellowNormalized(720, 1280, CV_8UC1);
+Mat yellowThreshold(720, 1280, CV_8UC1);
 
-Mat mask(480, 640, CV_8UC1);
-Mat cameraFrame(480, 640, CV_8UC3);
-Mat cameraFrameNoMask(480, 640, CV_8UC3);
-Mat cameraFrameNoGamma(480, 640, CV_8UC3);
-Mat cameraFrameNoBlur(480, 640, CV_8UC3);
+Mat mask(720, 1280, CV_8UC1);
+Mat cameraFrame(720, 1280, CV_8UC3);
+Mat cameraFrameNoMask(720, 1280, CV_8UC3);
+Mat cameraFrameNoGamma(720, 1280, CV_8UC3);
+Mat cameraFrameNoBlur(720, 1280, CV_8UC3);
 
 Mat channels[3];
 Mat seg_channels[3];
@@ -61,13 +61,16 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
+VideoCapture capture;
+
 void SimplestCB(Mat& in, Mat& out, float percent) {
-        Mat lookUpTable(1, 256, CV_8U);
-        uchar* p = lookUpTable.ptr();
-        for( int i = 0; i < 256; ++i)
-            p[i] = saturate_cast<uchar>(pow(i / 255.0, (percent/100)) * 255.0);
-        //out = in.clone();
-        LUT(in, lookUpTable, out);
+}
+void wb(Mat& in) {
+        double min, max;
+        minMaxLoc(in, &min, &max, NULL, NULL);
+        in = in - ((int) min);
+        double scale = (int)(1.0 / (max - min));
+        in = in * scale;
 }
 
 void prepareFrame() {
@@ -75,18 +78,20 @@ void prepareFrame() {
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-        cameraFrameNoMask.convertTo(cameraFrameNoMask, -1, 1, 50);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
-}
-
-void normalizeChannels() {
         split(cameraFrame, channels);
+        for (int i = 0; i < 4; i++) {
+          wb(channels[i]);
+        }
         blue = channels[0];
         green = channels[1];
         red = channels[2];
+        merge(channels, 3, cameraFrame);
+}
 
+void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
@@ -96,7 +101,7 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
 }
 
-void printTeensy() {
+/*void printTeensy() {
         char ballXLow = ballX & 0xFF;
         char ballXHigh = (ballX >> 8) & 0xFF;
         char ballYLow = ballX & 0xFF;
@@ -132,7 +137,7 @@ void printTeensy() {
         serialPutchar(fd, goalYYLow);
         serialPutchar(fd, goalYYHigh);
         serialPutchar(fd, goalYVis);
-}
+}*/
 
 void doContours() {
         vector<vector<Point> > contoursBall;
@@ -231,32 +236,32 @@ void processFrame() {
 void processFrames() {
         while(true) {
                 processFrame();
-                printTeensy();
-                //cout << "Image Processing Thread: " << processCounter << endl;
+                //printTeensy();
+                cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
 }
 
 void getFrames() {
-        VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+        //VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=1280,height=720 ! videoconvert ! appsink");
+        //VideoCapture capture(0);
         if(!capture.isOpened()) {
                 cout << "Could not open camera" << endl;
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                //cout << "Camera Thread: " << camCounter << endl;
+                cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
 
 int main(int argc, const char * argv[]) {
-
-        //Capture stream from webcam.
-        thread image_getter(getFrames);
+        capture.open(0);
+        capture >> cameraFrameNoMask;
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        fd = serialOpen("/dev/ttyS1", 115200);
+        //fd = serialOpen("/dev/ttyS1", 115200);
 
         // Create a window
         namedWindow("Original Image", 1);
@@ -274,6 +279,7 @@ int main(int argc, const char * argv[]) {
         minMaxLoc(blue, &minb, &maxb, NULL, NULL);
         minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
+        thread image_getter(getFrames);
         thread image_processor(processFrames);
 
         while (true) {
@@ -296,15 +302,15 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 3: {
-                        imshow("Original Image", redThreshold);
+                        imshow("Original Image", redNormalized);
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueThreshold);
+                        imshow("Original Image", blueNormalized);
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowThreshold);
+                        imshow("Original Image", yellowNormalized);
                         break;
                 }
                 case 6: {
@@ -315,32 +321,17 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                //cout << "Main Thread: " << mainCounter << endl;
+                cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
                 {
                         break;
                 }
-                if (serialDataAvail(fd)) {
+                /*if (serialDataAvail(fd)) {
                         teensyByte = serialGetchar(fd);
                         fflush(stdout);
                 }
-                robotOnField = (teensyByte == 1);
+                robotOnField = (teensyByte == 1);*/
         }
-        // return 0;
-        // int fd;
-        // if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0) {
-        //         fprintf(stderr, "Unable to open serial device: %s\n", strerror (errno));
-        //         return 1;
-        // }
-        // // Loop, getting and printing characters
-        // for (;;) {
-        //         if (serialDataAvail(fd)) {
-        //                 putchar(serialGetchar(fd));
-        //                 fflush(stdout);
-        //         }
-        // }
-        // serialPutchar(fd, count);
-        // return 0;
 }
