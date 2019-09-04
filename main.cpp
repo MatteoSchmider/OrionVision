@@ -90,7 +90,7 @@ void prepareFrame() {
 }
 
 void correctGammaWhiteLine(Mat& img) {
-        double inverse_gamma = 1.0 / 0.1;
+        double inverse_gamma = 1.0 / 0.3;
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
