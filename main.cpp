@@ -78,11 +78,11 @@ void prepareFrame() {
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
-        blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
+        blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
 }
 
 void normalizeChannels() {
-        split(cameraFrame, channels);
+        split(cameraFrameNoBlur, channels);
         wb(channels[0]);
         wb(channels[1]);
         wb(channels[2]);
@@ -235,7 +235,7 @@ void processFrames() {
         while(true) {
                 processFrame();
                 //printTeensy();
-                cout << "Image Processing Thread: " << processCounter << endl;
+                //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
 }
@@ -247,7 +247,7 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                cout << "Camera Thread: " << camCounter << endl;
+                //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
@@ -297,15 +297,15 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 3: {
-                        imshow("Original Image", redNormalized);
+                        imshow("Original Image", redThreshold);
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueNormalized);
+                        imshow("Original Image", blueThreshold);
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowNormalized);
+                        imshow("Original Image", yellowThreshold);
                         break;
                 }
                 case 6: {
@@ -316,7 +316,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                cout << "Main Thread: " << mainCounter << endl;
+                //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
