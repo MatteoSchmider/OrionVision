@@ -90,7 +90,7 @@ void prepareFrame() {
 }
 
 void correctGammaWhiteLine(Mat& img) {
-        double inverse_gamma = 1.0 / 0.3;
+        double inverse_gamma = 1.0 / (gammaSlider / 100);
         Mat lut_matrix(1, 256, CV_8UC1 );
         uchar * ptr = lut_matrix.ptr();
         for( int i = 0; i < 256; i++ )
@@ -104,8 +104,8 @@ void normalizeChannels() {
         subtract(blue, gray, blueNormalized);
         subtract(green, gray, greenNormalized);
         subtract(gray, blue, yellow);
-        correctGammaWhiteLine(gray);
-        subtract(yellow, gray, yellow);
+        correctGammaWhiteLine(blue);
+        subtract(yellow, blue, yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
         subtract(yellow, redNormalized, yellowNormalized);
