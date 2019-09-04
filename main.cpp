@@ -91,10 +91,11 @@ void prepareFrame() {
 
 void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-        subtract(gray, blue, yellow);
+        //subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
         subtract(red, gray, red);
-        subtract(yellow, redNormalized, yellowNormalized);
+        absdiff(green, red, yellow);
+        //subtract(yellow, redNormalized, yellowNormalized);
         subtract(red, yellowNormalized, redNormalized);
         subtract(green, gray, greenNormalized);
 }
