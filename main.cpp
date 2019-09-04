@@ -90,13 +90,12 @@ void prepareFrame() {
 }
 
 void correctGammaWhiteLine(Mat& img) {
-        Mat lookUpTable(1, 256, CV_8U);
-        uchar* p = lookUpTable.ptr();
-        for(int i = 0; i < 256; ++i) {
-                p[i] = saturate_cast<uchar>(pow(i / 255.0, 50) * 255.0);
-        }
-        Mat res = img.clone();
-        LUT(img, lookUpTable, res);
+        double inverse_gamma = 1.0 / 0.5;
+        Mat lut_matrix(1, 256, CV_8UC1 );
+        uchar * ptr = lut_matrix.ptr();
+        for( int i = 0; i < 256; i++ )
+                ptr[i] = (int)(pow((double) i / 255.0, inverse_gamma) * 255.0);
+        LUT(img, lut_matrix, img);
 }
 
 void normalizeChannels() {
