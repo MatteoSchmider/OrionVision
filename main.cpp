@@ -79,17 +79,13 @@ void prepareFrame() {
         cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrame, Size(1, 1));
-        split(cameraFrame, channels);
-        for (int i = 0; i < 4; i++) {
-                wb(channels[i]);
-        }
-        blue = channels[0];
-        green = channels[1];
-        red = channels[2];
-        merge(channels, 3, cameraFrame);
 }
 
 void normalizeChannels() {
+        split(cameraFrame, channels);
+        blue = channels[0];
+        green = channels[1];
+        red = channels[2];
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
