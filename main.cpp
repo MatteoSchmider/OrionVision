@@ -76,7 +76,8 @@ void prepareFrame() {
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-        split(cameraFrameNoMask, channels);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
+        split(cameraFrameNoBlur, channels);
         wb(channels[0]);
         wb(channels[1]);
         wb(channels[2]);
@@ -84,7 +85,6 @@ void prepareFrame() {
         green = channels[1];
         red = channels[2];
         merge(channels, 3, cameraFrame);
-        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
         //blur
         blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
 }
