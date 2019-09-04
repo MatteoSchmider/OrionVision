@@ -84,9 +84,19 @@ void prepareFrame() {
         blue = channels[0];
         green = channels[1];
         red = channels[2];
-        merge(channels, 3, cameraFrame);
+        merge(channels, 3, cameraFrame); ()
         //blur
         blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
+}
+
+Mat correctGammaWhiteLine(Mat& img) {
+        Mat lookUpTable(1, 256, CV_8U);
+        uchar* p = lookUpTable.ptr();
+        for( int i = 0; i < 256; ++i)
+                p[i] = saturate_cast<uchar>(pow(i / 255.0, 5) * 255.0);
+        Mat res = img.clone();
+        LUT(res, lookUpTable, res);
+        return res;
 }
 
 void normalizeChannels() {
@@ -95,6 +105,7 @@ void normalizeChannels() {
         subtract(blue, gray, blueNormalized);
         subtract(green, blue, yellow);
         subtract((yellow * 6), blue, yellow);
+        subtract(yellow, correctGammaWhiteLine(gray), yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
         subtract(yellow, redNormalized, yellowNormalized);
