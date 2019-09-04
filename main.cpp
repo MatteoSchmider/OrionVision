@@ -93,12 +93,11 @@ void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         //subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
-        absdiff(green, red, yellow);
+        absdiff(green, blue, yellow);
         subtract(red, green, redNormalized);
         //subtract(yellow, redNormalized, yellowNormalized);
         //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
-        //addWeighted(gray, 1.0, yellow, -2.0, 1.0, yellowNormalized);y
-        subtract(green, blue, yellowNormalized)
+        //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
         //subtract(yellow, gray, yellowNormalized);
         //subtract(red, yellowNormalized, redNormalized);
         subtract(green, gray, greenNormalized);
