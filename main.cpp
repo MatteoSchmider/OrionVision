@@ -76,13 +76,7 @@ void prepareFrame() {
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-        cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
-        //blur
-        blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
-}
-
-void normalizeChannels() {
-        split(cameraFrameNoBlur, channels);
+        split(cameraFrameNoMask, channels);
         wb(channels[0]);
         wb(channels[1]);
         wb(channels[2]);
@@ -90,6 +84,12 @@ void normalizeChannels() {
         green = channels[1];
         red = channels[2];
         merge(channels, 3, cameraFrame);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
+        //blur
+        blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
+}
+
+void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
