@@ -106,7 +106,7 @@ void normalizeChannels() {
         subtract(red, blue, yellow);
         subtract(red, green, redNormalized);
         absdiff(red, green, yellow);
-        subtract(gray, yellow, yellowNormalized)
+        subtract(gray, yellow, yellowNormalized);
         //subtract(Scalar(255), yellow, yellowNormalized);
         //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
         //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
