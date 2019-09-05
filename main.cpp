@@ -98,7 +98,7 @@ void prepareFrame() {
 void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
         //blue goal
-        subtract(blue, gray, blueNormalized);
+        subtract(blue, red, blueNormalized);
         //field
         subtract(green, gray, greenNormalized);
         //ball
@@ -311,7 +311,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blue);
+                        imshow("Original Image", blueNormalized);
                         break;
                 }
                 case 5: {
