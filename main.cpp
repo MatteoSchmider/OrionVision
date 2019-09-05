@@ -77,10 +77,14 @@ void prepareFrame() {
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
-        Mat non_sat = cvtColor(cameraFrameNoBlur, COLOR_BGR2HSV);
+
+        Mat non_sat;
+        cvtColor(cameraFrameNoBlur, non_sat, COLOR_BGR2HSV);
         split(non_sat, channels);
         channels[1] = Scalar(255);
-        merge(channels, 3, cameraFrameNoBlur);
+        merge(channels, 3, non_sat);
+        cvtColor(non_sat, cameraFrameNoBlur, COLOR_HSV2BGR);
+
         split(cameraFrameNoBlur, channels);
         wb(channels[0]);
         wb(channels[1]);
