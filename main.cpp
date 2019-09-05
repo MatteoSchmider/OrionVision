@@ -104,6 +104,7 @@ void normalizeChannels() {
         subtract(blue, gray, blueNormalized);
         subtract(green, gray, greenNormalized);
         subtract(red, blue, yellow);
+        subtract(red, green, redNormalized);
         Mat temp;
         threshold(blue, temp, 60, 255, THRESH_BINARY);
         subtract(yellow, temp, yellow);
