@@ -77,6 +77,10 @@ void prepareFrame() {
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
+        Mat non_sat = cvtColor(cameraFrameNoBlur, COLOR_BGR2HSV);
+        split(non_sat, channels);
+        channels[1] = Scalar(255);
+        merge(channels, 3, cameraFrameNoBlur);
         split(cameraFrameNoBlur, channels);
         wb(channels[0]);
         wb(channels[1]);
@@ -85,8 +89,6 @@ void prepareFrame() {
         green = channels[1];
         red = channels[2];
         merge(channels, 3, cameraFrame);
-        //blur
-        blur(cameraFrameNoBlur, cameraFrameNoBlur, Size(1, 1));
 }
 
 void correctGammaWhiteLine(Mat& img) {
@@ -100,19 +102,16 @@ void correctGammaWhiteLine(Mat& img) {
 
 void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
-        //subtract(gray, blue, yellow);
+        //blue goal
         subtract(blue, gray, blueNormalized);
+        //field
         subtract(green, gray, greenNormalized);
-        subtract(red, blue, yellow);
+        //ball
         subtract(red, green, redNormalized);
+        //yellow goal
         absdiff(red, green, yellow);
         subtract(red, yellow, yellow);
         subtract(yellow, blue, yellowNormalized);
-        //subtract(Scalar(255), yellow, yellowNormalized);
-        //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
-        //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
-        //subtract(yellow, gray, yellowNormalized);
-        //subtract(red, yellowNormalized, redNormalized);
 }
 
 void printTeensy() {
