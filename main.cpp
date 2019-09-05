@@ -108,7 +108,7 @@ void normalizeChannels() {
         absdiff(red, green, yellow);
         subtract(red, yellow, yellow);
         subtract(yellow, blue, yellow);
-        subtract(yellow, redNormalized, yellowNormalized);
+        //subtract(yellow, redNormalized, yellowNormalized);
 }
 
 void printTeensy() {
