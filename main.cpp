@@ -1,3 +1,4 @@
+#define PI 3.141592
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui.hpp"
@@ -174,7 +175,7 @@ void doContours() {
                 //cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = (int) sqrt((ballX * ballX) + (ballY * ballY));
                 int ballradius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
-                int angle = (int) atan2(double y, double x) * 180 / PI;
+                int angle = (int) atan2(ballY, ballX) * 180 / PI;
                 cout << "Ball Radius: " << ballradius << endl;
                 cout << "Ball Angle: " << angle << endl;
 
