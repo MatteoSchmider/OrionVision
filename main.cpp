@@ -244,8 +244,8 @@ void processFrame() {
 void processFrames() {
         while(true) {
                 processFrame();
-                //printTeensy();
-                cout << "Image Processing Thread: " << processCounter << endl;
+                printTeensy();
+                //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
 }
@@ -257,7 +257,7 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                cout << "Camera Thread: " << camCounter << endl;
+                //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
@@ -326,7 +326,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                cout << "Main Thread: " << mainCounter << endl;
+                //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
