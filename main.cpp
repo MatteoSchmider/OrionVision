@@ -105,10 +105,8 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
         subtract(red, blue, yellow);
         subtract(red, green, redNormalized);
-        Mat temp;
-        threshold(blue, temp, 60, 255, THRESH_BINARY);
-        subtract(yellow, temp, yellow);
-        subtract(yellow, redNormalized, yellowNormalized);
+        absdiff(red, green, yellow);
+        invert(yellow, yellowNormalized);
         //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
         //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
         //subtract(yellow, gray, yellowNormalized);
