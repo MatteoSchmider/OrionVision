@@ -81,7 +81,7 @@ void prepareFrame() {
         Mat non_sat;
         cvtColor(cameraFrameNoBlur, non_sat, COLOR_BGR2HSV);
         split(non_sat, channels);
-        channels[1] = Scalar(255);
+        multiply(channels[1], Scalr(2), channels[1]);
         merge(channels, 3, non_sat);
         cvtColor(non_sat, cameraFrameNoBlur, COLOR_HSV2BGR);
 
