@@ -105,7 +105,7 @@ void normalizeChannels() {
         subtract(green, gray, greenNormalized);
         subtract(red, blue, yellow);
         correctGammaWhiteLine(blue);
-        subtract(yellow, (blue * (threshold_yellow_slider / 10)), yellow);
+        //subtract(yellow, (blue * (threshold_yellow_slider / 10)), yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
         subtract(yellow, redNormalized * (threshold_yellow_slider / 10), yellowNormalized);
