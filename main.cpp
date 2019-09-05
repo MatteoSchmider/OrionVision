@@ -109,7 +109,7 @@ void normalizeChannels() {
         subtract(red, green, redNormalized);
         Mat tempRed = redNormalized.clone();
         correctGammaWhiteLine(tempRed);
-        subtract(yellow, gray, yellowNormalized);
+        subtract(yellow * 2, gray, yellowNormalized);
 
         // yellow = (1 - b - k) / (1 - k) * 255.;
 
