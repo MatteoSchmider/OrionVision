@@ -39,11 +39,11 @@ Mat oneMat = Mat::ones(480, 640, CV_8UC1);
 Mat channels[3];
 Mat seg_channels[3];
 
-int gammaSlider = 50;
+int gammaSlider = 100;
 int imageShownSlider = 0;
-int threshold_red_slider = 52;
+int threshold_red_slider = 13;
 int threshold_blue_slider = 7;
-int threshold_yellow_slider = 35;
+int threshold_yellow_slider = 10;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
@@ -311,7 +311,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueNormalized * 10);
+                        imshow("Original Image", blue);
                         break;
                 }
                 case 5: {
