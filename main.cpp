@@ -81,7 +81,7 @@ void prepareFrame() {
         Mat non_sat;
         cvtColor(cameraFrameNoBlur, non_sat, COLOR_BGR2HSV);
         split(non_sat, channels);
-        multiply(channels[1], Scalar(2), channels[1]);
+        multiply(channels[1], Scalar(gammaSlider / 100.0), channels[1]);
         merge(channels, 3, non_sat);
         cvtColor(non_sat, cameraFrameNoBlur, COLOR_HSV2BGR);
 
@@ -93,15 +93,6 @@ void prepareFrame() {
         green = channels[1];
         red = channels[2];
         merge(channels, 3, cameraFrame);
-}
-
-void correctGammaWhiteLine(Mat& img) {
-        double inverse_gamma = 1.0 / (gammaSlider / 100.0);
-        Mat lut_matrix(1, 256, CV_8UC1);
-        uchar * ptr = lut_matrix.ptr();
-        for( int i = 0; i < 256; i++ )
-                ptr[i] = (int)(pow((double) i / 255.0, inverse_gamma) * 255.0);
-        LUT(img, lut_matrix, img);
 }
 
 void normalizeChannels() {
