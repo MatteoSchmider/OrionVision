@@ -103,14 +103,14 @@ void normalizeChannels() {
         //subtract(gray, blue, yellow);
         subtract(blue, gray, blueNormalized);
         subtract(green, gray, greenNormalized);
-        subtract(red, blue, yellow);
+        subtract(gray, blue, yellow);
         //subtract(yellow, (blue * (threshold_yellow_slider / 10)), yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
         Mat tempRed = redNormalized.clone();
         correctGammaWhiteLine(tempRed);
-        subtract(yellow, tempRed * (threshold_yellow_slider / 10), yellow);
-        subtract(yellow, blue, yellowNormalized);
+        subtract(yellow, gray, yellowNormalized);
+        // yellow = (1 - b - k) / (1 - k) * 255.;
         //subtract(yellow, redNormalized, yellowNormalized);
         //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
         //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
