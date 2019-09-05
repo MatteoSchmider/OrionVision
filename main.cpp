@@ -108,7 +108,7 @@ void normalizeChannels() {
         subtract(yellow, blue, yellow);
         //addWeighted(green, 6.0, blue, -5.0, 1.0, yellow);
         subtract(red, green, redNormalized);
-        subtract(yellow, redNormalized, yellowNormalized);
+        subtract(yellow, redNormalized * 10, yellowNormalized);
         //subtract(yellow, redNormalized, yellowNormalized);
         //addWeighted(yellow, 1.0, redNormalized, -2.0, 1.0, yellow);
         //addWeighted(gray, 1.0, yellow, -5.0, 1.0, yellowNormalized);
@@ -314,15 +314,15 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 3: {
-                        imshow("Original Image", redThreshold);
+                        imshow("Original Image", redNormalized);
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueThreshold);
+                        imshow("Original Image", blueNormalized * 10);
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowThreshold);
+                        imshow("Original Image", yellowNormalized * 4);
                         break;
                 }
                 case 6: {
