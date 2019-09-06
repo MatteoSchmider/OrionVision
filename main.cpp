@@ -111,7 +111,7 @@ void normalizeChannels() {
         //yellow goal
         absdiff(red, green, yellow);
         subtract(red, yellow, yellow);
-        subtract(yellow * 2.0, blue * 3.0, yellow);
+        subtract(yellow, blue, yellow);
         subtract(yellow, redNormalized, yellowNormalized);
 }
 
