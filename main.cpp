@@ -95,7 +95,7 @@ void prepareFrame() {
         blue = channels[0];
         green = channels[1];
         red = channels[2];
-        merge(channels, 3, cameraFrameNoBlur);
+        merge(channels, 3, cameraFrame);
 }
 
 void normalizeChannels() {
