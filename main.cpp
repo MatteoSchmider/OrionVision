@@ -123,7 +123,8 @@ void normalizeChannels() {
         erode(yellow, yellow, Mat());
         dilate(yellow, yellow, Mat());
         dilate(yellow, yellow, Mat());
-        dilate(yellow, yellowNormalized, Mat());
+        dilate(yellow, yellow, Mat());
+        subtract(yellow, redNormalized, yellowNormalized);
 }
 
 void printTeensy() {
