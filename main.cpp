@@ -237,6 +237,8 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
+        erode(blueNormalized, blueNormalized, Mat());
+        erode(yellowNormalized, yellowNormalized, Mat());
         double redTresh = maxr * (double)(threshold_red_slider / 100.0);
         double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
         double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
