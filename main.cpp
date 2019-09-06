@@ -117,7 +117,7 @@ void normalizeChannels() {
         subtract(red, blue, yellow);
         subtract(green, blue, temp);
         multiply(yellow, temp, yellow);
-        threshold(yellow, yellow, 254, 255, THRESH_BINARY);
+        //threshold(yellow, yellow, 254, 255, THRESH_BINARY);
         erode(yellow, yellow, Mat());
         erode(yellow, yellow, Mat());
         erode(yellow, yellow, Mat());
