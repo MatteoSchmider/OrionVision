@@ -111,7 +111,7 @@ void normalizeChannels() {
         //yellow goal
         absdiff(red, green, yellow);
         subtract(red, yellow, yellow);
-        subtract(yellow, blue, yellow);
+        subtract(yellow * 2, blue * 3, yellow);
         subtract(yellow, redNormalized, yellowNormalized);
 }
 
@@ -239,6 +239,7 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
+        erode(blueNormalized, blueNormalized, Mat());
         erode(blueNormalized, blueEroded, Mat());
         //dilate(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowNormalized, Mat());
