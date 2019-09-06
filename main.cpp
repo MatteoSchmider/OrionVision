@@ -240,6 +240,7 @@ void processFrame() {
         prepareFrame();
         normalizeChannels();
         erode(blueNormalized, blueEroded, Mat());
+        dilate(yellowNormalized, yellowNormalized, Mat());
         erode(yellowNormalized, yellowEroded, Mat());
         double redTresh = maxr * (double)(threshold_red_slider / 100.0);
         double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
