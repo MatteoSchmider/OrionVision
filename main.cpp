@@ -77,6 +77,8 @@ void prepareFrame() {
            var->setSaturationThreshold(gammaSlider);
            var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
+
+        blur(cameraFrameNoMask, cameraFrameNoMask, Size(3,3));
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
 
         Mat non_sat;
@@ -93,7 +95,7 @@ void prepareFrame() {
         blue = channels[0];
         green = channels[1];
         red = channels[2];
-        merge(channels, 3, cameraFrame);
+        merge(channels, 3, cameraFrameNoBlur);
 }
 
 void normalizeChannels() {
