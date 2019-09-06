@@ -19,6 +19,7 @@ using namespace std;
 Mat gray(480, 640, CV_8UC1);
 Mat blue(480, 640, CV_8UC1);
 Mat blueNormalized(480, 640, CV_8UC1);
+Mat blueEroded(480, 640, CV_8UC1);
 Mat blueThreshold(480, 640, CV_8UC1);
 Mat green(480, 640, CV_8UC1);
 Mat greenNormalized(480, 640, CV_8UC1);
@@ -28,6 +29,7 @@ Mat redNormalized(480, 640, CV_8UC1);
 Mat redThreshold(480, 640, CV_8UC1);
 Mat yellow(480, 640, CV_8UC1);
 Mat yellowNormalized(480, 640, CV_8UC1);
+Mat yellowEroded(480, 640, CV_8UC1);
 Mat yellowThreshold(480, 640, CV_8UC1);
 
 Mat mask(480, 640, CV_8UC1);
@@ -237,14 +239,14 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        erode(blueNormalized, blueNormalized, Mat());
-        erode(yellowNormalized, yellowNormalized, Mat());
+        erode(blueNormalized, blueEroded, Mat());
+        erode(yellowNormalized, yellowEroded, Mat());
         double redTresh = maxr * (double)(threshold_red_slider / 100.0);
         double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
         double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
         threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
-        threshold(blueNormalized, blueThreshold, blueTresh, 255, THRESH_BINARY);
-        threshold(yellowNormalized, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
+        threshold(blueEroded, blueThreshold, blueTresh, 255, THRESH_BINARY);
+        threshold(yellowEroded, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
         doContours();
 }
 
@@ -318,11 +320,11 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueNormalized * 10);
+                        imshow("Original Image", blueEroded * 10);
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowNormalized * 4);
+                        imshow("Original Image", yellowEroded * 4);
                         break;
                 }
                 case 6: {
