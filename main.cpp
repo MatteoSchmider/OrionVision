@@ -294,9 +294,9 @@ int main(int argc, const char * argv[]) {
 
         normalizeChannels();
 
-        minMaxLoc(red, &minr, &maxr, NULL, NULL);
-        minMaxLoc(blue, &minb, &maxb, NULL, NULL);
-        minMaxLoc(yellow, &miny, &maxy, NULL, NULL);
+        minMaxLoc(redNormalized, &minr, &maxr, NULL, NULL);
+        minMaxLoc(blueNormalized, &minb, &maxb, NULL, NULL);
+        minMaxLoc(yellowNormalized, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
 
