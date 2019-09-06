@@ -109,10 +109,21 @@ void normalizeChannels() {
         //ball
         subtract(red, green, redNormalized);
         //yellow goal
-        absdiff(red, green, yellow);
+        /*absdiff(red, green, yellow);
         subtract(red, yellow, yellow);
         subtract(yellow, blue, yellow);
-        subtract(yellow, redNormalized, yellowNormalized);
+        subtract(yellow, redNormalized, yellowNormalized);*/
+        Mat temp;
+        subtract(red, blue, yellow);
+        subtract(green, blue, temp);
+        multiply(yellow, temp, yellow);
+        threshold(yellow, yellow, 254, 255, THRESH_BINARY);
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellowNormalized, Mat());
 }
 
 void printTeensy() {
