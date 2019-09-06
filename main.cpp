@@ -243,13 +243,13 @@ void processFrame() {
         //dilate(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowNormalized, Mat());
-        erode(yellowNormalized, yellowEroded, Mat());
+        //erode(yellowNormalized, yellowEroded, Mat());
         double redTresh = maxr * (double)(threshold_red_slider / 100.0);
         double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
         double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
         threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
         threshold(blueEroded, blueThreshold, blueTresh, 255, THRESH_BINARY);
-        threshold(yellowEroded, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
+        threshold(yellowNormalized, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
         doContours();
 }
 
@@ -327,7 +327,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowEroded * 4);
+                        imshow("Original Image", yellowNormalized * 4);
                         break;
                 }
                 case 6: {
