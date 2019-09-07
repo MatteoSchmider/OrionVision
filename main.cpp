@@ -124,7 +124,7 @@ void normalizeChannels() {
         //yellow goal
         Mat lab;
         cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
-        inRange(lab, Scalar(0, 0, 0), Scalar(threshold_red_slider, threshold_blue_slider, threshold_yellow_slider), yellowNormalized);
+        inRange(lab, Scalar(0, 0, 0), Scalar(255, 255, 255), yellowNormalized);
         /*absdiff(red, green, yellow);
            subtract(red, yellow, yellow);
            subtract(yellow, blue, yellow);
