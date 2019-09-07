@@ -125,8 +125,8 @@ void normalizeChannels() {
         Mat lab;
         cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
         Mat lowerL = Mat(480, 640, CV_8UC1, Scalar(50));
-        Mat lowerA = Mat(480, 640, CV_8UC1, Scalar(125));
-        Mat lowerB = Mat(480, 640, CV_8UC1, Scalar(135));
+        Mat lowerA = Mat(480, 640, CV_8UC1, Scalar(126));
+        Mat lowerB = Mat(480, 640, CV_8UC1, Scalar(139));
         split(lab, channels);
         absdiff(lowerL, channels[0], lowerL);
         absdiff(lowerA, channels[1], lowerA);
