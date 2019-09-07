@@ -131,8 +131,10 @@ void normalizeChannels() {
         subtract(channels[0], lowerL, lowerL);
         subtract(channels[1], lowerA, lowerA);
         subtract(channels[2], lowerB, lowerB);
-        multiply(lowerL, lowerA, yellow);
-        multiply(yellow, lowerB, yellowNormalized);
+        addWeighted(lowerL, 0.5, lowerA, 0.5, 0, yellow);
+        addWeighted(yellow, 0.5, lowerB, 0.5, 0, yellowNormalized);
+        //multiply(lowerL, lowerA, yellow);
+        //multiply(yellow, lowerB, yellowNormalized);
         /*absdiff(red, green, yellow);
            subtract(red, yellow, yellow);
            subtract(yellow, blue, yellow);
