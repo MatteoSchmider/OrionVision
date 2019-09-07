@@ -311,9 +311,8 @@ void tangents() {
         double d = z - sqr(r);
         if (d < -EPS) return;
         d = sqrt(abs(d));
-        line l;
-        a = ((ballX * r) + (ballY * d)) / z;
-        b = ((ballY * r) - (ballX * d)) / z;
+        double a = ((ballX * r) + (ballY * d)) / z;
+        double b = ((ballY * r) - (ballX * d)) / z;
         ballAngle = atan2(-a, b) * 180 / PI;
 }
 
