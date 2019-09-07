@@ -126,7 +126,7 @@ void normalizeChannels() {
         subtract(red, yellow, yellow);
         subtract(yellow, blue, yellow);
         subtract(yellow, redNormalized, yellow);
-        subtract(yellow * 2, blue, yellowNormalized);
+        subtract(yellow * 4, blue, yellowNormalized);
         /*subtract(red, blue, yellow);
            subtract(green, blue, temp);
            multiply(yellow, temp, yellow);
