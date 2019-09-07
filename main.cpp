@@ -122,23 +122,10 @@ void normalizeChannels() {
         //ball
         subtract(red, green, redNormalized);
         //yellow goal
-        Mat lab;
-        cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
-        Mat lowerL = Mat(480, 640, CV_8UC1, Scalar(50));
-        Mat lowerA = Mat(480, 640, CV_8UC1, Scalar(126));
-        Mat lowerB = Mat(480, 640, CV_8UC1, Scalar(139));
-        split(lab, channels);
-        subtract(lowerL, channels[0], lowerL);
-        subtract(lowerA, channels[1], lowerA);
-        subtract(lowerB, channels[2], lowerB);
-        addWeighted(lowerL, 0.1, lowerA, 0.5, 0, yellow);
-        addWeighted(yellow, 0.5, lowerB, 0.5, 0, yellowNormalized);
-        //multiply(lowerL, lowerA, yellow);
-        //multiply(yellow, lowerB, yellowNormalized);
-        /*absdiff(red, green, yellow);
-           subtract(red, yellow, yellow);
-           subtract(yellow, blue, yellow);
-           subtract(yellow, redNormalized, yellowNormalized);*/
+        absdiff(red, green, yellow);
+        subtract(red, yellow, yellow);
+        subtract(yellow, blue, yellow);
+        subtract(yellow, redNormalized, yellowNormalized);
         /*subtract(red, blue, yellow);
            subtract(green, blue, temp);
            multiply(yellow, temp, yellow);
