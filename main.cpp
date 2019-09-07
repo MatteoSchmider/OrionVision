@@ -127,7 +127,7 @@ void normalizeChannels() {
         int upperL = threshold_red_slider;
         int upperA = threshold_blue_slider;
         int upperB = threshold_yellow_slider;
-        inRange(lab, Scalar(50, 120, 130), Scalar(upperL, upperA, upperB), yellowNormalized);
+        inRange(lab, Scalar(50, 130, 140), Scalar(upperL, upperA, upperB), yellowNormalized);
         /*absdiff(red, green, yellow);
            subtract(red, yellow, yellow);
            subtract(yellow, blue, yellow);
