@@ -28,7 +28,7 @@ Mat red(480, 640, CV_8UC1);
 Mat redNormalized(480, 640, CV_8UC1);
 Mat redThreshold(480, 640, CV_8UC1);
 Mat yellow(480, 640, CV_8UC1);
-Mat yellowNormalized();//480, 640, CV_8UC1);
+Mat yellowNormalized;//480, 640, CV_8UC1);
 Mat yellowEroded(480, 640, CV_8UC1);
 Mat yellowThreshold(480, 640, CV_8UC1);
 
