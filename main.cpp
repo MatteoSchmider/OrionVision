@@ -76,6 +76,22 @@ void wb(Mat& in) {
         addWeighted(in, 1.0, oneMat, -min, scale, in);
 }
 
+const double EPS = 1E-9;
+
+double sqr(double a) {
+        return a * a;
+}
+void tangents() {
+        double r = 3.0 - 10.5;
+        double z = sqr(ballX) + sqr(ballY);
+        double d = z - sqr(r);
+        if (d < -EPS) return;
+        d = sqrt(abs(d));
+        double a = ((ballX * r) + (ballY * d)) / z;
+        double b = ((ballY * r) - (ballX * d)) / z;
+        ballAngle = atan2(-a, b) * 180 / PI;
+}
+
 void prepareFrame() {
         /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
            var->setSaturationThreshold(gammaSlider);
@@ -203,6 +219,7 @@ void doContours() {
                 ballVisible = true;
                 //cout << "Ball X: " << ballX << endl;
                 //cout << "Ball Y: " << ballY << endl;
+                double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
                 //ballAngle = atan2(ballY, ballX) * 180 / PI;
                 tangents();
@@ -298,22 +315,6 @@ void getFrames() {
                 cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
-}
-
-const double EPS = 1E-9;
-
-double sqr(double a) {
-        return a * a;
-}
-void tangents() {
-        double r = 3.0 - 10.5;
-        double z = sqr(ballX) + sqr(ballY);
-        double d = z - sqr(r);
-        if (d < -EPS) return;
-        d = sqrt(abs(d));
-        double a = ((ballX * r) + (ballY * d)) / z;
-        double b = ((ballY * r) - (ballX * d)) / z;
-        ballAngle = atan2(-a, b) * 180 / PI;
 }
 
 int main(int argc, const char * argv[]) {
