@@ -53,7 +53,7 @@ long mainCounter = 0, processCounter = 0, camCounter = 0;
 
 
 int16_t ballXcam = 0, ballYcam = 0;
-double ballX = 0, ballY = 0;
+double ballX = 0, ballY = 0, ballRadius = 0, ballAngle = 0;
 bool ballVisible = false;
 
 int16_t goalBX = 0, goalBY = 0;
@@ -122,22 +122,22 @@ void normalizeChannels() {
         //ball
         subtract(red, green, redNormalized);
         //yellow goal
-        absdiff(red, green, yellow);
-        subtract(red, yellow, yellow);
-        subtract(yellow, blue, yellow);
-        subtract(yellow, redNormalized, yellow);
-        subtract(yellow * 10, blue, yellowNormalized);
-        /*subtract(red, blue, yellow);
-           subtract(green, blue, temp);
-           multiply(yellow, temp, yellow);
-           threshold(yellow, yellow, 254, 255, THRESH_BINARY);
-           erode(yellow, yellow, Mat());
-           erode(yellow, yellow, Mat());
-           erode(yellow, yellow, Mat());
-           dilate(yellow, yellow, Mat());
-           dilate(yellow, yellow, Mat());
-           dilate(yellow, yellow, Mat());
-           addWeighted(yellow, 0.5, redNormalized, -5, 0, yellowNormalized);*/
+        /*absdiff(red, green, yellow);
+           subtract(red, yellow, yellow);
+           subtract(yellow, blue, yellow);
+           subtract(yellow, redNormalized, yellow);
+           subtract(yellow * 10, blue, yellowNormalized);*/
+        subtract(red, blue, yellow);
+        subtract(green, blue, temp);
+        multiply(yellow, temp, yellow);
+        threshold(yellow, yellow, 254, 255, THRESH_BINARY);
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        addWeighted(yellow, 0.5, redNormalized, -5, 0, yellowNormalized);
 }
 
 void printTeensy() {
@@ -203,14 +203,13 @@ void doContours() {
                 ballVisible = true;
                 //cout << "Ball X: " << ballX << endl;
                 //cout << "Ball Y: " << ballY << endl;
-                double ballradiusDouble = (int) sqrt((ballX * ballX) + (ballY * ballY));
-                int ballradius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
-                int angle = (int) atan2(ballY, ballX) * 180 / PI;
-                ballX;
-                ballY;
-                cout << "Ball Radius: " << ballradius << endl;
-                cout << "Ball Angle: " << (atan2(ballY, ballX) * 180 / PI) << endl;
-
+                ballRadius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
+                //ballAngle = atan2(ballY, ballX) * 180 / PI;
+                tangents();
+                ballX = ballRadius * cos(ballAngle);
+                ballY = ballRadius * sin(ballAngle);
+                cout << "Ball Radius: " << ballRadius << endl;
+                cout << "Ball Angle: " << ballAngle << endl;
         }
         else {ballVisible = false;}
 
@@ -299,6 +298,23 @@ void getFrames() {
                 cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
+}
+
+const double EPS = 1E-9;
+
+double sqr(double a) {
+        return a * a;
+}
+void tangents() {
+        double r = 3.0 - 10.5;
+        double z = sqr(ballX) + sqr(ballY);
+        double d = z - sqr(r);
+        if (d < -EPS) return;
+        d = sqrt(abs(d));
+        line l;
+        a = ((ballX * r) + (ballY * d)) / z;
+        b = ((ballY * r) - (ballX * d)) / z;
+        ballAngle = atan2(-a, b) * 180 / PI;
 }
 
 int main(int argc, const char * argv[]) {
