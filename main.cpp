@@ -28,7 +28,7 @@ Mat red(480, 640, CV_8UC1);
 Mat redNormalized(480, 640, CV_8UC1);
 Mat redThreshold(480, 640, CV_8UC1);
 Mat yellow(480, 640, CV_8UC1);
-Mat yellowNormalized(480, 640, CV_8UC1);
+Mat yellowNormalized();//480, 640, CV_8UC1);
 Mat yellowEroded(480, 640, CV_8UC1);
 Mat yellowThreshold(480, 640, CV_8UC1);
 
@@ -44,14 +44,16 @@ Mat seg_channels[3];
 
 int gammaSlider = 100;
 int imageShownSlider = 0;
-int threshold_red_slider = 13;
-int threshold_blue_slider = 7;
-int threshold_yellow_slider = 10;
+int threshold_red_slider = 50;
+int threshold_blue_slider = 50;
+int threshold_yellow_slider = 50;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
 
-int16_t ballX = 0, ballY = 0;
+
+int16_t ballXcam = 0, ballYcam = 0;
+double ballX = 0, ballY = 0;
 bool ballVisible = false;
 
 int16_t goalBX = 0, goalBY = 0;
@@ -102,36 +104,49 @@ void prepareFrame() {
 
 void normalizeChannels() {
         cvtColor(cameraFrame, gray, COLOR_BGR2GRAY);
+        Mat temp;
+        Mat hsv;
         //blue goal
-        subtract(blue, red, blueNormalized);
+        //subtract(blue, red, blueNormalized);
+        cvtColor(cameraFrame, hsv, COLOR_BGR2HSV);
+        inRange(hsv, Scalar(70, 0, 0), Scalar(255, 255, 30), hsv);
+        hsv = Mat(Scalar(255)) - hsv;
+        subtract(blue, green, blueNormalized);
+        subtract(blue, red, temp);
+        multiply(blueNormalized, temp, blueNormalized);
+        subtract(blueNormalized, hsv, blueNormalized);
+        erode(blueNormalized, blueNormalized, Mat());
+        dilate(blueNormalized, blueNormalized, Mat());
         //field
         subtract(green, gray, greenNormalized);
         //ball
         subtract(red, green, redNormalized);
         //yellow goal
+        Mat lab;
+        cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
+        inRange(lab, Scalar(0, 0, 0), Scalar(threshold_red_slider, threshold_blue_slider, threshold_yellow_slider), yellowNormalized);
         /*absdiff(red, green, yellow);
-        subtract(red, yellow, yellow);
-        subtract(yellow, blue, yellow);
-        subtract(yellow, redNormalized, yellowNormalized);*/
-        Mat temp;
-        subtract(red, blue, yellow);
-        subtract(green, blue, temp);
-        multiply(yellow, temp, yellow);
+           subtract(red, yellow, yellow);
+           subtract(yellow, blue, yellow);
+           subtract(yellow, redNormalized, yellowNormalized);*/
+        //subtract(red, blue, yellow);
+        //subtract(green, blue, temp);
+        //multiply(yellow, temp, yellow);
         //threshold(yellow, yellow, 254, 255, THRESH_BINARY);
-        erode(yellow, yellow, Mat());
-        erode(yellow, yellow, Mat());
-        erode(yellow, yellow, Mat());
-        dilate(yellow, yellow, Mat());
-        dilate(yellow, yellow, Mat());
-        dilate(yellow, yellow, Mat());
-        subtract(yellow, redNormalized, yellowNormalized);
+        //erode(yellow, yellow, Mat());
+        //erode(yellow, yellow, Mat());
+        //erode(yellow, yellow, Mat());
+        //dilate(yellow, yellow, Mat());
+        //dilate(yellow, yellow, Mat());
+        //dilate(yellow, yellow, Mat());
+        //addWeighted(yellow, 0.5, redNormalized, -5, 0, yellowNormalized);
 }
 
 void printTeensy() {
-        char ballXLow = ballX & 0xFF;
-        char ballXHigh = (ballX >> 8) & 0xFF;
-        char ballYLow = ballX & 0xFF;
-        char ballYHigh = (ballX >> 8) & 0xFF;
+        char ballXLow = ballXcam & 0xFF;
+        char ballXHigh = (ballXcam >> 8) & 0xFF;
+        char ballYLow = ballYcam & 0xFF;
+        char ballYHigh = (ballYcam >> 8) & 0xFF;
         char ballVis = ballVisible;
 
         char goalBXLow = goalBX & 0xFF;
@@ -183,16 +198,18 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballX = (int) (minRectBall[0].center.x);
-                ballX -= CENTER_X;
-                ballY = (int) (minRectBall[0].center.y);
-                ballY -= CENTER_Y;
+                ballXcam = (int) (minRectBall[0].center.x);
+                ballXcam -= CENTER_X;
+                ballYcam = (int) (minRectBall[0].center.y);
+                ballYcam -= CENTER_Y;
                 ballVisible = true;
                 //cout << "Ball X: " << ballX << endl;
                 //cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = (int) sqrt((ballX * ballX) + (ballY * ballY));
                 int ballradius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
                 int angle = (int) atan2(ballY, ballX) * 180 / PI;
+                ballX;
+                ballY;
                 cout << "Ball Radius: " << ballradius << endl;
                 cout << "Ball Angle: " << (atan2(ballY, ballX) * 180 / PI) << endl;
 
@@ -251,15 +268,14 @@ void doContours() {
 void processFrame() {
         prepareFrame();
         normalizeChannels();
-        erode(blueNormalized, blueNormalized, Mat());
-        erode(blueNormalized, blueEroded, Mat());
+        erode(blueNormalized, blueEroded, getStructuringElement(MORPH_RECT, Size(5, 5)));
         //dilate(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowNormalized, Mat());
         //erode(yellowNormalized, yellowEroded, Mat());
-        double redTresh = maxr * (double)(threshold_red_slider / 100.0);
-        double blueTresh = maxb * (double)(threshold_blue_slider / 100.0);
-        double yellowTresh = maxy * (double)(threshold_yellow_slider / 100.0);
+        double redTresh = (double) threshold_red_slider;
+        double blueTresh = (double) threshold_blue_slider;
+        double yellowTresh = (double) threshold_yellow_slider;
         threshold(redNormalized, redThreshold, redTresh, 255, THRESH_BINARY);
         threshold(blueEroded, blueThreshold, blueTresh, 255, THRESH_BINARY);
         threshold(yellowNormalized, yellowThreshold, yellowTresh, 255, THRESH_BINARY);
@@ -270,7 +286,7 @@ void processFrames() {
         while(true) {
                 processFrame();
                 printTeensy();
-                //cout << "Image Processing Thread: " << processCounter << endl;
+                cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
 }
@@ -282,7 +298,7 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                //cout << "Camera Thread: " << camCounter << endl;
+                cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
@@ -301,14 +317,6 @@ int main(int argc, const char * argv[]) {
         createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
         createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
         createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
-
-        prepareFrame();
-
-        normalizeChannels();
-
-        minMaxLoc(redNormalized, &minr, &maxr, NULL, NULL);
-        minMaxLoc(blueNormalized, &minb, &maxb, NULL, NULL);
-        minMaxLoc(yellowNormalized, &miny, &maxy, NULL, NULL);
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
 
@@ -336,7 +344,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 4: {
-                        imshow("Original Image", blueEroded * 10);
+                        imshow("Original Image", blueEroded * 4);
                         break;
                 }
                 case 5: {
@@ -351,7 +359,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                //cout << "Main Thread: " << mainCounter << endl;
+                cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
