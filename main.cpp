@@ -221,10 +221,13 @@ void doContours() {
                 //cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
+                ballX = ballRadius * cos(ballAngle);
+                ballY = ballRadius * sin(ballAngle);
                 //ballAngle = atan2(ballY, ballX) * 180 / PI;
                 tangents();
                 ballX = ballRadius * cos(ballAngle);
                 ballY = ballRadius * sin(ballAngle);
+                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
         }
