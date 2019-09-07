@@ -128,9 +128,9 @@ void normalizeChannels() {
         Mat lowerA = Mat(480, 640, CV_8UC1, Scalar(126));
         Mat lowerB = Mat(480, 640, CV_8UC1, Scalar(139));
         split(lab, channels);
-        subtract(channels[0], lowerL, lowerL);
-        subtract(channels[1], lowerA, lowerA);
-        subtract(channels[2], lowerB, lowerB);
+        subtract(lowerL, channels[0], lowerL);
+        subtract(lowerA, channels[1], lowerA);
+        subtract(lowerB, channels[2], lowerB);
         addWeighted(lowerL, 0.1, lowerA, 0.5, 0, yellow);
         addWeighted(yellow, 0.5, lowerB, 0.5, 0, yellowNormalized);
         //multiply(lowerL, lowerA, yellow);
