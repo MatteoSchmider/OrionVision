@@ -122,24 +122,24 @@ void normalizeChannels() {
         //ball
         subtract(red, green, redNormalized);
         //yellow goal
-        Mat lab;
-        cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
-        inRange(lab, Scalar(0, 0, 0), Scalar(threshold_red_slider, threshold_blue_slider, threshold_yellow_slider), yellowNormalized);
+        //Mat lab;
+        //cvtColor(cameraFrame, lab, COLOR_BGR2Lab);
+        //inRange(lab, Scalar(0, 0, 0), Scalar(threshold_red_slider, threshold_blue_slider, threshold_yellow_slider), yellowNormalized);
         /*absdiff(red, green, yellow);
            subtract(red, yellow, yellow);
            subtract(yellow, blue, yellow);
            subtract(yellow, redNormalized, yellowNormalized);*/
-        //subtract(red, blue, yellow);
-        //subtract(green, blue, temp);
-        //multiply(yellow, temp, yellow);
-        //threshold(yellow, yellow, 254, 255, THRESH_BINARY);
-        //erode(yellow, yellow, Mat());
-        //erode(yellow, yellow, Mat());
-        //erode(yellow, yellow, Mat());
-        //dilate(yellow, yellow, Mat());
-        //dilate(yellow, yellow, Mat());
-        //dilate(yellow, yellow, Mat());
-        //addWeighted(yellow, 0.5, redNormalized, -5, 0, yellowNormalized);
+        subtract(red, blue, yellow);
+        subtract(green, blue, temp);
+        multiply(yellow, temp, yellow);
+        threshold(yellow, yellow, 254, 255, THRESH_BINARY);
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        erode(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        dilate(yellow, yellow, Mat());
+        addWeighted(yellow, 0.5, redNormalized, -5, 0, yellowNormalized);
 }
 
 void printTeensy() {
