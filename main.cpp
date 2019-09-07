@@ -348,7 +348,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 case 5: {
-                        imshow("Original Image", yellowNormalized * 4);
+                        imshow("Original Image", yellowNormalized);
                         break;
                 }
                 case 6: {
