@@ -317,9 +317,9 @@ int main(int argc, const char * argv[]) {
         namedWindow("Original Image", 1);
         createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
         createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
-        createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 100);
-        createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 100);
-        createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 100);
+        createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 255);
+        createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 255);
+        createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 255);
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
 
