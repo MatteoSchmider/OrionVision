@@ -100,7 +100,7 @@ void prepareFrame() {
         //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
 
         blur(cameraFrameNoMask, cameraFrameNoMask, Size(3,3));
-        cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
+        cameraFrameNoMask.copyTo(cameraFrameNoBlur);//, mask);
 
         Mat non_sat;
         cvtColor(cameraFrameNoBlur, non_sat, COLOR_BGR2HSV);
