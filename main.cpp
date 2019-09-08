@@ -289,7 +289,7 @@ void doContours() {
                 ballY = ballRadius * sin(ballAngle);
                 cout << "Ball X: " << ballX << endl;
                 cout << "Ball Y: " << ballY << endl;
-                cout << "Ball Radius: " << ballradiusDouble << endl;
+                cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 40) {
                         if (ballAngle > 90 && ballAngle < 180) {
