@@ -285,8 +285,8 @@ void doContours() {
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = pixelsToCm(ballradiusDouble);
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
+                ballX = ballRadius * cos(ballAngle / (180 / PI));
+                ballY = ballRadius * sin(ballAngle / (180 / PI));
                 cout << "Ball X: " << ballX << endl;
                 cout << "Ball Y: " << ballY << endl;
                 cout << "Ball Radius: " << ballRadius << endl;
