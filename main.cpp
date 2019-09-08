@@ -278,15 +278,15 @@ void doContours() {
                 ballY = (int) (minRectBall[0].center.y);
                 ballY -= CENTER_Y;
                 ballVisible = true;
-                cout << "Ball X: " << ballX << endl;
-                cout << "Ball Y: " << ballY << endl;
+                //cout << "Ball X: " << ballX << endl;
+                //cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 cout << "Ball Radius: " << ballRadius << endl;
-                cout << "Ball Angle: " << ballAngle << endl;
+                //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 40) {
                         if (ballAngle > 90 && ballAngle < 180) {
                                 tangents3();
@@ -383,7 +383,7 @@ void processFrames() {
         while(true) {
                 processFrame();
                 printTeensy();
-                cout << "Image Processing Thread: " << processCounter << endl;
+                //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
 }
@@ -395,7 +395,7 @@ void getFrames() {
         }
         while(true) {
                 capture >> cameraFrameNoMask;
-                cout << "Camera Thread: " << camCounter << endl;
+                //cout << "Camera Thread: " << camCounter << endl;
                 camCounter++;
         }
 }
@@ -456,7 +456,7 @@ int main(int argc, const char * argv[]) {
                         break;
                 }
                 }
-                cout << "Main Thread: " << mainCounter << endl;
+                //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
                 if (key == 'q' || key == 27)
