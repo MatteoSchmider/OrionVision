@@ -278,16 +278,16 @@ void doContours() {
         }
         if (contoursBall.size() > 0) {
                 ballX = (minRectBall[0].center.x);
-                ballX = pixelsToCm(ballX - CENTER_X);
+                ballX = ballX - CENTER_X;
                 ballY = (minRectBall[0].center.y);
-                ballY = pixelsToCm(ballY - CENTER_Y);
+                ballY = ballY - CENTER_Y;
                 ballVisible = true;
-                cout << "Ball X: " << ballX << endl;
-                cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
                 ballX = ballRadius * cos(ballAngle);
                 ballY = ballRadius * sin(ballAngle);
+                cout << "Ball X: " << ballX << endl;
+                cout << "Ball Y: " << ballY << endl;
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 cout << "Ball Radius: " << ballradiusDouble << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
