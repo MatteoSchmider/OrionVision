@@ -269,14 +269,6 @@ void doContours() {
                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + ballX, CENTER_Y + ballY), Scalar(0, 0, 255));
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
-                for(auto& rows: myArray) // Iterating over rows
-                {
-                        for(auto& elem: rows)
-                        {
-                                // do some stuff
-                        }
-                }
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
         }
