@@ -251,17 +251,17 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballXcam = (int) (minRectBall[0].center.x);
-                ballXcam -= CENTER_X;
-                ballYcam = (int) (minRectBall[0].center.y);
-                ballYcam -= CENTER_Y;
+                ballX = (int) (minRectBall[0].center.x);
+                ballX -= CENTER_X;
+                ballY = (int) (minRectBall[0].center.y);
+                ballY -= CENTER_Y;
                 ballVisible = true;
                 //cout << "Ball X: " << ballX << endl;
                 //cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
+                //ballX = ballRadius * cos(ballAngle);
+                //ballY = ballRadius * sin(ballAngle);
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 tangents();
                 ballX = ballRadius * cos(ballAngle);
