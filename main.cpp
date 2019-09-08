@@ -89,7 +89,7 @@ void tangents() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        cout << atan2(-a, b) * 180 / PI << endl;
+        //cout << atan2(-a, b) * 180 / PI << endl;
         ballAngle = atan2(-a, b) * 180 / PI;
 }
 
