@@ -14,8 +14,8 @@
 using namespace cv;
 using namespace std;
 
-#define CENTER_X 310
-#define CENTER_Y 255
+#define CENTER_X 332
+#define CENTER_Y 252
 Mat gray(480, 640, CV_8UC1);
 Mat blue(480, 640, CV_8UC1);
 Mat blueNormalized(480, 640, CV_8UC1);
