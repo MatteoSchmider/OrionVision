@@ -285,7 +285,7 @@ void doContours() {
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
-                cout << "Ball Radius: " << ballRadius << endl;
+                cout << "Ball Radius: " << ballradiusDouble << endl;
                 //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 40) {
                         if (ballAngle > 90 && ballAngle < 180) {
