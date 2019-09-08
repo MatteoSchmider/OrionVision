@@ -256,7 +256,7 @@ void printTeensy() {
 }
 
 double pixelsToCm(double pixels) {
-        double centimeters = -417.1296 + 9.79953 * pixels - pow(0.07336298 * pixels, 2) + pow(0.0001840463 * pixels, 3);
+        double centimeters = 14.11251 - (0.0158725955 * (1 - exp(0.04170403 * pixels)));
         return centimeters;
 }
 void doContours() {
