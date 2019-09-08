@@ -119,17 +119,6 @@ const double EPS = 1E-9;
 double sqr(double a) {
         return a * a;
 }
-void tangents1() {
-        double r = 3.0 - 10.5;
-        double z = sqr(ballX) + sqr(ballY);
-        double d = z - sqr(r);
-        if (d < -EPS) return;
-        d = sqrt(abs(d));
-        double a = ((ballX * r) + (ballY * d)) / z;
-        double b = ((ballY * r) - (ballX * d)) / z;
-        //cout << atan2(-a, b) * 180 / PI << endl;
-        ballAngle = atan2(-a, b) * 180 / PI;
-}
 void tangents2() {
         double r = -3.0 - 10.5;
         double z = sqr(ballX) + sqr(ballY);
@@ -299,10 +288,6 @@ void doContours() {
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 40) {
-                        tangents1();
-                        ballX = ballRadius * cos(ballAngle);
-                        ballY = ballRadius * sin(ballAngle);
-                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
                         tangents2();
                         ballX = ballRadius * cos(ballAngle);
                         ballY = ballRadius * sin(ballAngle);
