@@ -255,6 +255,10 @@ void printTeensy() {
         serialPutchar(fd, goalYVis);
 }
 
+double pixelsToCm(double pixels) {
+        double centimeters = 70910200 + (15.71175 - 70910200) / (1 + pow((pixels / 1075.12), 8.265744));
+        return centimeters;
+}
 void doContours() {
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
@@ -273,20 +277,20 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballX = (int) (minRectBall[0].center.x);
-                ballX -= CENTER_X;
-                ballY = (int) (minRectBall[0].center.y);
-                ballY -= CENTER_Y;
+                ballX = (minRectBall[0].center.x);
+                ballX = pixelsToCm(ballX - CENTER_X);
+                ballY = (minRectBall[0].center.y);
+                ballY = pixelsToCm(ballY - CENTER_Y);
                 ballVisible = true;
-                //cout << "Ball X: " << ballX << endl;
-                //cout << "Ball Y: " << ballY << endl;
+                cout << "Ball X: " << ballX << endl;
+                cout << "Ball Y: " << ballY << endl;
                 double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
                 ballRadius = (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
-                //ballX = ballRadius * cos(ballAngle);
-                //ballY = ballRadius * sin(ballAngle);
+                ballX = ballRadius * cos(ballAngle);
+                ballY = ballRadius * sin(ballAngle);
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 cout << "Ball Radius: " << ballradiusDouble << endl;
-                //cout << "Ball Angle: " << ballAngle << endl;
+                cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 40) {
                         if (ballAngle > 90 && ballAngle < 180) {
                                 tangents3();
