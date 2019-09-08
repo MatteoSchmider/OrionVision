@@ -298,22 +298,27 @@ void doContours() {
                 ballAngle = atan2(ballY, ballX) * 180 / PI;
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
-                tangents1();
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
-                tangents2();
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 255));
-                tangents3();
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 255));
-                tangents4();
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 255, 255));
+                if (ballX < 40) {
+                        tangents1();
+                        ballX = ballRadius * cos(ballAngle);
+                        ballY = ballRadius * sin(ballAngle);
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
+                        tangents2();
+                        ballX = ballRadius * cos(ballAngle);
+                        ballY = ballRadius * sin(ballAngle);
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 255));
+                        tangents3();
+                        ballX = ballRadius * cos(ballAngle);
+                        ballY = ballRadius * sin(ballAngle);
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 255));
+                        tangents4();
+                        ballX = ballRadius * cos(ballAngle);
+                        ballY = ballRadius * sin(ballAngle);
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 255, 255));
+                }
+                else {
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + ballX, CENTER_Y + ballY), Scalar(0, 255, 0));
+                }
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
         }
