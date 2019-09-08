@@ -42,11 +42,11 @@ Mat oneMat = Mat::ones(480, 640, CV_8UC1);
 Mat channels[3];
 Mat seg_channels[3];
 
-int gammaSlider = 100;
+int gammaSlider = 130;
 int imageShownSlider = 0;
-int threshold_red_slider = 50;
-int threshold_blue_slider = 50;
-int threshold_yellow_slider = 50;
+int threshold_red_slider = 25;
+int threshold_blue_slider = 3;
+int threshold_yellow_slider = 20;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
 long mainCounter = 0, processCounter = 0, camCounter = 0;
