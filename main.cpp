@@ -266,7 +266,7 @@ void doContours() {
                 tangents();
                 ballX = 2 * ballRadius * cos(ballAngle);
                 ballY = 2 * ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point((int) CENTER_X + ballX,(int) CENTER_Y + ballY, Scalar(0, 0, 255)));
+                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point((int) (CENTER_X + ballX), (int) (CENTER_Y + ballY), Scalar(0, 0, 255)));
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
                 cout << "Ball Radius: " << ballRadius << endl;
