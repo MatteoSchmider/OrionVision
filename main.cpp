@@ -1,4 +1,4 @@
-#define PI 3.141592
+0 #define PI 3.141592
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui.hpp"
@@ -76,6 +76,44 @@ void wb(Mat& in) {
         addWeighted(in, 1.0, oneMat, -min, scale, in);
 }
 
+/*double[][] getTangents(double x2, double y2) {
+        double d_sq = (0 - x2) * (0 - x2) + (0 - y2) * (0 - y2);
+        if (d_sq <= (10.5-3.0)*(10.5-3.0)) return new double[0][4];
+        double d = sqrt(d_sq);
+        double vx = (x2 - 0) / d;
+        double vy = (y2 - 0) / d;
+        double[][] res = new double[4][4];
+        int i = 0;
+        // Let A, B be the centers, and C, D be points at which the tangent
+        // touches first and second circle, and n be the normal vector to it.
+        //
+        // We have the system:
+        //   n * n = 1          (n is a unit vector)
+        //   C = A + 10.5 * n
+        //   D = B +/- 3.0 * n
+        //   n * CD = 0         (common orthogonality)
+        //
+        // n * CD = n * (AB +/- 3.0*n - 10.5*n) = AB*n - (10.5 -/+ 3.0) = 0,  <=>
+        // AB * n = (10.5 -/+ 3.0), <=>
+        // v * n = (10.5 -/+ 3.0) / d,  where v = AB/|AB| = AB/d
+        // This is a linear equation in unknown vector n.
+
+        for (int sign1 = +1; sign1 >= -1; sign1 -= 2) {
+                double c = (10.5 - sign1 * 3.0) / d;
+                // Now we're just intersecting a line with a circle: v*n=c, n*n=1
+                if (c*c > 1.0) continue;
+                double h = sqrt(max(0.0, 1.0 - c*c));
+                for (int sign2 = +1; sign2 >= -1; sign2 -= 2) {
+                        double nx = vx * c - sign2 * h * vy;
+                        double ny = vy * c + sign2 * h * vx;
+                        double[] a = res[i++];
+                        a[0] = 0 + 10.5 * nx;
+                        a[1] = 0 + 10.5 * ny;
+                        a[2] = x2 + sign1 * 3.0 * nx;
+                        a[3] = y2 + sign1 * 3.0 * ny;
+                }
+        }
+   }*/
 const double EPS = 1E-9;
 
 double sqr(double a) {
@@ -224,11 +262,21 @@ void doContours() {
                 ballRadius = (int) (18.38108 - (0.000427424254 * (1 - exp(0.05804322 * ballradiusDouble))));
                 ballX = ballRadius * cos(ballAngle);
                 ballY = ballRadius * sin(ballAngle);
-                //ballAngle = atan2(ballY, ballX) * 180 / PI;
-                //tangents();
+                ballAngle = atan2(ballY, ballX) * 180 / PI;
+                tangents();
+                ballX = ballRadius * cos(ballAngle);
+                ballY = ballRadius * sin(ballAngle);
+                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + ballX, CENTER_Y + ballY), Scalar(0, 0, 255));
                 //ballX = ballRadius * cos(ballAngle);
                 //ballY = ballRadius * sin(ballAngle);
-                //line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
+                for(auto& rows: myArray) // Iterating over rows
+                {
+                        for(auto& elem: rows)
+                        {
+                                // do some stuff
+                        }
+                }
+                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
         }
