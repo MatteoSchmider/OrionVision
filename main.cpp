@@ -89,6 +89,7 @@ void tangents() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
+        cout << atan2(-a, b) * 180 / PI << endl;
         ballAngle = atan2(-a, b) * 180 / PI;
 }
 
@@ -224,10 +225,10 @@ void doContours() {
                 ballX = ballRadius * cos(ballAngle);
                 ballY = ballRadius * sin(ballAngle);
                 //ballAngle = atan2(ballY, ballX) * 180 / PI;
-                tangents();
-                ballX = ballRadius * cos(ballAngle);
-                ballY = ballRadius * sin(ballAngle);
-                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
+                //tangents();
+                //ballX = ballRadius * cos(ballAngle);
+                //ballY = ballRadius * sin(ballAngle);
+                //line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(ballX, ballY), Scalar(0, 0, 255));
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
         }
