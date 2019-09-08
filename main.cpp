@@ -291,7 +291,7 @@ void doContours() {
                 cout << "Ball Y: " << ballY << endl;
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
-                if (ballX < 40) {
+                if (ballX > 16) {
                         if (ballAngle > 90 && ballAngle < 180) {
                                 tangents3();
                                 ballX = ballRadius * cos(ballAngle);
