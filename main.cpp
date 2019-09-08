@@ -1,4 +1,4 @@
-0 #define PI 3.141592
+#define PI 3.141592
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui.hpp"
