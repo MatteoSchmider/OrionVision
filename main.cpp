@@ -130,7 +130,7 @@ void normalizeChannels() {
         //blue goal
         //subtract(blue, red, blueNormalized);
         cvtColor(cameraFrame, hsv, COLOR_BGR2HSV);
-        inRange(hsv, Scalar(70, 0, 0), Scalar(255, 255, 30), hsv);
+        inRange(hsv, Scalar(70, 0, 0), Scalar(255, 255, 50), hsv);
         hsv = Mat(Scalar(255)) - hsv;
         subtract(blue, green, blueNormalized);
         subtract(blue, red, temp);
