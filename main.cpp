@@ -180,6 +180,7 @@ void printTeensy() {
         char goalYYHigh = (((int)(goalYY)) >> 8) & 0xFF;
         char goalYVis = goalYVisible;
 
+        cout << ballAngleLow << endl;
         serialPutchar(fd, ballAngleLow);
         serialPutchar(fd, ballAngleHigh);
         serialPutchar(fd, ballRadiusLow);
