@@ -262,17 +262,13 @@ void doContours() {
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                         }
                         else {
-                                ballAngle = tangents1();
-                                cout << "1 Angle: " << ballAngle << endl;
-                                ballX = ballRadius * cos(ballAngle / (180 / PI));
-                                ballY = ballRadius * sin(ballAngle / (180 / PI));
-                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 0));
                                 ballAngle = tangents2();
+                                cout << "green Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                                 ballAngle = tangents3();
-                                cout << "3 Angle: " << ballAngle << endl;
+                                cout << "red Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
