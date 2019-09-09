@@ -215,7 +215,7 @@ double getRadius(double xInImage, double yInImage) {
         return pixelsToCm(radiusDouble);
 }
 void doContours() {
-        double[] angleRadius;
+        double angleRadius[2];
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
 
