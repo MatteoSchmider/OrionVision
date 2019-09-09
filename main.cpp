@@ -80,16 +80,15 @@ const double EPS = 1E-9;
 double sqr(double a) {
         return a * a;
 }
-void tangents1() {
+double tangents1() {
         double r = 3.0 - 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
-        if (d < -EPS) return;
+        if (d < -EPS) return 1000.0;
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        //cout << atan2(-a, b) * 180 / PI << endl;
-        ballAngle = atan2(-a, b) * 180 / PI;
+        return atan2(-a, b) * 180 / PI;
 }
 double tangents2() {
         double r = -3.0 - 10.5;
@@ -99,19 +98,17 @@ double tangents2() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        //cout << atan2(-a, b) * 180 / PI << endl;
         return atan2(-a, b) * 180 / PI;
 }
-void tangents3() {
+double tangents3() {
         double r = 3.0 + 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
-        if (d < -EPS) return;
+        if (d < -EPS) return 1000.0;
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        //cout << atan2(-a, b) * 180 / PI << endl;
-        ballAngle = atan2(-a, b) * 180 / PI;
+        return atan2(-a, b) * 180 / PI;
 }
 double tangents4() {
         double r = -3.0 + 10.5;
@@ -121,7 +118,6 @@ double tangents4() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        //cout << atan2(-a, b) * 180 / PI << endl;
         return atan2(-a, b) * 180 / PI;
 }
 
