@@ -368,7 +368,7 @@ int main(int argc, const char * argv[]) {
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        fd = serialOpen("/dev/ttyS0", 115200);
+        fd = serialOpen("/dev/ttyAMA0", 115200);
 
         // Create a window
         /*namedWindow("Original Image", 1);
