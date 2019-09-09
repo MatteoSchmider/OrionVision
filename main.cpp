@@ -364,26 +364,27 @@ int main(int argc, const char * argv[]) {
         fd = serialOpen("/dev/ttyS1", 115200);
 
         // Create a window
-        namedWindow("Original Image", 1);
-        createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
-        createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
-        createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 255);
-        createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 255);
-        createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 255);
+        /*namedWindow("Original Image", 1);
+           createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
+           createTrackbar("Preview Images", "Original Image", &imageShownSlider, 5);
+           createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 255);
+           createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 255);
+           createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 255);
+         */
         cout << "Just before threading!" << endl;
         thread image_processor(processFrames);
 
         while (true) {
-                switch (imageShownSlider) {
-                case 0: {
+                /*switch (imageShownSlider) {
+                   case 0: {
 
                         break;
-                }
-                case 1: {
+                   }
+                   case 1: {
                         imshow("Original Image", cameraFrame);
                         break;
-                }
-                case 2: {
+                   }
+                   case 2: {
                         seg_channels[0] = blueNormalized * 10;
                         seg_channels[1] = greenNormalized * 25;
                         seg_channels[2] = redNormalized * 2;
@@ -391,27 +392,27 @@ int main(int argc, const char * argv[]) {
                         merge(seg_channels, 3, seg_img);
                         imshow("Original Image", seg_img);
                         break;
-                }
-                case 3: {
+                   }
+                   case 3: {
                         imshow("Original Image", redNormalized * 4);
                         break;
-                }
-                case 4: {
+                   }
+                   case 4: {
                         imshow("Original Image", blueEroded * 4);
                         break;
-                }
-                case 5: {
+                   }
+                   case 5: {
                         imshow("Original Image", yellowNormalized * 4);
                         break;
-                }
-                case 6: {
+                   }
+                   case 6: {
                         imshow("Original Image", cameraFrame);
                         imshow("Ball", redThreshold);
                         imshow("Blue Goal", blueThreshold);
                         imshow("Yellow Goal", yellowThreshold);
                         break;
-                }
-                }
+                   }
+                   }*/
                 //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
                 char key = (char) waitKey(20);
