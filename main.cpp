@@ -203,14 +203,16 @@ double pixelsToCm(double pixels) {
         double centimeters = 14.11251 - (0.0158725955 * (1 - exp(0.04170403 * pixels)));
         return centimeters;
 }
-double[] getAngleRadius(double xInImage, double yInImage) {
-        double[2] output; //angle, radius
+double getAngle(double xInImage, double yInImage) {
         double x = xInImage - CENTER_X;
         double y = yInImage - CENTER_Y;
-        output[0] = atan2(ballY, ballX) * 180 / PI;
+        return atan2(ballY, ballX) * 180 / PI;
+}
+double getRadius(double xInImage, double yInImage) {
+        double x = xInImage - CENTER_X;
+        double y = yInImage - CENTER_Y;
         double radiusDouble = sqrt((sqr(x)) + (sqr(y)));
-        output[0] = pixelsToCm(radiusDouble);
-        return output;
+        return pixelsToCm(radiusDouble);
 }
 void doContours() {
         double[] angleRadius;
@@ -231,7 +233,8 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                angleRadius = getAngleRadius(minRectBall[0].center.x, minRectBall[0].center.y);
+                angleRadius[0] = getAngle(minRectBall[0].center.x, minRectBall[0].center.y);
+                angleRadius[1] = getRadius(minRectBall[0].center.x, minRectBall[0].center.y);
                 ballVisible = true;
                 ballAngle = angleRadius[0];
                 ballRadius = angleRadius[1];
@@ -278,7 +281,8 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBG.size() > 0) {
-                angleRadius = getAngleRadius(minRectBG[0].center.x, minRectBG[0].center.y);
+                angleRadius[0] = getAngle(minRectBG[0].center.x, minRectBG[0].center.y);
+                angleRadius[1] = getRadius(minRectBG[0].center.x, minRectBG[0].center.y);
                 goalBVisible = true;
                 goalBX = angleRadius[1] * cos(angleRadius[0] / (180 / PI));
                 goalBY = angleRadius[1] * sin(angleRadius[0] / (180 / PI));
@@ -303,7 +307,8 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursYG.size() > 0) {
-                angleRadius = getAngleRadius(minRectYG[0].center.x, minRectYG[0].center.y);
+                angleRadius[0] = getAngle(minRectYG[0].center.x, minRectYG[0].center.y);
+                angleRadius[1] = getRadius(minRectYG[0].center.x, minRectYG[0].center.y);
                 goalYVisible = true;
                 goalYX = angleRadius[1] * cos(angleRadius[0] / (180 / PI));
                 goalYY = angleRadius[1] * sin(angleRadius[0] / (180 / PI));
