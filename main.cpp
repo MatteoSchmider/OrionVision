@@ -81,14 +81,13 @@ double sqr(double a) {
         return a * a;
 }
 double tangents1() {
-        double r = 3.0 - 10.5;
+        double r = -3.0 + 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
         if (d < -EPS) return 1000.0;
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        cout << "1 a: " << a << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents2() {
@@ -99,7 +98,6 @@ double tangents2() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        cout << "2 a: " << a << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents3() {
@@ -110,7 +108,6 @@ double tangents3() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        cout << "3 a: " << a << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents4() {
@@ -121,7 +118,6 @@ double tangents4() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
-        cout << "4 a: " << a << endl;
         return atan2(-a, b) * 180 / PI;
 }
 
@@ -254,6 +250,8 @@ void doContours() {
                 ballRadius = pixelsToCm(ballradiusDouble);
                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                 ballY = ballRadius * sin(ballAngle / (180 / PI));
+                double ballXsave = ballX;
+                double ballYsave = ballY;
                 //cout << "Ball X: " << ballX << endl;
                 //cout << "Ball Y: " << ballY << endl;
                 //cout << "Ball Radius: " << ballRadius << endl;
@@ -271,18 +269,24 @@ void doContours() {
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 0));
+                                ballX = ballXsave;
+                                ballY = ballYsave;
                                 ballAngle = tangents2();
                                 cout << "green Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
+                                ballX = ballXsave;
+                                ballY = ballYsave;
                                 ballAngle = tangents3();
                                 cout << "red Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
-
+                                ballX = ballXsave;
+                                ballY = ballYsave;
                                 ballAngle = tangents4();
+                                cout << "purple Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 255));
