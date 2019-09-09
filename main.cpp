@@ -267,6 +267,7 @@ void doContours() {
                         }
                         else {
                                 ballAngle = tangents1();
+                                cout << "blue Angle: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 0));
