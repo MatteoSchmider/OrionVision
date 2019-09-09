@@ -88,6 +88,7 @@ double tangents1() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
+        cout << "1 a: " << ballAngle << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents2() {
@@ -98,6 +99,7 @@ double tangents2() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
+        cout << "2 a: " << ballAngle << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents3() {
@@ -108,6 +110,7 @@ double tangents3() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
+        cout << "3 a: " << ballAngle << endl;
         return atan2(-a, b) * 180 / PI;
 }
 double tangents4() {
@@ -118,6 +121,7 @@ double tangents4() {
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
+        cout << "4 a: " << ballAngle << endl;
         return atan2(-a, b) * 180 / PI;
 }
 
