@@ -75,45 +75,6 @@ void wb(Mat& in) {
         double scale = (int)(1.0 / (max - min));
         addWeighted(in, 1.0, oneMat, -min, scale, in);
 }
-
-/*double[][] getTangents(double x2, double y2) {
-        double d_sq = (0 - x2) * (0 - x2) + (0 - y2) * (0 - y2);
-        if (d_sq <= (10.5-3.0)*(10.5-3.0)) return new double[0][4];
-        double d = sqrt(d_sq);
-        double vx = (x2 - 0) / d;
-        double vy = (y2 - 0) / d;
-        double[][] res = new double[4][4];
-        int i = 0;
-        // Let A, B be the centers, and C, D be points at which the tangent
-        // touches first and second circle, and n be the normal vector to it.
-        //
-        // We have the system:
-        //   n * n = 1          (n is a unit vector)
-        //   C = A + 10.5 * n
-        //   D = B +/- 3.0 * n
-        //   n * CD = 0         (common orthogonality)
-        //
-        // n * CD = n * (AB +/- 3.0*n - 10.5*n) = AB*n - (10.5 -/+ 3.0) = 0,  <=>
-        // AB * n = (10.5 -/+ 3.0), <=>
-        // v * n = (10.5 -/+ 3.0) / d,  where v = AB/|AB| = AB/d
-        // This is a linear equation in unknown vector n.
-
-        for (int sign1 = +1; sign1 >= -1; sign1 -= 2) {
-                double c = (10.5 - sign1 * 3.0) / d;
-                // Now we're just intersecting a line with a circle: v*n=c, n*n=1
-                if (c*c > 1.0) continue;
-                double h = sqrt(max(0.0, 1.0 - c*c));
-                for (int sign2 = +1; sign2 >= -1; sign2 -= 2) {
-                        double nx = vx * c - sign2 * h * vy;
-                        double ny = vy * c + sign2 * h * vx;
-                        double[] a = res[i++];
-                        a[0] = 0 + 10.5 * nx;
-                        a[1] = 0 + 10.5 * ny;
-                        a[2] = x2 + sign1 * 3.0 * nx;
-                        a[3] = y2 + sign1 * 3.0 * ny;
-                }
-        }
-   }*/
 const double EPS = 1E-9;
 
 double sqr(double a) {
@@ -130,7 +91,7 @@ void tangents1() {
         //cout << atan2(-a, b) * 180 / PI << endl;
         ballAngle = atan2(-a, b) * 180 / PI;
 }
-void tangents2() {
+double tangents2() {
         double r = -3.0 - 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
@@ -139,7 +100,7 @@ void tangents2() {
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
         //cout << atan2(-a, b) * 180 / PI << endl;
-        ballAngle = atan2(-a, b) * 180 / PI;
+        return atan2(-a, b) * 180 / PI;
 }
 void tangents3() {
         double r = 3.0 + 10.5;
@@ -152,7 +113,7 @@ void tangents3() {
         //cout << atan2(-a, b) * 180 / PI << endl;
         ballAngle = atan2(-a, b) * 180 / PI;
 }
-void tangents4() {
+double tangents4() {
         double r = -3.0 + 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
@@ -161,15 +122,10 @@ void tangents4() {
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
         //cout << atan2(-a, b) * 180 / PI << endl;
-        ballAngle = atan2(-a, b) * 180 / PI;
+        return atan2(-a, b) * 180 / PI;
 }
 
 void prepareFrame() {
-        /*Ptr<xphoto::GrayworldWB> var = xphoto::createGrayworldWB();
-           var->setSaturationThreshold(gammaSlider);
-           var->balanceWhite(cameraFrameNoMask, cameraFrameNoMask);*/
-        //SimplestCB(cameraFrameNoMask, cameraFrameNoMask, (float) gammaSlider);
-
         blur(cameraFrameNoMask, cameraFrameNoMask, Size(3,3));
         cameraFrameNoMask.copyTo(cameraFrameNoBlur, mask);
 
@@ -303,22 +259,18 @@ void doContours() {
                 cout << "Ball Radius: " << ballRadius << endl;
                 cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 16) {
-                        tangents1();
-                        ballX = ballRadius * cos(ballAngle / (180 / PI));
-                        ballY = ballRadius * sin(ballAngle / (180 / PI));
-                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
-                        tangents2();
-                        ballX = ballRadius * cos(ballAngle / (180 / PI));
-                        ballY = ballRadius * sin(ballAngle / (180 / PI));
-                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 0, 255));
-                        tangents3();
-                        ballX = ballRadius * cos(ballAngle / (180 / PI));
-                        ballY = ballRadius * sin(ballAngle / (180 / PI));
-                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 255));
-                        tangents4();
-                        ballX = ballRadius * cos(ballAngle / (180 / PI));
-                        ballY = ballRadius * sin(ballAngle / (180 / PI));
-                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(255, 255, 255));
+                        if (ballY > 0) {
+                                ballAngle = tangents2();
+                                ballX = ballRadius * cos(ballAngle / (180 / PI));
+                                ballY = ballRadius * sin(ballAngle / (180 / PI));
+                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
+                        }
+                        else {
+                                ballAngle = tangents4() - (tangents2() - tangents4());
+                                ballX = ballRadius * cos(ballAngle / (180 / PI));
+                                ballY = ballRadius * sin(ballAngle / (180 / PI));
+                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
+                        }
                 }
                 else {
                         line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + ballX, CENTER_Y + ballY), Scalar(0, 255, 0));
