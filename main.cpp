@@ -259,7 +259,7 @@ void doContours() {
                 //cout << "Ball Radius: " << ballRadius << endl;
                 //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 16) {
-                        if (ballY > 0) {
+                        if (ballY < 0) {
                                 ballAngle = tangents2();
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
