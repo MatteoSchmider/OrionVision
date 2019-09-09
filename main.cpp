@@ -95,7 +95,7 @@ double tangents2() {
         double r = -3.0 - 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
-        if (d < -EPS) return;
+        if (d < -EPS) return 1000.0;
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
@@ -117,7 +117,7 @@ double tangents4() {
         double r = -3.0 + 10.5;
         double z = sqr(ballX) + sqr(ballY);
         double d = z - sqr(r);
-        if (d < -EPS) return;
+        if (d < -EPS) return 1000.0;
         d = sqrt(abs(d));
         double a = ((ballX * r) + (ballY * d)) / z;
         double b = ((ballY * r) - (ballX * d)) / z;
