@@ -180,10 +180,10 @@ void printTeensy() {
         char goalYYHigh = (((int)(goalYY)) >> 8) & 0xFF;
         char goalYVis = goalYVisible;
 
-        serialPutchar(fd, ballXLow);
-        serialPutchar(fd, ballXHigh);
-        serialPutchar(fd, ballYLow);
-        serialPutchar(fd, ballYHigh);
+        serialPutchar(fd, ballAngleLow);
+        serialPutchar(fd, ballAngleHigh);
+        serialPutchar(fd, ballRadiusLow);
+        serialPutchar(fd, ballRadiusHigh);
         serialPutchar(fd, ballVis);
 
         serialPutchar(fd, goalBXLow);
