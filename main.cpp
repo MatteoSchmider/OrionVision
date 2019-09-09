@@ -344,8 +344,7 @@ void processFrame() {
 void processFrames() {
         while(true) {
                 processFrame();
-                printTeensy();
-                //serialPutchar (fd, count) ;
+                //printTeensy();
                 //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
@@ -368,7 +367,7 @@ int main(int argc, const char * argv[]) {
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        fd = serialOpen("/dev/ttyAMA0", 115200);
+        fd = serialOpen("/dev/ttyS1", 115200);
         wiringPiSetup();
         // Create a window
         /*namedWindow("Original Image", 1);
@@ -382,6 +381,7 @@ int main(int argc, const char * argv[]) {
         thread image_processor(processFrames);
 
         while (true) {
+                serialPutchar(fd, mainCounter);
                 /*switch (imageShownSlider) {
                    case 0: {
 
