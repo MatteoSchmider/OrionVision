@@ -256,7 +256,12 @@ void doContours() {
                 //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 16) {
                         if (ballY < 0) {
-
+                                ballAngle = tangents2() - 180.0;
+                                ballX = ballRadius * cos(ballAngle / (180 / PI));
+                                ballY = ballRadius * sin(ballAngle / (180 / PI));
+                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
+                        }
+                        else {
                                 ballAngle = tangents1();
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
@@ -265,12 +270,6 @@ void doContours() {
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
-                        }
-                        else {
-                                ballAngle = tangents2() - 180.0;
-                                ballX = ballRadius * cos(ballAngle / (180 / PI));
-                                ballY = ballRadius * sin(ballAngle / (180 / PI));
-                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                         }
                 }
                 else {
