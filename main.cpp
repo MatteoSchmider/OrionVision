@@ -369,7 +369,7 @@ int main(int argc, const char * argv[]) {
         mask = imread("mask.png", IMREAD_COLOR);
 
         fd = serialOpen("/dev/ttyAMA0", 115200);
-
+        wiringPiSetup();
         // Create a window
         /*namedWindow("Original Image", 1);
            createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
