@@ -48,7 +48,7 @@ Mat seg_channels[3];
 int gammaSlider = 130;
 int imageShownSlider = 0;
 int threshold_red_slider = 25;
-int threshold_blue_slider = 3;
+int threshold_blue_slider = 10;
 int threshold_yellow_slider = 20;
 
 double minr = 0, maxr = 0, minb = 0, maxb = 0, miny = 0, maxy = 0;
