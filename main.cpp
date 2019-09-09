@@ -162,22 +162,28 @@ void normalizeChannels() {
 }
 
 void printTeensy() {
-        char ballAngleLow = ((int)(ballAngle)) & 0xFF;
-        char ballAngleHigh = (((int)(ballAngle)) >> 8) & 0xFF;
-        char ballRadiusLow = ((int)(ballRadius)) & 0xFF;
-        char ballRadiusHigh = (((int)(ballRadius)) >> 8) & 0xFF;
+        int temp = (int)(ballAngle);
+        char ballAngleLow = temp & 0xFF;
+        char ballAngleHigh = (temp >> 8) & 0xFF;
+        temp = (int)(ballRadius);
+        char ballRadiusLow = temp & 0xFF;
+        char ballRadiusHigh = (temp >> 8) & 0xFF;
         char ballVis = ballVisible;
 
-        char goalBXLow = ((int)(goalBX)) & 0xFF;
-        char goalBXHigh = (((int)(goalBX)) >> 8) & 0xFF;
-        char goalBYLow = ((int)(goalBY)) & 0xFF;
-        char goalBYHigh = (((int)(goalBY)) >> 8) & 0xFF;
+        temp = (int)(goalBX);
+        char goalBXLow = temp & 0xFF;
+        char goalBXHigh = (temp >> 8) & 0xFF;
+        temp = (int)(goalBY);
+        char goalBYLow = temp & 0xFF;
+        char goalBYHigh = (temp >> 8) & 0xFF;
         char goalBVis = goalBVisible;
 
-        char goalYXLow = ((int)(goalYX)) & 0xFF;
-        char goalYXHigh = (((int)(goalYX)) >> 8) & 0xFF;
-        char goalYYLow = ((int)(goalYY)) & 0xFF;
-        char goalYYHigh = (((int)(goalYY)) >> 8) & 0xFF;
+        temp = (int)(goalYX);
+        char goalYXLow = temp & 0xFF;
+        char goalYXHigh = (temp >> 8) & 0xFF;
+        temp = (int)(goalYY);
+        char goalYYLow = temp & 0xFF;
+        char goalYYHigh = (temp >> 8) & 0xFF;
         char goalYVis = goalYVisible;
 
         cout << ballAngleLow << endl;
@@ -339,6 +345,7 @@ void processFrames() {
         while(true) {
                 processFrame();
                 printTeensy();
+                //serialPutchar (fd, count) ;
                 //cout << "Image Processing Thread: " << processCounter << endl;
                 processCounter++;
         }
@@ -361,7 +368,7 @@ int main(int argc, const char * argv[]) {
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        fd = serialOpen("/dev/ttyS1", 115200);
+        fd = serialOpen("/dev/ttyS0", 115200);
 
         // Create a window
         /*namedWindow("Original Image", 1);
