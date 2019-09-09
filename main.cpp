@@ -254,10 +254,10 @@ void doContours() {
                 ballRadius = pixelsToCm(ballradiusDouble);
                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                 ballY = ballRadius * sin(ballAngle / (180 / PI));
-                cout << "Ball X: " << ballX << endl;
-                cout << "Ball Y: " << ballY << endl;
-                cout << "Ball Radius: " << ballRadius << endl;
-                cout << "Ball Angle: " << ballAngle << endl;
+                //cout << "Ball X: " << ballX << endl;
+                //cout << "Ball Y: " << ballY << endl;
+                //cout << "Ball Radius: " << ballRadius << endl;
+                //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 16) {
                         if (ballY > 0) {
                                 ballAngle = tangents2();
@@ -266,10 +266,17 @@ void doContours() {
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                         }
                         else {
-                                ballAngle = tangents4() - (tangents2() - tangents4());
+                                ballAngle = tangents2();
+                                cout << "Green Tangent: " << ballAngle << endl;
                                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                                 line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
+                                ballAngle = tangents4();
+                                cout << "Red Tangent: " << ballAngle << endl;
+                                ballX = ballRadius * cos(ballAngle / (180 / PI));
+                                ballY = ballRadius * sin(ballAngle / (180 / PI));
+                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
+
                         }
                 }
                 else {
