@@ -206,7 +206,7 @@ double pixelsToCm(double pixels) {
 double getAngle(double xInImage, double yInImage) {
         double x = xInImage - CENTER_X;
         double y = yInImage - CENTER_Y;
-        return atan2(ballY, ballX) * 180 / PI;
+        return atan2(y, x) * 180 / PI;
 }
 double getRadius(double xInImage, double yInImage) {
         double x = xInImage - CENTER_X;
@@ -254,7 +254,7 @@ void doContours() {
                 else {
                         ballX = ballX - 10.5;
                         ballAngle = atan2(ballY, ballX) * 180 / PI;
-                        ballradius = sqrt((ballX * ballX) + (ballY * ballY));
+                        ballRadius = sqrt((ballX * ballX) + (ballY * ballY));
                         line(cameraFrame, Point(DRIVING_FRONT_X, CENTER_Y), Point(DRIVING_FRONT_X + ballX, CENTER_Y + ballY), Scalar(0, 255, 0));
                 }
                 cout << "Ball X: " << ballX << endl;
