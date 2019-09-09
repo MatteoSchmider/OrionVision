@@ -18,7 +18,7 @@ using namespace std;
 #define CENTER_Y 252
 
 #define DRIVING_FRONT_X 416
-#define DRIVING_FRONT_Y 224
+
 Mat gray(480, 640, CV_8UC1);
 Mat blue(480, 640, CV_8UC1);
 Mat blueNormalized(480, 640, CV_8UC1);
@@ -233,32 +233,27 @@ void doContours() {
                 ballRadius = pixelsToCm(ballradiusDouble);
                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                 ballY = ballRadius * sin(ballAngle / (180 / PI));
-                //cout << "Ball X: " << ballX << endl;
-                //cout << "Ball Y: " << ballY << endl;
-                //cout << "Ball Radius: " << ballRadius << endl;
-                //cout << "Ball Angle: " << ballAngle << endl;
                 if (ballX < 16) {
                         if (ballY < 0) {
                                 ballAngle = tangents2() - 180.0;
-                                ballX = ballRadius * cos(ballAngle / (180 / PI));
-                                ballY = ballRadius * sin(ballAngle / (180 / PI));
-                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                         }
                         else {
                                 ballAngle = tangents3() - 180.0;
-                                ballX = ballRadius * cos(ballAngle / (180 / PI));
-                                ballY = ballRadius * sin(ballAngle / (180 / PI));
-                                line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 0, 255));
                         }
+                        ballX = ballRadius * cos(ballAngle / (180 / PI));
+                        ballY = ballRadius * sin(ballAngle / (180 / PI));
+                        line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                 }
                 else {
                         ballX = ballX - 10.5;
                         ballAngle = atan2(ballY, ballX) * 180 / PI;
                         ballradius = sqrt((ballX * ballX) + (ballY * ballY));
-                        line(cameraFrame, Point(DRIVING_FRONT_X, DRIVING_FRONT_Y), Point(DRIVING_FRONT_X + ballX, DRIVING_FRONT_Y + ballY), Scalar(0, 255, 0));
+                        line(cameraFrame, Point(DRIVING_FRONT_X, CENTER_Y), Point(DRIVING_FRONT_X + ballX, CENTER_Y + ballY), Scalar(0, 255, 0));
                 }
-                //ballX = ballRadius * cos(ballAngle);
-                //ballY = ballRadius * sin(ballAngle);
+                cout << "Ball X: " << ballX << endl;
+                cout << "Ball Y: " << ballY << endl;
+                cout << "Ball Radius: " << ballRadius << endl;
+                cout << "Ball Angle: " << ballAngle << endl;
         }
         else {ballVisible = false;}
 
