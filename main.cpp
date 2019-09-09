@@ -70,8 +70,6 @@ int fd;
 char teensyByte = 0;
 bool robotOnField = false;
 
-void SimplestCB(Mat& in, Mat& out, float percent) {
-}
 void wb(Mat& in) {
         double min, max;
         minMaxLoc(in, &min, &max, NULL, NULL);
@@ -164,22 +162,22 @@ void normalizeChannels() {
 }
 
 void printTeensy() {
-        char ballXLow = ballXcam & 0xFF;
-        char ballXHigh = (ballXcam >> 8) & 0xFF;
-        char ballYLow = ballYcam & 0xFF;
-        char ballYHigh = (ballYcam >> 8) & 0xFF;
+        char ballAngleLow = ((int)(ballAngle)) & 0xFF;
+        char ballAngleHigh = (((int)(ballAngle)) >> 8) & 0xFF;
+        char ballRadiusLow = ((int)(ballRadius)) & 0xFF;
+        char ballRadiusHigh = (((int)(ballRadius)) >> 8) & 0xFF;
         char ballVis = ballVisible;
 
-        char goalBXLow = goalBX & 0xFF;
-        char goalBXHigh = (goalBX >> 8) & 0xFF;
-        char goalBYLow = goalBY & 0xFF;
-        char goalBYHigh = (goalBY >> 8) & 0xFF;
+        char goalBXLow = ((int)(goalBX)) & 0xFF;
+        char goalBXHigh = (((int)(goalBX)) >> 8) & 0xFF;
+        char goalBYLow = ((int)(goalBY)) & 0xFF;
+        char goalBYHigh = (((int)(goalBY)) >> 8) & 0xFF;
         char goalBVis = goalBVisible;
 
-        char goalYXLow = goalYX & 0xFF;
-        char goalYXHigh = (goalYX >> 8) & 0xFF;
-        char goalYYLow = goalYY & 0xFF;
-        char goalYYHigh = (goalYY >> 8) & 0xFF;
+        char goalYXLow = ((int)(goalYX)) & 0xFF;
+        char goalYXHigh = (((int)(goalYX)) >> 8) & 0xFF;
+        char goalYYLow = ((int)(goalYY)) & 0xFF;
+        char goalYYHigh = (((int)(goalYY)) >> 8) & 0xFF;
         char goalYVis = goalYVisible;
 
         serialPutchar(fd, ballXLow);
@@ -205,7 +203,17 @@ double pixelsToCm(double pixels) {
         double centimeters = 14.11251 - (0.0158725955 * (1 - exp(0.04170403 * pixels)));
         return centimeters;
 }
+double[] getAngleRadius(double xInImage, double yInImage) {
+        double[2] output; //angle, radius
+        double x = xInImage - CENTER_X;
+        double y = yInImage - CENTER_Y;
+        output[0] = atan2(ballY, ballX) * 180 / PI;
+        double radiusDouble = sqrt((sqr(x)) + (sqr(y)));
+        output[0] = pixelsToCm(radiusDouble);
+        return output;
+}
 void doContours() {
+        double[] angleRadius;
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
 
@@ -223,14 +231,10 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBall.size() > 0) {
-                ballX = (minRectBall[0].center.x);
-                ballX = ballX - CENTER_X;
-                ballY = (minRectBall[0].center.y);
-                ballY = ballY - CENTER_Y;
+                angleRadius = getAngleRadius(minRectBall[0].center.x, minRectBall[0].center.y);
                 ballVisible = true;
-                ballAngle = atan2(ballY, ballX) * 180 / PI;
-                double ballradiusDouble = sqrt((ballX * ballX) + (ballY * ballY));
-                ballRadius = pixelsToCm(ballradiusDouble);
+                ballAngle = angleRadius[0];
+                ballRadius = angleRadius[1];
                 ballX = ballRadius * cos(ballAngle / (180 / PI));
                 ballY = ballRadius * sin(ballAngle / (180 / PI));
                 if (ballX < 16) {
@@ -274,9 +278,10 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursBG.size() > 0) {
-                goalBX = (int) (minRectBG[0].center.x);
-                goalBY = (int) (minRectBG[0].center.y);
+                angleRadius = getAngleRadius(minRectBG[0].center.x, minRectBG[0].center.y);
                 goalBVisible = true;
+                goalBX = angleRadius[1] * cos(angleRadius[0] / (180 / PI));
+                goalBY = angleRadius[1] * sin(angleRadius[0] / (180 / PI));
 
         }
         else {goalBVisible = false;}
@@ -298,9 +303,10 @@ void doContours() {
                         line(cameraFrame, rect_points[j], rect_points[(j+1)%4], color, 1, 8);
         }
         if (contoursYG.size() > 0) {
-                goalYX = (int) (minRectYG[0].center.x);
-                goalYY = (int) (minRectYG[0].center.y);
+                angleRadius = getAngleRadius(minRectYG[0].center.x, minRectYG[0].center.y);
                 goalYVisible = true;
+                goalYX = angleRadius[1] * cos(angleRadius[0] / (180 / PI));
+                goalYY = angleRadius[1] * sin(angleRadius[0] / (180 / PI));
 
         }
         else {goalBVisible = false;}
