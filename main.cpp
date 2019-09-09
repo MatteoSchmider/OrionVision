@@ -253,7 +253,7 @@ void doContours() {
                         line(cameraFrame, Point(CENTER_X, CENTER_Y), Point(CENTER_X + (ballX * 2.0), CENTER_Y + (ballY * 2.0)), Scalar(0, 255, 0));
                 }
                 else {
-                        ballX += 10.5;
+                        //ballX -= 10.5;
                         ballAngle = atan2(ballY, ballX) * 180 / PI;
                         ballRadius = sqrt((ballX * ballX) + (ballY * ballY));
                         line(cameraFrame, Point(DRIVING_FRONT_X, CENTER_Y), Point(DRIVING_FRONT_X + ballX, CENTER_Y + ballY), Scalar(0, 255, 0));
