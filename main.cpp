@@ -225,8 +225,8 @@ void doContours() {
         double angleRadius[2];
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
-
-        findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        mainCOunterf
+                findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
 
         vector<RotatedRect> minRectBall(contoursBall.size());
         for(int i = 0; i < contoursBall.size(); i++) {
@@ -363,11 +363,11 @@ void getFrames() {
 }
 
 int main(int argc, const char * argv[]) {
-        thread image_getter(getFrames);
+        //thread image_getter(getFrames);
 
         mask = imread("mask.png", IMREAD_COLOR);
 
-        fd = serialOpen("/dev/ttyS1", 9600);
+        fd = serialOpen("/dev/ttyS1", 115200);
         wiringPiSetup();
         // Create a window
         /*namedWindow("Original Image", 1);
@@ -376,12 +376,15 @@ int main(int argc, const char * argv[]) {
            createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 255);
            createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 255);
            createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 255);
-         */
-        cout << "Just before threading!" << endl;
-        thread image_processor(processFrames);
+
+           cout << "Just before threading!" << endl;
+           thread image_processor(processFrames);*/
 
         while (true) {
-                serialPutchar(fd, mainCounter);
+                char c1 = ((int) mainCounter) & 0xFF;
+                char c2 = (((int) mainCounter) >> 8) & 0xFF;
+                serialPutchar(fd, c1);
+                serialPutchar(fd, c2);
                 /*switch (imageShownSlider) {
                    case 0: {
 
@@ -422,15 +425,15 @@ int main(int argc, const char * argv[]) {
                    }*/
                 //cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
-                char key = (char) waitKey(20);
-                if (key == 'q' || key == 27)
-                {
+                /*   char key = (char) waitKey(20);
+                   if (key == 'q' || key == 27)
+                   {
                         break;
-                }
-                if (serialDataAvail(fd)) {
+                   }
+                   if (serialDataAvail(fd)) {
                         teensyByte = serialGetchar(fd);
                         fflush(stdout);
-                }
-                robotOnField = (teensyByte == 1);
+                   }
+                   robotOnField = (teensyByte == 1);*/
         }
 }
