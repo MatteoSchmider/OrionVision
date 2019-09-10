@@ -362,7 +362,7 @@ void getFrames() {
 }
 
 int main(int argc, const char * argv[]) {
-        //thread image_getter(getFrames);
+        thread image_getter(getFrames);
 
         mask = imread("mask.png", IMREAD_COLOR);
 
@@ -375,25 +375,21 @@ int main(int argc, const char * argv[]) {
            createTrackbar("Red Treshold multiplier", "Original Image", &threshold_red_slider, 255);
            createTrackbar("Blue Treshold multiplier", "Original Image", &threshold_blue_slider, 255);
            createTrackbar("Yellow Treshold multiplier", "Original Image", &threshold_yellow_slider, 255);
-
-           cout << "Just before threading!" << endl;
-           thread image_processor(processFrames);*/
+         */
+        cout << "Just before threading!" << endl;
+        thread image_processor(processFrames);
 
         while (true) {
-                char c1 = 'a';//((int) mainCounter) & 0xFF;
-                char c2 = (((int) mainCounter) >> 8) & 0xFF;
-                serialPutchar(fd, c1);
-                //serialPutchar(fd, c2);
-                /*switch (imageShownSlider) {
-                   case 0: {
+                switch (imageShownSlider) {
+                case 0: {
 
                         break;
-                   }
-                   case 1: {
+                }
+                case 1: {
                         imshow("Original Image", cameraFrame);
                         break;
-                   }
-                   case 2: {
+                }
+                case 2: {
                         seg_channels[0] = blueNormalized * 10;
                         seg_channels[1] = greenNormalized * 25;
                         seg_channels[2] = redNormalized * 2;
@@ -401,38 +397,38 @@ int main(int argc, const char * argv[]) {
                         merge(seg_channels, 3, seg_img);
                         imshow("Original Image", seg_img);
                         break;
-                   }
-                   case 3: {
+                }
+                case 3: {
                         imshow("Original Image", redNormalized * 4);
                         break;
-                   }
-                   case 4: {
+                }
+                case 4: {
                         imshow("Original Image", blueEroded * 4);
                         break;
-                   }
-                   case 5: {
+                }
+                case 5: {
                         imshow("Original Image", yellowNormalized * 4);
                         break;
-                   }
-                   case 6: {
+                }
+                case 6: {
                         imshow("Original Image", cameraFrame);
                         imshow("Ball", redThreshold);
                         imshow("Blue Goal", blueThreshold);
                         imshow("Yellow Goal", yellowThreshold);
                         break;
-                   }
-                   }*/
-                //cout << "Main Thread: " << mainCounter << endl;
+                }
+                }
+                cout << "Main Thread: " << mainCounter << endl;
                 mainCounter++;
-                /*   char key = (char) waitKey(20);
-                   if (key == 'q' || key == 27)
-                   {
+                char key = (char) waitKey(20);
+                if (key == 'q' || key == 27)
+                {
                         break;
-                   }
-                   if (serialDataAvail(fd)) {
+                }
+                if (serialDataAvail(fd)) {
                         teensyByte = serialGetchar(fd);
                         fflush(stdout);
-                   }
-                   robotOnField = (teensyByte == 1);*/
+                }
+                robotOnField = (teensyByte == 1);
         }
 }
