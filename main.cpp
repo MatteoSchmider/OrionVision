@@ -225,8 +225,7 @@ void doContours() {
         double angleRadius[2];
         vector<vector<Point> > contoursBall;
         vector<Vec4i> hierarchyBall;
-        mainCOunterf
-                findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
+        findContours(redThreshold, contoursBall, hierarchyBall, RETR_TREE, CHAIN_APPROX_SIMPLE);
 
         vector<RotatedRect> minRectBall(contoursBall.size());
         for(int i = 0; i < contoursBall.size(); i++) {
