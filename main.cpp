@@ -380,10 +380,10 @@ int main(int argc, const char * argv[]) {
            thread image_processor(processFrames);*/
 
         while (true) {
-                char c1 = ((int) mainCounter) & 0xFF;
+                char c1 = 'a';//((int) mainCounter) & 0xFF;
                 char c2 = (((int) mainCounter) >> 8) & 0xFF;
                 serialPutchar(fd, c1);
-                serialPutchar(fd, c2);
+                //serialPutchar(fd, c2);
                 /*switch (imageShownSlider) {
                    case 0: {
 
