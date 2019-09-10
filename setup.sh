@@ -17,6 +17,9 @@
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install git build-essential cmake gfortran libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libatlas-base-dev libavcodec-dev libavformat-dev libavresample-dev libcanberra-gtk* libgtk2.0-dev libgtk-3-dev libjpeg-dev libpng-dev libswscale-dev libtiff5-dev libv4l-dev libxvidcore-dev libx264-dev pkg-config python python2.7-dev python3-dev unzip wget apt-file v4l-utils
+cd
+
+#install opencv 4.1.0
 cd /opt
 sudo wget -O opencv.zip https://github.com/opencv/opencv/archive/4.1.0.zip
 sudo unzip opencv.zip
@@ -34,15 +37,10 @@ sudo make clean
 sudo ldconfig
 cd
 
-#Neueste Version pullen
-git clone https://github.com/MatteoSchmider/OrionVision.git
+#build gpio library
+git clone https://github.com/TinkerBoard/gpio_lib_c.git
+cd gpio_lib_c
+chmod a+x build
+sudo ./build
 
-#Ausführen
-cd OrionVision
-g++ main.cpp -o main `pkg-config --cflags --libs opencv4`
-./main
-
-# L = p * G * V
-# p = 1.2
-# G = 2 * pi * radius * 2 * pi * radius * revs/sec
-# 
+echo "setup ended"
