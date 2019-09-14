@@ -469,6 +469,7 @@ int main(int argc, const char * argv[])
                         printf ("\nOut: %3d: ", count);
                         fflush (stdout);
                         serialPutchar (fd, count);
+                        serialFlush (fd);
                         nextTime += 300;
                         ++count;
                 }
