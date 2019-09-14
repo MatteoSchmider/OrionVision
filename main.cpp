@@ -445,7 +445,7 @@
 int main(int argc, const char * argv[])
 {
         int fd;
-        unsigned char count;
+        char count;
         unsigned int nextTime;
 
         if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
@@ -481,7 +481,7 @@ int main(int argc, const char * argv[])
                         fflush (stdout);
                 }
         }
-
+        serialClose (fd);
         printf ("\n");
         return 0;
 }
