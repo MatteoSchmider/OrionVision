@@ -445,7 +445,7 @@
 int main(int argc, const char * argv[])
 {
         int fd;
-        int count;
+        uint8_t count;
         unsigned int nextTime;
 
         if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
@@ -462,13 +462,13 @@ int main(int argc, const char * argv[])
 
         nextTime = millis () + 300;
 
-        for (count = 0; count < 256; )
+        for (count = 0; count < 255; )
         {
                 if (millis () > nextTime)
                 {
                         printf ("\nOut: %3d: ", count);
                         fflush (stdout);
-                        serialPutchar (fd, &count);
+                        serialPutchar (fd, count);
                         nextTime += 300;
                         ++count;
                 }
