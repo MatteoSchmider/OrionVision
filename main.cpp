@@ -445,7 +445,7 @@
 int main(int argc, const char * argv[])
 {
         int fd;
-        uint8_t count;
+        unsigned char count;
         unsigned int nextTime;
 
         if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
