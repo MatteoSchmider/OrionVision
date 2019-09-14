@@ -451,7 +451,7 @@ int main(int argc, const char * argv[])
         if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
         {
                 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno));
-                //return 1;
+                return 1;
         }
 
         if (wiringPiSetup () == -1)
@@ -468,7 +468,7 @@ int main(int argc, const char * argv[])
                 {
                         printf ("\nOut: %3d: ", count);
                         fflush (stdout);
-                        serialPutchar (fd, count);
+                        serialPutchar (fd, &count);
                         nextTime += 300;
                         ++count;
                 }
