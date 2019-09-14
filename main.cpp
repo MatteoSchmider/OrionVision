@@ -301,7 +301,9 @@
 //
 //         findContours(yellowThreshold, contoursYG, hierarchyYG, RETR_TREE, CHAIN_APPROX_SIMPLE);
 //
-//         vector<RotatedRect> minRectYG(contoursYG.size());
+//         vector<Rotated
+//         blue = channels[0];
+//         green = channels[Rect> minRectYG(contoursYG.size());
 //         for(int i = 0; i < contoursYG.size(); i++) {
 //                 minRectYG[i] = minAreaRect(Mat(contoursYG[i]));
 //         }
@@ -449,7 +451,7 @@ int main(int argc, const char * argv[])
         if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
         {
                 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno));
-                return 1;
+                //return 1;
         }
 
         if (wiringPiSetup () == -1)
