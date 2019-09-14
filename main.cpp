@@ -474,12 +474,6 @@ int main(int argc, const char * argv[])
                 }
 
                 delay (3);
-
-                while (serialDataAvail (fd))
-                {
-                        printf (" -> %3d", serialGetchar (fd));
-                        fflush (stdout);
-                }
         }
 
         printf ("\n");
