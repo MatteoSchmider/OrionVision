@@ -37,10 +37,4 @@ sudo make clean
 sudo ldconfig
 cd
 
-#build gpio library
-git clone https://github.com/TinkerBoard/gpio_lib_c.git
-cd gpio_lib_c
-chmod a+x build
-sudo ./build
-
 echo "setup ended"

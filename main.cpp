@@ -352,7 +352,7 @@
 // }
 //
 // void getFrames() {
-//         VideoCapture capture("rkcamsrc io-mode=4 isp-mode=2A ! video/x-raw,format=NV12,width=640,height=480 ! videoconvert ! appsink");
+//         VideoCapture capture(0);
 //         if(!capture.isOpened()) {
 //                 cout << "Could not open camera" << endl;
 //         }
@@ -368,8 +368,7 @@
 //
 //         mask = imread("mask.png", IMREAD_COLOR);
 //
-//         fd = serialOpen("/dev/ttyS1", 115200);
-//         wiringPiSetup();
+//         fd = serialOpen("/dev/ttyAMC0", 115200);
 //         // Create a window
 //         /*namedWindow("Original Image", 1);
 //            createTrackbar("Gamma", "Original Image", &gammaSlider, 500);
@@ -434,55 +433,3 @@
 //                 robotOnField = (teensyByte == 1);
 //         }
 // }
-
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-
-#include <wiringPi.h>
-#include <wiringSerial.h>
-
-int main(int argc, const char * argv[])
-{
-        int fd;
-        char count;
-        unsigned int nextTime;
-
-        if ((fd = serialOpen ("/dev/ttyS1", 115200)) < 0)
-        {
-                fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno));
-                return 1;
-        }
-
-        if (wiringPiSetup () == -1)
-        {
-                fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno));
-                return 1;
-        }
-
-        nextTime = millis () + 300;
-
-        for (count = 0; count < 255; )
-        {
-                if (millis () > nextTime)
-                {
-                        printf ("\nOut: %3d: ", count);
-                        fflush (stdout);
-                        serialPutchar (fd, count);
-                        serialFlush (fd);
-                        nextTime += 300;
-                        ++count;
-                }
-
-                delay (3);
-
-                while (serialDataAvail (fd))
-                {
-                        printf (" -> %3d\n", serialGetchar (fd));
-                        fflush (stdout);
-                }
-        }
-        serialClose (fd);
-        printf ("\n");
-        return 0;
-}
